@@ -1,8 +1,8 @@
 library(tidyverse)
-csvURL <- "https://query.data.world/s/UFu01kdUJhMxE-MkjesFRKWAGCApjn"
+csvURL <- "https://query.data.world/s/UE8OZEnRRP6HfUiUV-6znwrs9EKbCK"
 df <- read_csv(csvURL, col_types = list(
-  Claim.Number = col_number(),
-  Date.Received = parse_date(Date.Received, "%d-%B-%Y"),
+  Claim.Number = col_character(),
+  Date.Received = col_date("%d-%B-%Y"),
   Incident.D = col_date("%d-%B-%Y"),
   Airport.Code = col_character(),
   Airport.Name = col_character(),
@@ -14,9 +14,10 @@ df <- read_csv(csvURL, col_types = list(
   Disposition = col_character()
 ))
 # Change .+ and -+ in column names to _
-names(df) <- gsub(".", "_", names(df))
+names(df) <- gsub("\\.", "_", names(df))
 # Remove non-printable characters from column names.
 names(df) <- gsub("[^ -~]", "", names(df)) 
+names(df$incident_d) <- gsub("d", "date", names(df$incident_d))
 # Change dashes in columns to unknowns, and dashes in close_amount to 0's
 df$airport_code <- gsub("-", "Unknown", df$airport_code)
 df$airport_name <- gsub("-", "Unknown", df$airport_name)
@@ -26,6 +27,7 @@ df$claim_site <- gsub("-", "Unknown", df$claim_site)
 df$item_category <- gsub("-", "Unspecified", df$item_category)
 df$close_amount <- gsub("-", "0.00", df$close_amount)
 df$disposition <- gsub("-", "Undetermined", df$disposition)
+df$close_amount <- gsub("\\$", "", df$close_amount)
 
 # Remove non-printable characters from all column values.
 df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
@@ -33,8 +35,8 @@ df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
 write_csv(df, "/Users/derekorji/Documents/claimstmp.csv") # /Users/pcannata/Downloads needs to be changed to a known folder on your machine.
 df <- read_csv("/Users/derekorji/Documents/claimstmp.csv", col_types = list(
   Claim_Number = col_number(),
-  Date_Received = parse_date("%Y-%B-%d"),
-  Incident_D = col_date(),
+  Date_Received = col_date("%d-%B-%Y"),
+  Incident_D = col_date("%d-%B-%Y"),
   Airport_Code = col_character(),
   Airport_Name = col_character(),
   Airline_Name = col_character(),
