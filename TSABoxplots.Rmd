@@ -1,0 +1,44 @@
+---
+title: "TSA Claims Insights"
+author: "Derek Orji, Brandon Kerbow"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(data.world)
+library(DT)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+data.world::set_config(cfg_env("DW_API")) 
+Airlines <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct claimsnew.airline_name 
+	from claimsnew 
+ "), 
+dataset = project)
+```
+
+```{r}
+inputPanel(
+  selectInput("selectAirline", label = "Select Airline",
+              choices = Airlines, multiple=TRUE, selected=c()),
+  sliderInput("CloseAmountFilter", label = "Close Amount:",
+              min = 0, max = 5403, value = c(0, 100200), step = 10)
+)
+```
+
+```{r}
