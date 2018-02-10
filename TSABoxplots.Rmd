@@ -35,10 +35,69 @@ dataset = project)
 ```{r}
 inputPanel(
   selectInput("selectAirline", label = "Select Airline",
-              choices = Airlines, multiple=TRUE, selected=c()),
+              choices = Airlines, multiple=TRUE, selected=c("Allegiant Air","Unknown","Southwest Airlines","USAir","American Airlines","Etihad Airways","Delta Air Lines","Spirit Airlines","UAL","Frontier Airlines","Emirates","British Airways","Southeast Airlines","KLM Royal Dutch Airlines","Alaska Airlines","Direct Air","Jet Blue","TAP Portugal","Virgin America","Air New Zealand","Swiss Air","Lufthansa","Copa Airlines","Scandinavian Airlines Systems","Air Canada","Turkish Airlines","Austrian Airlines","Jet Airways","Czechoslavak Airlines","EL AL Israeli Airlines","Virgin Atlantic","American Eagle","Silverjet","Cathay Pacific Unknown CX","Air Tahiti Nui","Hawaiian Airlines","Sata","Iberia Airlines","Air France","Pakistan International Airlines Cor","Aires Airline","Norwegian Airlines","Westjet Airlines Ltd","Bahama Airlines","Avianca","CanJet","SunWing Airlines","Carribean Airlines","Sun Country Airlines Inc","Philippine Airlines","Korean Airlines","Qantas Airlines","Island Air","Japan Airlines","Cape Air","Qatar airlines","Iceland Air","South African Airways","Middle East Airlines","Ethopian Airlines","Aero Mexico","Aero Flot","Aer Lingus","North American Airlines","Singapore Airlines","LOT Polish Airlines","Asiana Airlines","China Eastern Airlines","Transaero Airlines","EVA airlines","Finnair","Royal Dutch Airlines","Air India","Lan Airlines","Republic Airways","Air Berlin","Brit Air","Aerolineas Argentinas","Alitalia","Arik Airlines","Polish Airlines","Brussels Airlines","Air China","Royal Jordanian Airline","Air Europa","TAM airlines","China Southern Airlines","Egypt Air","Delta (Song)","OMNI Air ExpressUnknown (OY)","V Australia","China Airlines","All Nippon Airways","Volaris Airlines","Virgin Express","Czech Airlines","Thai Airways","Canadian Airlines","Western Pacific Airlines Inc Westpac","Kuwait Airways","Santa Barbara Airlines","Carnival Airlines","Air Aruba","Webjet","Xtra Airways","Cayman Airlines","Aloha Airlines","Aero Lineas Mexicanas J S S A De C V","Great Lakes Airline","America Trans Air","Condor Air","Skywest Airlines Inc USA","Horizon Air","Hainan Airlines","Seaborne Airlines","Allegheny Airlines Inc","US Express")),
   sliderInput("CloseAmountFilter", label = "Close Amount:",
               min = 0, max = 5403, value = c(0, 100200), step = 10)
 )
 ```
 
 ```{r}
+
+
+
+#eventReactive is a function that tells it "if any of those things on the panel change"
+#then re-run the code below. so everything you change something on the panel, this code
+#will change. which makes sense because if we change the slider we want to re-run the query
+
+
+#then the SQL says we want four columns from the superstore data....
+#what do the ? come from? they com from the panel (the UI),
+#and as you see below they are called inputSalesFiler1 and inputSalesFilter2
+#and we want regeion to be whatever we selected above i.e. what we selected in the UI
+#so the question marks get filled in the panel, and the functon paramQueryparams
+#fills those ? in based on the panel. This is called a parmeratized (has ? marks)
+#SQL query. then the question marks 
+
+#and the results of this query went into df....what went info df is the output
+#of an event reative....which is not a dataframe. what eventReactive returns
+#is a functon. this function must be called to return the dataframes.
+
+```{r}
+
+df <- eventReactive(c(input$selectAirline, input$closeAmountFilter), { 
+  project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+  	select airline_name, close_amount, incident_d, item_category
+  	from claimsnew c
+    where close_amount between ? and ? and airline_name in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+order by airline_name
+   ")
+  paramQuery$params <- c(input$closeAmountFilter[1], input$closeAmountFilter[2], input$selectAirline[1], input$selectAirline[2], input$selectAirline[3], input$selectAirline[4], input$selectAirline[5], input$selectAirline[6], input$selectAirline[7], input$selectAirline[8], input$selectAirline[9], input$selectAirline[10], input$selectAirline[11], input$selectAirline[12], input$selectAirline[13], input$selectAirline[14], input$selectAirline[15], input$selectAirline[16], input$selectAirline[17], input$selectAirline[18], input$selectAirline[19], input$selectAirline[20], input$selectAirline[21], input$selectAirline[22], input$selectAirline[23], input$selectAirline[24], input$selectAirline[25], input$selectAirline[26], input$selectAirline[27], input$selectAirline[28], input$selectAirline[29], input$selectAirline[30], input$selectAirline[31], input$selectAirline[32], input$selectAirline[33], input$selectAirline[34], input$selectAirline[35], input$selectAirline[36], input$selectAirline[37], input$selectAirline[38], input$selectAirline[39], input$selectAirline[40], input$selectAirline[41], input$selectAirline[42], input$selectAirline[43], input$selectAirline[44], input$selectAirline[45], input$selectAirline[46], input$selectAirline[47], input$selectAirline[48], input$selectAirline[49], input$selectAirline[50], input$selectAirline[51], input$selectAirline[52], input$selectAirline[53], input$selectAirline[54], input$selectAirline[55], input$selectAirline[56], input$selectAirline[57], input$selectAirline[58], input$selectAirline[59], input$selectAirline[60], input$selectAirline[61], input$selectAirline[62], input$selectAirline[63], input$selectAirline[64], input$selectAirline[65], input$selectAirline[66], input$selectAirline[67], input$selectAirline[68], input$selectAirline[69], input$selectAirline[70], input$selectAirline[71], input$selectAirline[72], input$selectAirline[73], input$selectAirline[74], input$selectAirline[75], input$selectAirline[76], input$selectAirline[77], input$selectAirline[78], input$selectAirline[79], input$selectAirline[80], input$selectAirline[81], input$selectAirline[82], input$selectAirline[83], input$selectAirline[84], input$selectAirline[85], input$selectAirline[86], input$selectAirline[87], input$selectAirline[88], input$selectAirline[89], input$selectAirline[90], input$selectAirline[91], input$selectAirline[92], input$selectAirline[93], input$selectAirline[94], input$selectAirline[95], input$selectAirline[96], input$selectAirline[97], input$selectAirline[98], input$selectAirline[99], input$selectAirline[100], input$selectAirline[101], input$selectAirline[102], input$selectAirline[103], input$selectAirline[104], input$selectAirline[105], input$selectAirline[106], input$selectAirline[107], input$selectAirline[108], input$selectAirline[109], input$selectAirline[110], input$selectAirline[111], input$selectAirline[112], input$selectAirline[113], input$selectAirline[114], input$selectAirline[115], input$selectAirline[116], input$selectAirline[117])
+  data.world::query(paramQuery, dataset = project)
+}) 
+```
+
+
+
+#unsure what this in in canntas code, maybe it is the "hack" of adding etra space?
+```{r}
+Airlines <- eventReactive(c(input$selectAirline), { 
+ library('stringr')
+  str_c(input$selectAirline, collapse=', ')
+})
+```
+
+#NOTE: Canattaa had shorter code for this seciton on tophat...but aybe cuz that is now order ate is a thing
+
+#you can loo up renderTable on the shiny cheat sheet
+#then we pipe it with a function called dplyr but then we add another column
+#called quarter with the code from "Daplr" to (order_date))
+```{r}
+# Notice the need to use df1() below:
+renderDataTable({
+  DT::datatable(df(), rownames = FALSE, 
+  extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+  )
+})
