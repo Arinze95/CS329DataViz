@@ -4,14 +4,15 @@ df <- read_csv(csvURL, col_types = list(
   region = col_character(),
   region.sales = col_number(),
   `region-profit` = col_number() #makes the column numbers not strings, part of data cleanup
-)) #the 'region profit' ' symbols probably not necesary depends on csv
+)) 
+#the 'region profit' ' symbols probably not necesary depends on csv
 # Change .+ (1 to infinity periods) and -+ (1 to infinity dashes) in column names to _
 names(df) <- gsub("\\.+", "_", names(df))
 names(df) <- gsub("-+", "_", names(df))
 # Remove non-printable characters from column names.
 names(df) <- gsub("[^ -~]", "", names(df)) 
 # Change null values in the region_sales and region_profit columns to 0.
-df <- df %>% tidyr::replace_na(list(region_sales = 0, region_profit = 0))#replaces null values with 0
+df <- df %>% tidyr::replace_na(list(region_sales = 0, region_profit = 0)) #replaces null values with 0
 # Remove non-printable characters from all column values.
 df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .))) #mutate all changes all of the data and the function u run on each piece of data is gsub, so this gets rid of all special characters in all of data fields
 #the dot on the previous line refers to whatever you are piping in, in this case df

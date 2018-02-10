@@ -1,0 +1,155 @@
+---
+title: "Top Hat Boxplots"
+author: "Brandon Kerbow"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+#runs the libraries
+```{r setup, include=FALSE}
+library(tidyverse)
+library(data.world)
+library(DT)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#uses the .rEnviron to get this file outto authenticate 
+#then it uses SQL code to get he region from the data set
+```{r}
+project <- "https://data.world/cannata/tophatsuperstore" 
+data.world::set_config(cfg_env("DW_API")) 
+regions <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from superstore 
+ "), 
+dataset = project)
+```
+
+#the input panel corrosponds to the slider
+#if you loo at the GUI you can figure out what corrpsonds to what
+#IF YOU MAKE ANOTHER SELECTINPUT THEN YOU MUST USE A NAME OTHE THAN selectRegion
+```{r}
+inputPanel(
+  selectInput("selectRegion", label = "Select Region",
+              choices = regions, multiple=TRUE, selected=c("East", "West", "Central", "South")),
+  sliderInput("salesFilter", label = "Sales:",
+              min = 0, max = 100200, value = c(0, 100200), step = 100)
+)
+```
+#eventReactive is a function that tells it "if any of those things on the panel change"
+#then re-run the code below. so everything you change something on the panel, this code
+#will change. which makes sense because if we change the slider we want to re-run the query
+
+
+#then the SQL says we want four columns from the superstore data....
+#what do the ? come from? they com from the panel (the UI),
+#and as you see below they are called inputSalesFiler1 and inputSalesFilter2
+#and we want regeion to be whatever we selected above i.e. what we selected in the UI
+#so the question marks get filled in the panel, and the functon paramQueryparams
+#fills those ? in based on the panel. This is called a parmeratized (has ? marks)
+#SQL query. then the question marks 
+
+#and the results of this query went into df....what went info df is the output
+#of an event reative....which is not a dataframe. what eventReactive returns
+#is a functon. this function must be called to return the dataframes.
+
+```{r}
+
+df <- eventReactive(c(input$selectRegion, input$salesFilter), { 
+  project <- "https://data.world/cannata/tophatsuperstore" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+  	select region, category, sales, order_date
+  	from superstore s
+    where sales between ? and ? and region in (?, ?, ?, ?)
+order by region
+   ")
+  paramQuery$params <- c(input$salesFilter[1], input$salesFilter[2], input$selectRegion[1], input$selectRegion[2], input$selectRegion[3], input$selectRegion[4])
+  data.world::query(paramQuery, dataset = project)
+}) 
+```
+
+```{r}
+Regions <- eventReactive(c(input$selectRegion), { 
+  library('stringr')
+  str_c(input$selectRegion, collapse=', ')
+})
+```
+#you can loo up renderTable on the shiny cheat sheet
+#then we pipe it with a function called dplyr but then we add another column
+#called quarter with the code from "Daplr" to (order_date))
+```{r}
+# Notice the need to use df1() below:
+renderDataTable({
+  DT::datatable(df() %>% dplyr::mutate(quarter = lubridate::quarter(order_date)), rownames = FALSE,
+  extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+  )
+})
+```
+
+```{r}
+# Notice the need to use df(), and Regions() below:
+renderPlot({
+  plot = df() %>% ggplot() + geom_boxplot(mapping = aes(x=category, y=sales, colour = region), size = 2) +
+    theme(legend.text=element_text(size=30)) +
+    theme(legend.title=element_text(size=40)) + 
+    theme(axis.text=element_text(size=30),
+          axis.title=element_text(size=30, face="bold")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))  + 
+    theme(plot.title = element_text(size = 40, face = "bold")) + 
+    ggtitle(paste("Sales for", Regions(), " Region(s)")) +
+    xlab("Category") + ylab("Sales")
+  #ggplotly(plot, tooltip = c("sales"), session="knitr")
+  plot
+}, height = 2000, width = 2000)
+```
+
+```{r}
+inputPanel(
+  textInput("title", "Title", "Region Sales"),
+  textInput("xTitle", "xTitle", "Quarter"),
+  textInput("yTitle", "yTitle", "Sales"),
+  numericInput("titleFont", "titleFont:", 60),
+  numericInput("textFont", "textFont:", 40),
+  numericInput("yMin", "yMin:", 0),
+  numericInput("yMax", "yMax:", 50000)
+)
+```
+
+```{r}
+df1 <- eventReactive(c(input$selectRegion, input$title, input$titleFont, input$textFont, input$xTitle, input$yTitle, input$yMin, input$yMax), { 
+  df() %>% dplyr::filter(between(sales, input$yMin, input$yMax))
+})
+```
+
+```{r}
+# Boxplot - see http://ggplot2.tidyverse.org/reference/geom_boxplot.html
+# Notice the need to use df(), and Regions() below:
+renderPlot({
+  plot = df1() %>% ggplot() + 
+    geom_boxplot(mapping = aes(x = as.factor(paste(lubridate::year(order_date),"_",lubridate::quarter(order_date))), y=sales, colour = region), size = 2) +
+    
+    theme(legend.text=element_text(size=input$textFont),
+      legend.title=element_text(size=input$titleFont), 
+      legend.key = element_rect(size = 5),
+      legend.key.size = unit(5, 'lines')) +
+    theme(axis.text=element_text(size=input$textFont),
+          axis.title=element_text(size=input$textFont, face="bold")) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))  + 
+    theme(plot.title = element_text(size = input$titleFont, face = "bold")) + 
+    ggtitle(paste(Regions(), input$title)) +
+    xlab(input$xTitle) + ylab(input$yTitle)
+  #ggplotly(plot, tooltip = c("sales"), session="knitr")
+  plot
+}, height = 2000, width = 2000)
+```
