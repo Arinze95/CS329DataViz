@@ -12,8 +12,29 @@ output:
 runtime: shiny
 ---
 
-# 
-#Our Dataset comes from ___ and shows 
+#Introduction
+Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the airline, type of claim, item category, incident date, and close amount.
+
+#Important Links: Data.World Project & Insights
+Project: [link](https://data.world/derek-orji/s-18-edv-project-1)
+
+Kyle DuQuesnay's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/81cd8a71-9457-449e-b99c-6dfac2546cab)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/8f193fe5-3c1c-4c61-93e2-bdbf85eca4fd)
+
+Jeffrey Feng's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/707c50dd-fdad-4db9-afc5-b13f960d0d8e)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/c5c17102-8410-44ef-8513-9eb64fe4f57e)
+
+Brandon Kerbow's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/cb6893e7-839d-4c7d-a7ae-e403bc1c3f66)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/ea9b67ab-fc4d-47aa-a1eb-2be1b94833e2)
+
+Derek Orji's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/0b3d3d3c-440a-4edc-89cf-7312c8a80a02)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/ff849a96-91ff-4369-943c-10e4f3bea41e)
+
+
 
 ```{r setup, include=FALSE}
 
@@ -46,6 +67,8 @@ Airlines <- data.world::query(data.world::qry_sql(
 dataset = project)
 ```
 
+
+#Select the Airlines and Close Amount range of interest
 ```{r}
 inputPanel(
   selectInput("selectAirline", label = "Select Airline",
@@ -99,7 +122,7 @@ airlines <- eventReactive(c(input$selectAirline), {
 })
 ```
 
-
+#Data table to match selected Airlines and Close Amount
 
 
 ```{r}
@@ -112,8 +135,8 @@ renderDataTable({
 })
 ```
 
+#Boxplots - Close Amount vs. Airport
 
-Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly)
 
 ```{r}
 tabsetPanel( 
@@ -193,7 +216,7 @@ inputPanel(
 
 
 
-Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly)
+#Boxplots - Close Amount vs. Airport over time
 
 ```{r}
 tabsetPanel( 
