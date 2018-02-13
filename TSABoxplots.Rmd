@@ -13,7 +13,7 @@ runtime: shiny
 ---
 
 #Introduction
-Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the airline, type of claim, item category, incident date, and close amount.
+Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the airline, type of claim, item category, incident date, disposition, and close amount.
 
 #Important Links: Data.World Project & Insights
 Project: [link](https://data.world/derek-orji/s-18-edv-project-1)
@@ -67,6 +67,17 @@ Airlines <- data.world::query(data.world::qry_sql(
 dataset = project)
 ```
 
+
+```{r}
+project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+data.world::set_config(cfg_env("DW_API")) 
+itemcategory <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct claimsnew.item_category 
+	from claimsnew 
+ "), 
+dataset = project)
+```
 
 #Select the Airlines and Close Amount range of interest
 ```{r}
@@ -135,7 +146,7 @@ renderDataTable({
 })
 ```
 
-#Boxplots - Close Amount vs. Airport
+#Boxplots - Close Amount vs. Airlines and Airports
 
 
 ```{r}
@@ -273,5 +284,89 @@ renderPlotly({
     xlab(input$xLabel_2) + ylab(input$yLabel_2)
   ggplotly(plot, tooltip = c("sales"), session="knitr", width = input$plotWidth_2, height = input$plotHeight_2)
 })
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+#Select the Item Category and Close Amount range of interest
+```{r}
+inputPanel(
+  selectInput("selectitemcategory", label = "Select Item Category",
+              choices = itemcategory, multiple=TRUE, 
+              selected=c("item_category",
+"Baggage/Cases/Purses",
+"Computer & Accessories",
+"Clothing",
+"Other"
+)),
+  sliderInput("CloseAmountFilter", label = "Close Amount:",
+              min = 0, max = 5403, value = c(0, 100200), step = 50)
+)
+```
+
+```{r}
+
+DF <- eventReactive(c(input$selectitemcategory, input$CloseAmountFilter), { 
+  project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+  	select c.close_amount, c.item_category
+  	from claimsnew c
+    where c.close_amount between ? and ? and c.item_category in
+
+(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+order by c.item_category
+   ")
+  paramQuery$params <- c(input$CloseAmountFilter[1], input$CloseAmountFilter[2], input$selectitemcategory[1], input$selectitemcategory[2], input$selectitemcategory[3], input$selectitemcategory[4], input$selectitemcategory[5], input$selectitemcategory[6], input$selectitemcategory[7], input$selectitemcategory[8], input$selectitemcategory[9], input$selectitemcategory[10], input$selectitemcategory[11], input$selectitemcategory[12], input$selectitemcategory[13], input$selectitemcategory[14], input$selectitemcategory[15], input$selectitemcategory[16], input$selectitemcategory[17], input$selectitemcategory[18], input$selectitemcategory[19], input$selectitemcategory[20])
+  data.world::query(paramQuery, dataset = project)
+}) 
+```
+
+
+
+
+```{r}
+Itemcategory <- eventReactive(c(input$selectitemcategory), { 
+ library('stringr')
+  str_c(input$selectitemcategory, collapse=', ')
+})
+```
+
+
+```{r}
+# Notice the need to use DF(), and Itemcategory() below:
+renderPlot({
+  plot = DF() %>% ggplot() + 
+    geom_histogram(mapping = aes(x=close_amount, colour = item_category, fill = item_category), binwidth = 200, size = 2) +
+    scale_x_continuous(breaks = seq(0,5000,200)) +
+    theme(legend.text=element_text(size=10)) +
+    theme(legend.title=element_text(size=10)) + 
+    theme(axis.text=element_text(size=10),
+          axis.title=element_text(size=10, face="bold")) + 
+    theme(axis.text.x = element_text(angle = 10, hjust = 1))  + 
+    theme(plot.title = element_text(size = 20, face = "bold")) + 
+    ggtitle(paste("Close Amount for", Itemcategory(), " Item Category(s)")) +
+    xlab("Close Amount $ (bin)") + ylab("Count of Close Amount")
+  #ggplotly(plot, tooltip = c("closeamount"), session="knitr")
+  plot
+}, height = 600, width = 800)
 ```
 
