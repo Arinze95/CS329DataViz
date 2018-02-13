@@ -1,6 +1,6 @@
 ---
-title: "TSA Claims Insights"
-author: "Derek Orji, Brandon Kerbow"
+title: "TSA Claims Data: An Interactive Document"
+author: "Kyle DuQuesnay, Jeffrey Feng, Brandon Kerbow, Derek Orji"
 resource_files:
 - .Renviron
 output:
@@ -11,6 +11,9 @@ output:
     toc_float: yes
 runtime: shiny
 ---
+
+# 
+#Our Dataset comes from ___ and shows 
 
 ```{r setup, include=FALSE}
 
@@ -23,7 +26,6 @@ runtime: shiny
 #sales: close_amount
 #region: airline_name
 
-
 library(tidyverse)
 library(data.world)
 library(DT)
@@ -32,9 +34,6 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-sessionInfo()
-```
 
 ```{r}
 project <- "https://data.world/derek-orji/s-18-edv-project-1" 
@@ -50,7 +49,18 @@ dataset = project)
 ```{r}
 inputPanel(
   selectInput("selectAirline", label = "Select Airline",
-              choices = Airlines, multiple=TRUE, selected=c("Allegiant Air","Unknown","Southwest Airlines","USAir","American Airlines","Etihad Airways","Delta Air Lines","Spirit Airlines","UAL","Frontier Airlines","Emirates","British Airways","Southeast Airlines","KLM Royal Dutch Airlines","Alaska Airlines","Direct Air","Jet Blue","TAP Portugal","Virgin America","Air New Zealand","Swiss Air","Lufthansa","Copa Airlines","Scandinavian Airlines Systems","Air Canada","Turkish Airlines","Austrian Airlines","Jet Airways","Czechoslavak Airlines","EL AL Israeli Airlines","Virgin Atlantic","American Eagle","Silverjet","Cathay Pacific Unknown CX","Air Tahiti Nui","Hawaiian Airlines","Sata","Iberia Airlines","Air France","Pakistan International Airlines Cor","Aires Airline","Norwegian Airlines","Westjet Airlines Ltd","Bahama Airlines","Avianca","CanJet","SunWing Airlines","Carribean Airlines","Sun Country Airlines Inc","Philippine Airlines","Korean Airlines","Qantas Airlines","Island Air","Japan Airlines","Cape Air","Qatar airlines","Iceland Air","South African Airways","Middle East Airlines","Ethopian Airlines","Aero Mexico","Aero Flot","Aer Lingus","North American Airlines","Singapore Airlines","LOT Polish Airlines","Asiana Airlines","China Eastern Airlines","Transaero Airlines","EVA airlines","Finnair","Royal Dutch Airlines","Air India","Lan Airlines","Republic Airways","Air Berlin","Brit Air","Aerolineas Argentinas","Alitalia","Arik Airlines","Polish Airlines","Brussels Airlines","Air China","Royal Jordanian Airline","Air Europa","TAM airlines","China Southern Airlines","Egypt Air","Delta (Song)","OMNI Air ExpressUnknown (OY)","V Australia","China Airlines","All Nippon Airways","Volaris Airlines","Virgin Express","Czech Airlines","Thai Airways","Canadian Airlines","Western Pacific Airlines Inc Westpac","Kuwait Airways","Santa Barbara Airlines","Carnival Airlines","Air Aruba","Webjet","Xtra Airways","Cayman Airlines","Aloha Airlines","Aero Lineas Mexicanas J S S A De C V","Great Lakes Airline","America Trans Air","Condor Air","Skywest Airlines Inc USA","Horizon Air","Hainan Airlines","Seaborne Airlines","Allegheny Airlines Inc","US Express")),
+              choices = Airlines, multiple=TRUE, 
+              selected=c("airline_name",
+"Southwest Airlines",
+"Delta Air Lines",
+"American Airlines",
+"UAL",
+"USAir",
+"Jet Blue",
+"Alaska Airlines",
+"Spirit Airlines",
+"Frontier Airlines"
+)),
   sliderInput("CloseAmountFilter", label = "Close Amount:",
               min = 0, max = 5403, value = c(0, 100200), step = 10)
 )
@@ -58,24 +68,6 @@ inputPanel(
 
 
 
-
-
-#eventReactive is a function that tells it "if any of those things on the panel change"
-#then re-run the code below. so everything you change something on the panel, this code
-#will change. which makes sense because if we change the slider we want to re-run the query
-
-
-#then the SQL says we want four columns from the superstore data....
-#what do the ? come from? they com from the panel (the UI),
-#and as you see below they are called inputSalesFiler1 and inputSalesFilter2
-#and we want regeion to be whatever we selected above i.e. what we selected in the UI
-#so the question marks get filled in the panel, and the functon paramQueryparams
-#fills those ? in based on the panel. This is called a parmeratized (has ? marks)
-#SQL query. then the question marks 
-
-#and the results of this query went into df....what went info df is the output
-#of an event reative....which is not a dataframe. what eventReactive returns
-#is a functon. this function must be called to return the dataframes.
 
 ```{r}
 
@@ -107,11 +99,6 @@ airlines <- eventReactive(c(input$selectAirline), {
 })
 ```
 
-#NOTE: Canattaa had shorter code for this seciton on tophat...but aybe cuz that is now order ate is a thing
-
-#you can loo up renderTable on the shiny cheat sheet
-#then we pipe it with a function called dplyr but then we add another column
-#called quarter with the code from "Daplr" to (order_date))
 
 
 
@@ -126,8 +113,6 @@ renderDataTable({
 ```
 
 
-#Render and Display the Categories Boxplot
-
 Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly)
 
 ```{r}
@@ -137,15 +122,15 @@ tabsetPanel(
     numericInput("plotWidth_1", "Plot Width:", 800),
     numericInput("plotHeight_1", "Plot Height:", 600)),
   tabPanel("Plot Title",
-    textInput("title_1", "Title", "Region Sales"),
+    textInput("title_1", "Title", "Close Amount vs. Airline"),
     numericInput("titleFont_1", "Title Font", 10)), 
   tabPanel("Plot Legend",
     numericInput("legendTitleSize_1", "Legend Title Size", 10),
     numericInput("legendItemSize_1", "Legend Item Size", 10),
     numericInput("legendKeySize_1", "Legend Key Size", 5)), 
   tabPanel("Axis Labels",
-    textInput("xLabel_1", "x-Axis Label", "Category"),
-    textInput("yLabel_1", "y-Axis Label", "Sales"),
+    textInput("xLabel_1", "x-Axis Label", "Airline"),
+    textInput("yLabel_1", "y-Axis Label", "Close Amount"),
     numericInput("textFont_1", "textFont:", 10)),
   tabPanel("Data Size", 
     numericInput("yDataMin_1", "yData Minimum (Required):", NA),
@@ -156,7 +141,7 @@ tabsetPanel(
 ```{r}
 df1 <- eventReactive(c(input$selectAirline, input$yDataMin_1, input$yDataMax_1), { 
   if( ! is.na(input$yDataMin_1) & ! is.na(input$yDataMax_1)) {
-    df() %>% dplyr::filter(between(closeAmount, input$yDataMin_1, input$yDataMax_1))
+    df() %>% dplyr::filter(between(close_amount, input$yDataMin_1, input$yDataMax_1))
   }
   else {
     df()
@@ -186,7 +171,7 @@ renderPlotly({
           axis.text.x = element_text(angle = 90, hjust = 1))  +
     theme(plot.margin=unit(c(2,1,1,1),"cm")) +
     scale_y_continuous(labels = scales::comma) + # Disable scientific notation
-    ggtitle(paste(airlines(), input$title_1)) +
+    ggtitle(input$title_1) +
     xlab(input$xLabel_1) + ylab(input$yLabel_1)
   ggplotly(plot, tooltip = c("closeAmount"), session="knitr", width = input$plotWidth_1, height = input$plotHeight_1)
 })
@@ -207,8 +192,6 @@ inputPanel(
 
 
 
-   
-#Render and Display the Quarters Boxplot
 
 Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly)
 
@@ -219,15 +202,15 @@ tabsetPanel(
     numericInput("plotWidth_2", "Plot Width:", 800),
     numericInput("plotHeight_2", "Plot Height:", 600)),
   tabPanel("Plot Title",
-    textInput("title_2", "Title", "Region Sales"),
+    textInput("title_2", "Title", "Close Amount vs. Airline"),
     numericInput("titleFont_2", "Title Font", 10)), 
   tabPanel("Plot Legend",
     numericInput("legendTitleSize_2", "Legend Title Size", 10),
     numericInput("legendItemSize_2", "Legend Item Size", 10),
     numericInput("legendKeySize_2", "Legend Key Size", 5)), 
   tabPanel("Axis Labels",
-    textInput("xLabel_2", "x-Axis Label", "Quarter"),
-    textInput("yLabel_2", "y-Axis Label", "Sales"),
+    textInput("xLabel_2", "x-Axis Label", "Date of Claim"),
+    textInput("yLabel_2", "y-Axis Label", "Close Amount"),
     numericInput("textFont_2", "textFont:", 10)),
   tabPanel("Data Size", 
     numericInput("yDataMin_2", "yData Minimum (Required):", NA),
@@ -235,9 +218,9 @@ tabsetPanel(
 ```
 
 ```{r}
-df2 <- eventReactive(c(input$selectRegion_1, input$yDataMin_2, input$yDataMax_2), { 
+df2 <- eventReactive(c(input$selectAirline, input$yDataMin_2, input$yDataMax_2), { 
   if( ! is.na(input$yDataMin_2) & ! is.na(input$yDataMax_2)) {
-    df() %>% dplyr::filter(between(closeAmount, input$yDataMin_2, input$yDataMax_2))
+    df() %>% dplyr::filter(between(close_amount, input$yDataMin_2, input$yDataMax_2))
   }
   else {
     df()
@@ -263,7 +246,7 @@ renderPlotly({
           axis.text.x = element_text(angle = 90, hjust = 1))  +
     theme(plot.margin=unit(c(2,1,1,1),"cm")) +
     scale_y_continuous(labels = scales::comma) + # Disable scientific notation
-    ggtitle(paste(airlines(), input$title_2)) +
+    ggtitle( input$title_2)+
     xlab(input$xLabel_2) + ylab(input$yLabel_2)
   ggplotly(plot, tooltip = c("sales"), session="knitr", width = input$plotWidth_2, height = input$plotHeight_2)
 })
