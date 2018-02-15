@@ -1,0 +1,373 @@
+---
+title: "TSA Claims Data: An Interactive Document"
+author: "Kyle DuQuesnay, Jeffrey Feng, Brandon Kerbow, Derek Orji"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+library(rsconnect)
+rsconnect::deployApp('C:/Users/kyl617/CS329DataViz')
+#Introduction
+Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the airline, type of claim, item category, incident date, disposition, and close amount.
+
+#Important Links: Data.World Project & Insights
+Project: [link](https://data.world/derek-orji/s-18-edv-project-1)
+
+Kyle DuQuesnay's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/81cd8a71-9457-449e-b99c-6dfac2546cab)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/8f193fe5-3c1c-4c61-93e2-bdbf85eca4fd)
+
+Jeffrey Feng's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/707c50dd-fdad-4db9-afc5-b13f960d0d8e)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/c5c17102-8410-44ef-8513-9eb64fe4f57e)
+
+Brandon Kerbow's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/cb6893e7-839d-4c7d-a7ae-e403bc1c3f66)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/ea9b67ab-fc4d-47aa-a1eb-2be1b94833e2)
+
+Derek Orji's insights:
+[1](https://data.world/derek-orji/s-18-edv-project-1/insights/0b3d3d3c-440a-4edc-89cf-7312c8a80a02)
+[2](https://data.world/derek-orji/s-18-edv-project-1/insights/ff849a96-91ff-4369-943c-10e4f3bea41e)
+
+
+
+```{r setup, include=FALSE}
+
+#RELATIONSHIP BETWEEN CANATTAS VARIABLES AND OURS, respectively
+#regions : Airlines
+#selectRegion_1: selectAirline
+#Select Region: Select Airline
+#salesFilter_1: closeAmountFilter
+#Regions: airlines
+#sales: close_amount
+#region: airline_name
+
+library(tidyverse)
+library(data.world)
+library(DT)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+data.world::set_config(cfg_env("DW_API")) 
+Airlines <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct claimsnew.airline_name 
+	from claimsnew 
+ "), 
+dataset = project)
+```
+
+
+```{r}
+project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+data.world::set_config(cfg_env("DW_API")) 
+itemcategory <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct claimsnew.item_category 
+	from claimsnew 
+ "), 
+dataset = project)
+```
+
+#Select the Airlines and Close Amount range of interest. Use to select what data will be examined in the following plots
+```{r}
+inputPanel(
+  selectInput("selectAirline", label = "Select Airline",
+              choices = Airlines, multiple=TRUE, 
+              selected=c("airline_name",
+"Southwest Airlines",
+"Delta Air Lines",
+"American Airlines",
+"UAL",
+"USAir",
+"Jet Blue",
+"Alaska Airlines",
+"Spirit Airlines",
+"Frontier Airlines"
+)),
+  sliderInput("CloseAmountFilter", label = "Close Amount:",
+              min = 0, max = 5403, value = c(0, 100200), step = 10)
+)
+```
+
+
+
+
+```{r}
+
+df <- eventReactive(c(input$selectAirline, input$CloseAmountFilter), { 
+  project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+  	select c.claim_number, c.airline_name, c.close_amount, c.incident_d, c.item_category
+  	from claimsnew c
+    where c.close_amount between ? and ? and c.airline_name in
+
+(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+order by c.airline_name
+   ")
+  paramQuery$params <- c(input$CloseAmountFilter[1], input$CloseAmountFilter[2], input$selectAirline[1], input$selectAirline[2], input$selectAirline[3], input$selectAirline[4], input$selectAirline[5], input$selectAirline[6], input$selectAirline[7], input$selectAirline[8], input$selectAirline[9], input$selectAirline[10], input$selectAirline[11], input$selectAirline[12], input$selectAirline[13], input$selectAirline[14], input$selectAirline[15], input$selectAirline[16], input$selectAirline[17], input$selectAirline[18], input$selectAirline[19], input$selectAirline[20], input$selectAirline[21], input$selectAirline[22], input$selectAirline[23], input$selectAirline[24], input$selectAirline[25], input$selectAirline[26], input$selectAirline[27], input$selectAirline[28], input$selectAirline[29], input$selectAirline[30], input$selectAirline[31], input$selectAirline[32], input$selectAirline[33], input$selectAirline[34], input$selectAirline[35], input$selectAirline[36], input$selectAirline[37], input$selectAirline[38], input$selectAirline[39], input$selectAirline[40], input$selectAirline[41], input$selectAirline[42], input$selectAirline[43], input$selectAirline[44], input$selectAirline[45], input$selectAirline[46], input$selectAirline[47], input$selectAirline[48], input$selectAirline[49], input$selectAirline[50], input$selectAirline[51], input$selectAirline[52], input$selectAirline[53], input$selectAirline[54], input$selectAirline[55], input$selectAirline[56], input$selectAirline[57], input$selectAirline[58], input$selectAirline[59], input$selectAirline[60], input$selectAirline[61], input$selectAirline[62], input$selectAirline[63], input$selectAirline[64], input$selectAirline[65], input$selectAirline[66], input$selectAirline[67], input$selectAirline[68], input$selectAirline[69], input$selectAirline[70], input$selectAirline[71], input$selectAirline[72], input$selectAirline[73], input$selectAirline[74], input$selectAirline[75], input$selectAirline[76], input$selectAirline[77], input$selectAirline[78], input$selectAirline[79], input$selectAirline[80], input$selectAirline[81], input$selectAirline[82], input$selectAirline[83], input$selectAirline[84], input$selectAirline[85], input$selectAirline[86], input$selectAirline[87], input$selectAirline[88], input$selectAirline[89], input$selectAirline[90], input$selectAirline[91], input$selectAirline[92], input$selectAirline[93], input$selectAirline[94], input$selectAirline[95], input$selectAirline[96], input$selectAirline[97], input$selectAirline[98], input$selectAirline[99], input$selectAirline[100], input$selectAirline[101], input$selectAirline[102], input$selectAirline[103], input$selectAirline[104], input$selectAirline[105], input$selectAirline[106], input$selectAirline[107], input$selectAirline[108], input$selectAirline[109], input$selectAirline[110], input$selectAirline[111], input$selectAirline[112], input$selectAirline[113], input$selectAirline[114], input$selectAirline[115], input$selectAirline[116], input$selectAirline[117])
+  data.world::query(paramQuery, dataset = project)
+}) 
+```
+
+
+
+
+```{r}
+airlines <- eventReactive(c(input$selectAirline), { 
+ library('stringr')
+  str_c(input$selectAirline, collapse=', ')
+})
+```
+
+#Data table to match selected Airlines and Close Amount. Arranges selected data into a table. Compares closing data numerically.
+
+
+```{r}
+ #Notice the need to use df1() below:
+renderDataTable({
+  
+  DT::datatable(df(), rownames = FALSE, 
+  extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+  )
+})
+```
+
+#Boxplots - Close Amount vs. Airlines and Airports. Arranges sum of close amounts by airlines and airports. 
+
+
+```{r}
+tabsetPanel( 
+  tabPanel("Settings:"),# To create a tab panel - see https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html
+  tabPanel("Plot Size", 
+    numericInput("plotWidth_1", "Plot Width:", 800),
+    numericInput("plotHeight_1", "Plot Height:", 600)),
+  tabPanel("Plot Title",
+    textInput("title_1", "Title", "Close Amount vs. Airline"),
+    numericInput("titleFont_1", "Title Font", 10)), 
+  tabPanel("Plot Legend",
+    numericInput("legendTitleSize_1", "Legend Title Size", 10),
+    numericInput("legendItemSize_1", "Legend Item Size", 10),
+    numericInput("legendKeySize_1", "Legend Key Size", 5)), 
+  tabPanel("Axis Labels",
+    textInput("xLabel_1", "x-Axis Label", "Airline"),
+    textInput("yLabel_1", "y-Axis Label", "Close Amount"),
+    numericInput("textFont_1", "textFont:", 10)),
+  tabPanel("Data Size", 
+    numericInput("yDataMin_1", "yData Minimum (Required):", NA),
+    numericInput("yDataMax_1", "yData Maximum (Required):", NA)))
+```
+
+
+```{r}
+df1 <- eventReactive(c(input$selectAirline, input$yDataMin_1, input$yDataMax_1), { 
+  if( ! is.na(input$yDataMin_1) & ! is.na(input$yDataMax_1)) {
+    df() %>% dplyr::filter(between(close_amount, input$yDataMin_1, input$yDataMax_1))
+  }
+  else {
+    df()
+  }
+})
+```
+
+
+
+
+
+```{r}
+# Boxplot - see http://ggplot2.tidyverse.org/reference/geom_boxplot.html
+# Notice the need to use df(), and Regions() below:
+renderPlotly({
+  plot = df1() %>% ggplot() + 
+    geom_boxplot(mapping = aes(x = airline_name, y=close_amount, colour = airline_name)) +
+     
+    theme(plot.title = element_text(size = input$titleFont_1, face = "bold")) + 
+    theme( # Legend Attributes - see https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
+      legend.title=element_text(size=input$legendTitleSize_1), 
+      legend.text=element_text(size=input$legendItemSize_1),
+      legend.key = element_rect(size = input$legendKeySize_1),
+      legend.key.size = unit(input$legendKeySize_1, 'lines')) +
+    theme(axis.text=element_text(size=input$textFont_1),
+          axis.title=element_text(size=input$textFont_1, face="bold"),
+          axis.text.x = element_text(angle = 90, hjust = 1))  +
+    theme(plot.margin=unit(c(2,1,1,1),"cm")) +
+    scale_y_continuous(labels = scales::comma) + # Disable scientific notation
+    ggtitle(input$title_1) +
+    xlab(input$xLabel_1) + ylab(input$yLabel_1)
+  ggplotly(plot, tooltip = c("closeAmount"), session="knitr", width = input$plotWidth_1, height = input$plotHeight_1)
+})
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+
+
+
+
+#Boxplots - Close Amount vs. Airport over time. Arranges close amount by airport and time. Use to find changes in close amount over time.
+
+```{r}
+tabsetPanel( 
+  tabPanel("Settings:"),# To create a tab panel - see https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html
+  tabPanel("Plot Size", 
+    numericInput("plotWidth_2", "Plot Width:", 800),
+    numericInput("plotHeight_2", "Plot Height:", 600)),
+  tabPanel("Plot Title",
+    textInput("title_2", "Title", "Close Amount vs. Airline"),
+    numericInput("titleFont_2", "Title Font", 10)), 
+  tabPanel("Plot Legend",
+    numericInput("legendTitleSize_2", "Legend Title Size", 10),
+    numericInput("legendItemSize_2", "Legend Item Size", 10),
+    numericInput("legendKeySize_2", "Legend Key Size", 5)), 
+  tabPanel("Axis Labels",
+    textInput("xLabel_2", "x-Axis Label", "Date of Claim"),
+    textInput("yLabel_2", "y-Axis Label", "Close Amount"),
+    numericInput("textFont_2", "textFont:", 10)),
+  tabPanel("Data Size", 
+    numericInput("yDataMin_2", "yData Minimum (Required):", NA),
+    numericInput("yDataMax_2", "yData Maximum (Required):", NA)))
+```
+
+```{r}
+df2 <- eventReactive(c(input$selectAirline, input$yDataMin_2, input$yDataMax_2), { 
+  if( ! is.na(input$yDataMin_2) & ! is.na(input$yDataMax_2)) {
+    df() %>% dplyr::filter(between(close_amount, input$yDataMin_2, input$yDataMax_2))
+  }
+  else {
+    df()
+  }
+})
+```
+
+```{r}
+# Boxplot - see http://ggplot2.tidyverse.org/reference/geom_boxplot.html
+# Notice the need to use df(), and Regions() below:
+renderPlotly({
+  plot = df2() %>% ggplot() + 
+    geom_boxplot(mapping = aes(x = as.factor(paste(lubridate::year(incident_d),"_",lubridate::quarter(incident_d))), y=close_amount, colour = airline_name)) +
+     
+    theme(plot.title = element_text(size = input$titleFont_2, face = "bold")) + 
+    theme( # Legend Attributes - see https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
+      legend.title=element_text(size=input$legendTitleSize_2), 
+      legend.text=element_text(size=input$legendItemSize_2),
+      legend.key = element_rect(size = input$legendKeySize_2),
+      legend.key.size = unit(input$legendKeySize_2, 'lines')) +
+    theme(axis.text=element_text(size=input$textFont_2),
+          axis.title=element_text(size=input$textFont_2, face="bold"),
+          axis.text.x = element_text(angle = 90, hjust = 1))  +
+    theme(plot.margin=unit(c(2,1,1,1),"cm")) +
+    scale_y_continuous(labels = scales::comma) + # Disable scientific notation
+    ggtitle( input$title_2)+
+    xlab(input$xLabel_2) + ylab(input$yLabel_2)
+  ggplotly(plot, tooltip = c("sales"), session="knitr", width = input$plotWidth_2, height = input$plotHeight_2)
+})
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+```{r}
+inputPanel( 
+  textInput("dummy_2", "", "")
+  )
+```
+
+#Select the Item Category and Close Amount range of interest. ALlows you to pick the close amount of interest by item category for following plots.
+```{r}
+inputPanel(
+  selectInput("selectitemcategory", label = "Select Item Category",
+              choices = itemcategory, multiple=TRUE, 
+              selected=c("item_category",
+"Baggage/Cases/Purses",
+"Computer & Accessories",
+"Clothing",
+"Other"
+)),
+  sliderInput("CloseAmountFilter", label = "Close Amount:",
+              min = 0, max = 5403, value = c(0, 100200), step = 50)
+)
+```
+
+```{r}
+
+DF <- eventReactive(c(input$selectitemcategory, input$CloseAmountFilter), { 
+  project <- "https://data.world/derek-orji/s-18-edv-project-1" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+  	select c.close_amount, c.item_category
+  	from claimsnew c
+    where c.close_amount between ? and ? and c.item_category in
+
+(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+order by c.item_category
+   ")
+  paramQuery$params <- c(input$CloseAmountFilter[1], input$CloseAmountFilter[2], input$selectitemcategory[1], input$selectitemcategory[2], input$selectitemcategory[3], input$selectitemcategory[4], input$selectitemcategory[5], input$selectitemcategory[6], input$selectitemcategory[7], input$selectitemcategory[8], input$selectitemcategory[9], input$selectitemcategory[10], input$selectitemcategory[11], input$selectitemcategory[12], input$selectitemcategory[13], input$selectitemcategory[14], input$selectitemcategory[15], input$selectitemcategory[16], input$selectitemcategory[17], input$selectitemcategory[18], input$selectitemcategory[19], input$selectitemcategory[20])
+  data.world::query(paramQuery, dataset = project)
+}) 
+```
+
+
+
+
+```{r}
+Itemcategory <- eventReactive(c(input$selectitemcategory), { 
+ library('stringr')
+  str_c(input$selectitemcategory, collapse=', ')
+})
+```
+
+
+```{r}
+# Notice the need to use DF(), and Itemcategory() below:
+renderPlot({
+  plot = DF() %>% ggplot() + 
+    geom_histogram(mapping = aes(x=close_amount, colour = item_category, fill = item_category), binwidth = 200, size = 2) +
+    scale_x_continuous(breaks = seq(0,5000,200)) +
+    theme(legend.text=element_text(size=10)) +
+    theme(legend.title=element_text(size=10)) + 
+    theme(axis.text=element_text(size=10),
+          axis.title=element_text(size=10, face="bold")) + 
+    theme(axis.text.x = element_text(angle = 10, hjust = 1))  + 
+    theme(plot.title = element_text(size = 20, face = "bold")) + 
+    ggtitle(paste("Close Amount for", Itemcategory(), " Item Category(s)")) +
+    xlab("Close Amount $ (bin)") + ylab("Count of Close Amount")
+  #ggplotly(plot, tooltip = c("closeamount"), session="knitr")
+  plot
+}, height = 600, width = 800)
+```
+
