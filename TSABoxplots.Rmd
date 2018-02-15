@@ -133,7 +133,11 @@ airlines <- eventReactive(c(input$selectAirline), {
 })
 ```
 
-#Data table to match selected Airlines and Close Amount
+#Data table to retrieve information on selected Airlines based on Close Amount
+
+This interactive table allows the user to retrieve data on airlines selected from the panel above. The sliding scale in the aforementioned panel allows the data to be filtered by close amount. The table displays the airline name, close amount, incident date, item category, and claim number for each claim filed.
+
+
 
 
 ```{r}
@@ -146,7 +150,7 @@ renderDataTable({
 })
 ```
 
-#Boxplots - Close Amount vs. Airlines and Airports
+#Boxplots - Close Amount vs. Airlines
 
 
 ```{r}
@@ -227,7 +231,7 @@ inputPanel(
 
 
 
-#Boxplots - Close Amount vs. Airport over time
+#Boxplots - Close Amount vs. Airline over time
 
 ```{r}
 tabsetPanel( 
@@ -314,12 +318,9 @@ inputPanel(
 "Computer & Accessories",
 "Clothing",
 "Other"
-)),
-  sliderInput("CloseAmountFilter", label = "Close Amount:",
-              min = 0, max = 5403, value = c(0, 100200), step = 50)
-)
+)))
 ```
-
+Please only select from amongst the first 120 item categories. Selecting past this will render the histogram useless due to data convolution. 
 ```{r}
 
 DF <- eventReactive(c(input$selectitemcategory, input$CloseAmountFilter), { 
@@ -331,11 +332,12 @@ DF <- eventReactive(c(input$selectitemcategory, input$CloseAmountFilter), {
   	from claimsnew c
     where c.close_amount between ? and ? and c.item_category in
 
-(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 
 order by c.item_category
    ")
-  paramQuery$params <- c(input$CloseAmountFilter[1], input$CloseAmountFilter[2], input$selectitemcategory[1], input$selectitemcategory[2], input$selectitemcategory[3], input$selectitemcategory[4], input$selectitemcategory[5], input$selectitemcategory[6], input$selectitemcategory[7], input$selectitemcategory[8], input$selectitemcategory[9], input$selectitemcategory[10], input$selectitemcategory[11], input$selectitemcategory[12], input$selectitemcategory[13], input$selectitemcategory[14], input$selectitemcategory[15], input$selectitemcategory[16], input$selectitemcategory[17], input$selectitemcategory[18], input$selectitemcategory[19], input$selectitemcategory[20])
+  paramQuery$params <- c(input$CloseAmountFilter[1], input$CloseAmountFilter[2], input$selectitemcategory[1], input$selectitemcategory[2], input$selectitemcategory[3], input$selectitemcategory[4], input$selectitemcategory[5], input$selectitemcategory[6], input$selectitemcategory[7], input$selectitemcategory[8], input$selectitemcategory[9], input$selectitemcategory[10], input$selectitemcategory[11], input$selectitemcategory[12], input$selectitemcategory[13], input$selectitemcategory[14], input$selectitemcategory[15], input$selectitemcategory[16], input$selectitemcategory[17], input$selectitemcategory[18], input$selectitemcategory[19], input$selectitemcategory[20],
+input$selectitemcategory[21], input$selectitemcategory[22], input$selectitemcategory[23], input$selectitemcategory[24], input$selectitemcategory[25], input$selectitemcategory[26], input$selectitemcategory[27], input$selectitemcategory[28], input$selectitemcategory[29], input$selectitemcategory[30], input$selectitemcategory[31], input$selectitemcategory[32], input$selectitemcategory[33], input$selectitemcategory[34], input$selectitemcategory[35], input$selectitemcategory[36], input$selectitemcategory[37], input$selectitemcategory[38], input$selectitemcategory[39], input$selectitemcategory[40], input$selectitemcategory[41], input$selectitemcategory[42], input$selectitemcategory[43], input$selectitemcategory[44], input$selectitemcategory[45], input$selectitemcategory[46], input$selectitemcategory[47], input$selectitemcategory[48], input$selectitemcategory[49], input$selectitemcategory[50], input$selectitemcategory[51], input$selectitemcategory[52], input$selectitemcategory[53], input$selectitemcategory[54], input$selectitemcategory[55], input$selectitemcategory[56], input$selectitemcategory[57], input$selectitemcategory[58], input$selectitemcategory[59], input$selectitemcategory[60], input$selectitemcategory[61], input$selectitemcategory[62], input$selectitemcategory[63], input$selectitemcategory[64], input$selectitemcategory[65], input$selectitemcategory[66], input$selectitemcategory[67], input$selectitemcategory[68], input$selectitemcategory[69], input$selectitemcategory[70], input$selectitemcategory[71], input$selectitemcategory[72], input$selectitemcategory[73], input$selectitemcategory[74], input$selectitemcategory[75], input$selectitemcategory[76], input$selectitemcategory[77], input$selectitemcategory[78], input$selectitemcategory[79], input$selectitemcategory[80], input$selectitemcategory[81], input$selectitemcategory[82], input$selectitemcategory[83], input$selectitemcategory[84], input$selectitemcategory[85], input$selectitemcategory[86], input$selectitemcategory[87], input$selectitemcategory[88], input$selectitemcategory[89], input$selectitemcategory[90], input$selectitemcategory[91], input$selectitemcategory[92], input$selectitemcategory[93], input$selectitemcategory[94], input$selectitemcategory[95], input$selectitemcategory[96], input$selectitemcategory[97], input$selectitemcategory[98], input$selectitemcategory[99], input$selectitemcategory[100], input$selectitemcategory[101], input$selectitemcategory[102], input$selectitemcategory[103], input$selectitemcategory[104], input$selectitemcategory[105], input$selectitemcategory[106], input$selectitemcategory[107], input$selectitemcategory[108], input$selectitemcategory[109], input$selectitemcategory[110], input$selectitemcategory[111], input$selectitemcategory[112], input$selectitemcategory[113], input$selectitemcategory[114], input$selectitemcategory[115], input$selectitemcategory[116], input$selectitemcategory[117], input$selectitemcategory[118], input$selectitemcategory[119], input$selectitemcategory[120])
   data.world::query(paramQuery, dataset = project)
 }) 
 ```
