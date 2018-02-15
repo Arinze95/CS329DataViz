@@ -13,7 +13,7 @@ runtime: shiny
 ---
 
 #Introduction
-Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the airline, type of claim, item category, incident date, disposition, and close amount.
+Our Dataset comes from the United States Department of Homeland Security and shows TSA data over claims from airlines around the globe. Fields of particular interest include the Airline, Type of Claim, Item Category, Incident Date, Disposition, and Close Amount.
 
 #Important Links: Data.World Project & Insights
 Project: [link](https://data.world/derek-orji/s-18-edv-project-1)
@@ -79,7 +79,7 @@ itemcategory <- data.world::query(data.world::qry_sql(
 dataset = project)
 ```
 
-#Select the Airlines and Close Amount range of interest
+#Select the Airline(s) and a range of interest for Close Amounts
 ```{r}
 inputPanel(
   selectInput("selectAirline", label = "Select Airline",
@@ -133,7 +133,7 @@ airlines <- eventReactive(c(input$selectAirline), {
 })
 ```
 
-#Data table to retrieve information on selected Airlines based on Close Amount
+#This data table retrieves data based on the selected Airlines and Close Amount range
 
 This interactive table allows the user to retrieve data on airlines selected from the panel above. The sliding scale in the aforementioned panel allows the data to be filtered by close amount. The table displays the airline name, close amount, incident date, item category, and claim number for each claim filed.
 
@@ -152,7 +152,7 @@ renderDataTable({
 
 #Boxplots - Close Amount vs. Airline
 
-Close amounts for claims submitted to the TSA in 2015 ranged from $0-$5403. In examining only those claims with close amounts over $1515 it can be seen that all 7 airlines associated with such claims are US based companies.
+Close Amounts for claims submitted to the TSA in 2015 ranged from $0-$5403. In examining only those claims with close amounts over $1515 it can be seen that all 7 airlines associated with such claims are US based companies.
 
 In order to recreate this insight, select the "Data Size" tab immediately above the boxplot. Set the "yData Minimum" field to 1515, and the "yData Maximum" field to 5403. Allow the "Selected Airlines" in the uppermost panel to remain at the default group of Southwest Airlines, Delta Air Lines, American Airlines, UAL, USAir, Jet Blue, Alaska Airlines, Spirit Airlines, and Frontier Airlines. You will see that the boxplot will re-render to not include Frontier and Spirit Airlines. Any attempts to add additional airlines will not change the boxplot, as they won't have the requisite close amount to be included. 
 
@@ -235,10 +235,11 @@ inputPanel(
 ```
 
 
-
-
-
 #Boxplots - Close Amount vs. Airline over time
+
+The following visual shows how Close Amounts vary over time for selected Airlines, orgaized by color. The data is represented as box plots and allows for a quick understanding of how the Airlines' Close Ammounts vary over time compared to the competition.The user can show and hide the listed Airlines by clicking on its corrosponding square in the legend.
+
+As an interesting insight, it can be observed that some airlines are improving over time by acheiving lower closing amounts with each passing quarter. For some airlines, however, the opposite is true. By selecting the airlines "USair" and "Virgin Alantic" and zooming in to the boxplots, the user can observe an example of each of these cases. 
 
 ```{r}
 tabsetPanel( 
@@ -315,7 +316,10 @@ inputPanel(
   )
 ```
 
-#Select the Item Category and Close Amount range of interest
+#Select the Item Category(s) of interest to alter the histogram below
+
+Please only select from amongst the first 120 item categories. Selecting past this will make the histogram far too cluttered to easily extract information from. 
+
 ```{r}
 inputPanel(
   selectInput("selectitemcategory", label = "Select Item Category",
@@ -327,7 +331,10 @@ inputPanel(
 "Other"
 )))
 ```
-Please only select from amongst the first 120 item categories. Selecting past this will render the histogram useless due to data convolution. 
+
+#Histogram - Close Amounts by Item Category
+
+Below is the histogram with a bin size of $200 for Close Amounts. Shown in different colors are the various item categories which you can add or remove with the input panel above. The resulting plot will show the splits by item category within each bin.  Within our data, the five categories with the largest number of claims are Travel Accessories, Personal Electronics, Medical/Science, Jewelry & Watches, and Cosmetics & Grooming. If you change the categories to the listed five, the resulting plot should reveal the majority of claims are within $200. However, the histogram should also reveal that of the claims within $200-$400, personal electronics make up a large section. In addition, a large portion of each bin, especially within the larger bins, is made up by cosmetics and grooming, which suggests the importance people place on any dollar amount of their cosmetics.
 ```{r}
 
 DF <- eventReactive(c(input$selectitemcategory, input$CloseAmountFilter), { 
