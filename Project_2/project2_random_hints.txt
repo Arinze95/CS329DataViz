@@ -1,0 +1,77 @@
+use plotly unless you have a good reason not to use plotly
+
+shiny cheat shet is helpful
+
+if you look at top hat hhistograms code on tophat u can see cannatas code has soure("histogramUI") to get R code from the same folder
+and when you click publish it should list all of them
+
+tophathistograms.tar.gz has all the files
+
+every plot will have 2 fils
+
+
+
+see comments on lines 120-122 of topHatBoxplots in project 2 folder
+(basically 2 new files are created by making new files with different names and then doing a replace all for the ne variable name......
+but if u want it to be a different plot with dfferent sql query then you go to the server code ..........but in cannatas example all three
+plots use the query from df1.......so to make new query just take the df made from query in tophatboxplots, copy paste it, call it df4 for example
+if u have the 4th plot....
+and change x=shpping cost to sales if that is what you want your query in
+
+change the query then the actual plot
+
+
+
+
+copy and paste dashboard code is part of it
+
+cannata put r code that ffeeds into the document in a seperate file
+
+in tableau for insights: he wants an average line and also in tableau he wants dual axis plot
+
+Do dual axis and histograms for insights 
+
+
+
+------------
+2-20
+
+he has furtehr broken up the code, now he has broken it up so now he has a different data file for each query (on the tar file on ch 3 of tophat)
+and each . every plot has its own UI and plot file, and everything is put together in the RMD file. and you put all these on github.
+PART OF THE GRADE IS MAKING SURE YOU GOT ALL YOUR FILES ON GITHUB
+
+see the comments on for 
+
+-----------------
+
+2-22-18 notes
+
+every plot has 2 fils: server file and UI file
+
+dataA and dataB are two different queries
+
+
+
+ADDING NEW STUFF: 
+
+step 1 adding new sidebar item to dashboard
+see your coments in the code from 2-22
+
+the instructions on cannatas interactive
+document (actually
+just to go tophat and click on link)
+also tell us what to do
+
+sometimes if you solved an error restart Rstduio
+
+
+...now moving on to step 5 and 6
+
+open up one of the similar files and
+do find and replace __3 with __5
+since this is the first plot
+(for the example if u you open bothUI)
+then do save AS to make a new file
+based on what you made in previous shade
+
+instructions are on tophat if you c
