@@ -107,7 +107,7 @@ df1 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__1_, input$
 
 ```{r}
 
-df2 <- eventReactive(c(input$selectdrg_definition_3, input$average_total_payments_filter_3), { 
+df2 <- eventReactive(c(input$selectdrg_definition_3, input$average_total_payments_filter_1), { 
   project <- "https://data.world/brandon-kerbow/s18-edv-project-2-dataset" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
@@ -121,13 +121,13 @@ df2 <- eventReactive(c(input$selectdrg_definition_3, input$average_total_payment
 
 order by drg_definition
    ")
-  paramQuery$params <- c(input$average_total_payments_filter_3[1], input$average_total_payments_filter_3[2], input$selectdrg_definition_3[1], input$selectdrg_definition_3[2], input$selectdrg_definition_3[3], input$selectdrg_definition_3[4], input$selectdrg_definition_3[5], input$selectdrg_definition_3[6], input$selectdrg_definition_3[7], input$selectdrg_definition_3[8], input$selectdrg_definition_3[9], input$selectdrg_definition_3[10])
+  paramQuery$params <- c(input$average_total_payments_filter_1[1], input$average_total_payments_filter_1[2], input$selectdrg_definition_3[1], input$selectdrg_definition_3[2], input$selectdrg_definition_3[3], input$selectdrg_definition_3[4], input$selectdrg_definition_3[5], input$selectdrg_definition_3[6], input$selectdrg_definition_3[7], input$selectdrg_definition_3[8], input$selectdrg_definition_3[9], input$selectdrg_definition_3[10])
   data.world::query(paramQuery, dataset = project)
 }) 
 ```
 
 ```{r}
-df3 <- eventReactive(c(input$selectdrg_definition_3, input$yDataMin__3_, input$yDataMax__3_,input$average_total_payments_filter_3), { 
+df3 <- eventReactive(c(input$selectdrg_definition_3, input$yDataMin__3_, input$yDataMax__3_,input$average_total_payments_filter_1), { 
   if( ! is.na(input$yDataMin__3_) & ! is.na(input$yDataMax__3_)) {
     df2() %>% dplyr::filter(between(average_total_payments, input$yDataMin__3_, input$yDataMax__3_))
   }
@@ -155,12 +155,16 @@ Diseases <- eventReactive(c(input$selectdrg_definition_3), {
 ```
 
 
-#Brandon's Boxplot
+#Brandon and Kyle's Boxplot
 
 ```{r}
 inputPanel(
   selectInput("selectHospital_Region_1", label = "Select Hospital Region",choices = hospital_regions, multiple=TRUE, selected=c("AR - Texarkana", "LA - Shreveport", "TX - Abilene", "TX - Amarillo", "TX - Austin", "TX - Beaumont", "TX - Bryan", "TX - Corpus Christi", "TX - Dallas", "TX - El Paso", "TX - Fort Worth", "TX - Harlingen", "TX - Houston", "TX - Longview", "TX - Lubbock", "TX - McAllen", "TX - Odessa", "TX - San Angelo", "TX - San Antonio", "TX - Temple", "TX - Tyler", "TX - Victoria", "TX - Waco", "TX - Wichita Falls")
-              )
+              ),
+  selectInput
+  ("selectdrg_definition_3", label = "Select dieases",choices = diseases, multiple=TRUE, selected=c("HEART FAILURE & SHOCK W/O CC/MCC", "OTHER VASCULAR PROCEDURES W MCC", "HEART FAILURE & SHOCK W MCC", "SIMPLE PNEUMONIA & PLEURISY W MCC", "RENAL FAILURE W MCC", "SIMPLE PNEUMONIA & PLEURISY W CC", "OTHER VASCULAR PROCEDURES W CC", "HEART FAILURE & SHOCK W CC", "G.I. HEMORRHAGE W MCC", "CELLULITIS W/O MCC")
+    
+  )
   ,sliderInput("average_total_payments_filter_1", label = "Average Total Payments:", min = 0, max = 50000, value = c(0, 50000), step = 100)
 )
 ```
@@ -175,91 +179,28 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Average Total Payment vs Disease", tabName = "boxplot1", icon = icon("dashboard"))
+      menuItem("Boxplot with Cities", tabName = "boxplot1", icon = icon("dashboard"))
+    ),
+    sidebarMenu(
+      menuItem("Boxplot with Disease", tabName = "boxplot3", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "Average Total Payment vs Diseaset" tab content
+      # 1. "Boxplot with Cities" tab content
       tabItem(tabName = "boxplot1",
         source("BoxPlot1UI.R",local = TRUE)$value
-      )
-    )
-  )
-)
-source("BoxPlot1Server.R", local = TRUE)
-```
- 
-
-#Kyle's Boxplot
-```{r}
-inputPanel(
-  selectInput
-  ("selectdrg_definition_3", label = "Select dieases",choices = diseases, multiple=TRUE, selected=c("HEART FAILURE & SHOCK W/O CC/MCC", "OTHER VASCULAR PROCEDURES W MCC", "HEART FAILURE & SHOCK W MCC", "SIMPLE PNEUMONIA & PLEURISY W MCC", "RENAL FAILURE W MCC", "SIMPLE PNEUMONIA & PLEURISY W CC", "OTHER VASCULAR PROCEDURES W CC", "HEART FAILURE & SHOCK W CC", "G.I. HEMORRHAGE W MCC", "CELLULITIS W/O MCC")
-    
-  )
-  
-  ,sliderInput("average_total_payments_filter_3", label = "Average Total Payments:", min = 0, max = 50000, value = c(0, 50000), step = 100)
-)
-```
-
-```{r}
-dashboardPage(
-  dashboardHeader(
-  ),
-  dashboardSidebar(
-    sidebarMenu(
-      menuItem("Average Total Payment vs Disease", tabName = "boxplot3", icon = icon("dashboard3"))
-    )
-  ),
-  dashboardBody(
-    tabItems(
-      # 1. "Average Total Payment vs Diseases" tab content
+      ),
+      # 2. "Boxplot with Diseases" tab content
       tabItem(tabName = "boxplot3",
         source("BoxPlot3UI.R",local = TRUE)$value
       )
     )
   )
 )
+source("BoxPlot1Server.R", local = TRUE)
 source("BoxPlot3Server.R", local = TRUE)
 ```
-  
+ 
 
-#Jeffrey's Histogram
-```{r}
-source("JeffData.R", local = TRUE)
-
-```
-
-```{r}
-inputPanel(
-  selectInput("selectCity_1", label = "Select Provider City",choices = cities, multiple=TRUE, selected=c("HOUSTON", "DALLAS", "AUSTIN", "SAN ANTONIO")),
-  sliderInput("PaymentFilter", label = "Average Total Payment:",
-              min = 2000, max = 91000, value = c(0, 100200), step = 1000)
-)
-```
-**Only first 10 cities will be shown**
-
-```{r}
-dashboardPage(
-  dashboardHeader(
-  ),
-  dashboardSidebar(
-    sidebarMenu(
-      menuItem("Hospital Costs Histogram", tabName = "histogram", icon = icon("dashboard2"))
-    )
-  ),
-  dashboardBody(
-    tabItems(
-      # 1. "Hospital Costs Histogram" tab content
-      tabItem(tabName = "histogram",
-        p("This is a histogram of average total payments with colors indicating different Texas cities"),
-        source("Histogram1UI.R",local = TRUE)$value
-      )
-    )
-  )
-)
-source("Histogram1Server.R", local = TRUE)
-
-```
 
