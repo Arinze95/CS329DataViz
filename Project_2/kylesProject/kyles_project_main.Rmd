@@ -1,6 +1,6 @@
 ---
 title: "TX Hospital Region Boxplot"
-author: "Brandon Kerbow"
+author: "Kyle DuQuesnay"
 resource_files:
 - .Renviron
 output:
@@ -40,9 +40,9 @@ The following query retrieves the distinct region names from the SuperStore data
 ```{r}
 project <- "https://data.world/brandon-kerbow/s18-edv-project-2-dataset" 
 data.world::set_config(cfg_env("DW_API")) 
-hospital_regions <- data.world::query(data.world::qry_sql(
+diseases <- data.world::query(data.world::qry_sql(
  "   
-	select distinct hospital_visit_data_tx.hospital_referral_region_description from hospital_visit_data_tx
+	select distinct hospital_visit_data_tx.drg_definition from hospital_visit_data_tx
  "), 
 dataset = project)
 ```
@@ -52,26 +52,29 @@ The following Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.
 
 ```{r}
 
-df <- eventReactive(c(input$selectHospital_Region_1, input$average_total_payments_filter_1), { 
+df <- eventReactive(c(input$selectdrg_definition_3, input$average_total_payments_filter_3), { 
   project <- "https://data.world/brandon-kerbow/s18-edv-project-2-dataset" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
    "   
   	select hospital_referral_region_description, drg_definition, average_total_payments
   	from hospital_visit_data_tx h
-    where average_total_payments between ? and ? and hospital_referral_region_description in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and drg_definition in ('HEART FAILURE & SHOCK W/O CC/MCC', 'OTHER VASCULAR PROCEDURES W MCC', 'HEART FAILURE & SHOCK W MCC', 'SIMPLE PNEUMONIA & PLEURISY W MCC', 'RENAL FAILURE W MCC', 'SIMPLE PNEUMONIA & PLEURISY W CC', 'OTHER VASCULAR PROCEDURES W CC', 'HEART FAILURE & SHOCK W CC', 'G.I. HEMORRHAGE W MCC', 'CELLULITIS W/O MCC')
+    where average_total_payments between ? and ? and drg_definition in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) and  hospital_referral_region_description  in 
 
-order by hospital_referral_region_description
+('TX - Houston', 'TX - Dallas', 'TX - Fort Worth', 'TX - San Antonio', 'TX - Austin', 'TX - McAllen', 'TX - Harlingen', 'TX - El Paso', 'TX - Tyler', 'TX - Lubbock') 
+
+
+order by drg_definition
    ")
-  paramQuery$params <- c(input$average_total_payments_filter_1[1], input$average_total_payments_filter_1[2], input$selectHospital_Region_1[1], input$selectHospital_Region_1[2], input$selectHospital_Region_1[3], input$selectHospital_Region_1[4], input$selectHospital_Region_1[5], input$selectHospital_Region_1[6], input$selectHospital_Region_1[7], input$selectHospital_Region_1[8], input$selectHospital_Region_1[9], input$selectHospital_Region_1[10], input$selectHospital_Region_1[11], input$selectHospital_Region_1[12], input$selectHospital_Region_1[13], input$selectHospital_Region_1[14], input$selectHospital_Region_1[15], input$selectHospital_Region_1[16], input$selectHospital_Region_1[17], input$selectHospital_Region_1[18], input$selectHospital_Region_1[19], input$selectHospital_Region_1[20], input$selectHospital_Region_1[21], input$selectHospital_Region_1[22], input$selectHospital_Region_1[23], input$selectHospital_Region_1[24])
+  paramQuery$params <- c(input$average_total_payments_filter_3[1], input$average_total_payments_filter_3[2], input$selectdrg_definition_3[1], input$selectdrg_definition_3[2], input$selectdrg_definition_3[3], input$selectdrg_definition_3[4], input$selectdrg_definition_3[5], input$selectdrg_definition_3[6], input$selectdrg_definition_3[7], input$selectdrg_definition_3[8], input$selectdrg_definition_3[9], input$selectdrg_definition_3[10])
   data.world::query(paramQuery, dataset = project)
 }) 
 ```
 
 ```{r}
-df1 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__1_, input$yDataMax__1_), { 
-  if( ! is.na(input$yDataMin__1_) & ! is.na(input$yDataMax__1_)) {
-    df() %>% dplyr::filter(between(average_total_payments, input$yDataMin__1_, input$yDataMax__1_))
+df3 <- eventReactive(c(input$selectdrg_definition_3, input$yDataMin__3_, input$yDataMax__3_), { 
+  if( ! is.na(input$yDataMin__3_) & ! is.na(input$yDataMax__3_)) {
+    df() %>% dplyr::filter(between(average_total_payments, input$yDataMin__3_, input$yDataMax__3_))
   }
   else {
     df()
@@ -83,9 +86,9 @@ df1 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__1_, input$
 Create a Regions variable with a string constructed from the selected regions in the input$selectRegion_1 variable.This Regions variable will be used in the title of the ggplot below.
 
 ```{r}
-Hospital_Regions <- eventReactive(c(input$selectHospital_Region_1), { 
+Diseases <- eventReactive(c(input$selectdrg_definition_3), { 
   library('stringr')
-  str_c(input$selectHospital_Region_1, collapse=', ')
+  str_c(input$selectdrg_definition_3, collapse=', ')
 })
 ```
 
@@ -94,9 +97,12 @@ The following code creates an input panel for the Interactive Document, which ha
 
 ```{r}
 inputPanel(
-  selectInput("selectHospital_Region_1", label = "Select Hospital Region",choices = hospital_regions, multiple=TRUE, selected=c("AR - Texarkana", "LA - Shreveport", "TX - Abilene", "TX - Amarillo", "TX - Austin", "TX - Beaumont", "TX - Bryan", "TX - Corpus Christi", "TX - Dallas", "TX - El Paso", "TX - Fort Worth", "TX - Harlingen", "TX - Houston", "TX - Longview", "TX - Lubbock", "TX - McAllen", "TX - Odessa", "TX - San Angelo", "TX - San Antonio", "TX - Temple", "TX - Tyler", "TX - Victoria", "TX - Waco", "TX - Wichita Falls")
-              )
-  ,sliderInput("average_total_payments_filter_1", label = "Average Total Payments:", min = 0, max = 50000, value = c(0, 50000), step = 100)
+  selectInput
+  ("selectdrg_definition_3", label = "Select dieases",choices = diseases, multiple=TRUE, selected=c("HEART FAILURE & SHOCK W/O CC/MCC", "OTHER VASCULAR PROCEDURES W MCC", "HEART FAILURE & SHOCK W MCC", "SIMPLE PNEUMONIA & PLEURISY W MCC", "RENAL FAILURE W MCC", "SIMPLE PNEUMONIA & PLEURISY W CC", "OTHER VASCULAR PROCEDURES W CC", "HEART FAILURE & SHOCK W CC", "G.I. HEMORRHAGE W MCC", "CELLULITIS W/O MCC")
+    
+  )
+  
+  ,sliderInput("average_total_payments_filter_3", label = "Average Total Payments:", min = 0, max = 50000, value = c(0, 50000), step = 100)
 )
 ```
 
@@ -110,23 +116,23 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Average Total Payment vs Disease", tabName = "boxplot1", icon = icon("dashboard"))
+      menuItem("Average Total Payment vs Disease", tabName = "boxplot3", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "Average Total Payment vs Diseaset" tab content
-      tabItem(tabName = "boxplot1",
-        source("BoxPlot1UI.R",local = TRUE)$value
+      # 1. "Average Total Payment vs Diseases" tab content
+      tabItem(tabName = "boxplot3",
+        source("BoxPlot3UI.R",local = TRUE)$value
       )
     )
   )
 )
-source("BoxPlot1Server.R", local = TRUE)
+source("BoxPlot3Server.R", local = TRUE)
 ```
  
 ```{r}
-df2 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__2_, input$yDataMax__2_), { 
+df2 <- eventReactive(c(input$selectdrg_definition_3, input$yDataMin__2_, input$yDataMax__2_), { 
   if( ! is.na(input$yDataMin__2_) & ! is.na(input$yDataMax__2_)) {
     df() %>% dplyr::filter(between(average_total_payments, input$yDataMin__2_, input$yDataMax__2_))
   }
