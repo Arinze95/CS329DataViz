@@ -82,7 +82,7 @@ order by hospital_referral_region_description
 ```
 
 ```{r}
-df1 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__1_, input$yDataMax__1_), { 
+df1 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__1_, input$yDataMax__1_, input$average_total_payments_filter_1), { 
   if( ! is.na(input$yDataMin__1_) & ! is.na(input$yDataMax__1_)) {
     df() %>% dplyr::filter(between(average_total_payments, input$yDataMin__1_, input$yDataMax__1_))
   }
@@ -140,16 +140,7 @@ dashboardPage(
 source("BoxPlot1Server.R", local = TRUE)
 ```
  
-```{r}
-df2 <- eventReactive(c(input$selectHospital_Region_1, input$yDataMin__2_, input$yDataMax__2_), { 
-  if( ! is.na(input$yDataMin__2_) & ! is.na(input$yDataMax__2_)) {
-    df() %>% dplyr::filter(between(average_total_payments, input$yDataMin__2_, input$yDataMax__2_))
-  }
-  else {
-    df()
-  }
-})
-```  
+  
 
 #Jeffrey's Histogram
 ```{r}
