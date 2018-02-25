@@ -1,0 +1,24 @@
+AR - Texarkana
+LA - Shreveport
+TX - Abilene
+TX - Amarillo
+TX - Austin
+TX - Beaumont
+TX - Bryan
+TX - Corpus Christi
+TX - Dallas
+TX - El Paso
+TX - Fort Worth
+TX - Harlingen
+TX - Houston
+TX - Longview
+TX - Lubbock
+TX - McAllen
+TX - Odessa
+TX - San Angelo
+TX - San Antonio
+TX - Temple
+TX - Tyler
+TX - Victoria
+TX - Waco
+TX - Wichita Falls
