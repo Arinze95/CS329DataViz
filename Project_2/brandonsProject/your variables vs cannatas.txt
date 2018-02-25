@@ -1,0 +1,41 @@
+CANNATA       vs             you
+---------------------------------------------
+~
+your_main_project_RMD
+~
+
+regions                      hospital_regions
+input$selectRegion_1         input$selectHospital_Region_1
+input$salesFilter_1          input$average_total_payments_filter_1
+region (in SQL query)        hospital_referral_region_description
+category (in SQL query)	     drg_definition
+sales (in SQL query)	     average_total_payments
+order_date (SQL Query)       <nothing, you deleted this>
+superstore	(query)      hospital_visit_data_tx
+s (alias in SQL query)       h
+input$yDataMin__1_           input$yDataMin__1_
+input$yDataMax__1_           input$yDataMax__1_
+Regions (line ~85)	         Hospital_Regions
+selectRegion_1 (line ~96)    selectHospital_Region_1
+Select Region                Select Hospital Region
+salesFilter_1                average_total_payments_filter_1
+Sales:                       Average Total Payments:
+Sales Categories Boxplot     Average Total Payment vs Disease
+
+~
+BoxPlot1Server
+~
+
+sales                        average_total_payments
+region                       hospital_referral_region_description
+category                     drg_definition
+Regions()                    Hospital_Regions()
+
+~
+BoxPlot1UI
+~
+
+Region Sales                           Average Total Payment by DRG Definition
+category                               DRG Definition
+sales                                  Average Total Payments
+Regions                                Hospital Regions
