@@ -1,0 +1,20 @@
+Kyle's tableau thing:
+These dual-axis visuals show the comparison of the average total payment vs the average medicare payment to Texas hospitals in 2017. The data is grouped by hospital region and the 
+user can filter by diagnosis.
+
+In all cases, the total payment will be at or above the total Medicare payment because up to 100% of bills can be covered by Medicare. Only the top 10 regions are listed,
+determined by total revenue across all hospitals.
+
+The top and bottom can be independently filtered for any given set of diagnoses. The default rendering shows the top visual including all diagnoses, and the
+bottom visual can include only one diagnosis like Septicimia or severe Sepsis.
+For this rendering, it can be seen that hospitals in the houston region have a disproportionately high amount of medical bills charged for vascular problems
+compared to the average of all regions. This is possibly due to the quality of care in Houston hospitals, implying some of the best vascular surgeons in Texas
+practice medicine in the Houston region.
+
+Kyle's Boxplot:
+This boxplot shows the distribution of the Average total Payments for the ten highest paying regions. Each color corresponds to a different diagnosis.
+This allows the user to make comparisons across both city and disease. For example, when we plot vascular problems, heart failures and renal failures across the regions we see that 
+vascular problems incur the highest payments in the Houston and Dallas region, implying a higher quality of vascular health care in these regions
+
+Top: The dataset visualized in this dashboard shows data over Texas Hospitals in 2017. Specificially, it shows for a given hospital and a given 
+diagnosis metrics such as the average price and average price covered by medicare.
