@@ -259,7 +259,7 @@ dashboardPage(
     )
   )
 )
-source("Histogram1Server.R", local = TRUE)
+source("Histogram1Server.R", local = TRUE1)
 
 ```
 
