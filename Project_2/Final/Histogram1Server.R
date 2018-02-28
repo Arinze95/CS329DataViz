@@ -15,7 +15,7 @@
   output$Histogram__2_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
       geom_histogram(mapping = aes(x=average_total_payments,colour= provider_city, fill=provider_city), binwidth = 5000) +
-      
+      geom_freqpoly(mapping = aes(x=average_total_payments, colour = provider_city), binwidth = 5000) +
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__2_, face = "bold")) + 
       theme( # Legend Attributes - see https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
