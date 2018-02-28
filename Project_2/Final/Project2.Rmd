@@ -11,15 +11,51 @@ output:
     toc_float: yes
 runtime: shiny
 ---
+
+
+#Dataset Description
+
+The dataset visualized in this interactive document shows data over Texas Hospitals in 2017. Specifically, it shows - for a given hospital and a given DRG Definition (diagnosis) - metrics such as the average price and average amount covered by medicare. 
+
+#Important Links
+
+[Data.world Project](https://data.world/jeffrey-feng/s18-edv-project-2)
+
+Kyle's Insights: [1](https://data.world/jeffrey-feng/s18-edv-project-2/insights/479959a2-7cf4-4112-8bf7-604b06fde898)
+[2](https://data.world/jeffrey-feng/s18-edv-project-2/insights/b18d3ebf-d075-4e77-9750-70a3198fa4c3)
+
+Jeffrey's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-2/insights/24cd17df-fa5e-4c76-969c-4b4f9a68d832)
+[2](https://data.world/jeffrey-feng/s18-edv-project-2/insights/2032ebd3-69b2-4386-8681-2aa1fbe244ae)
+
+Brandon's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-2/insights/3d7bd211-95c2-4169-a3dd-5bd62b826171)
+[2](https://data.world/jeffrey-feng/s18-edv-project-2/insights/32b72878-8102-49ae-a176-06abef591179)
+[3](https://data.world/jeffrey-feng/s18-edv-project-2/insights/5730154c-877a-4e6b-b8f2-e99176f59935)
+
+Derek's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-2/insights/c290f85e-4dc7-44ca-b63c-1160205ba86a)
+[2](https://data.world/jeffrey-feng/s18-edv-project-2/insights/03464bb2-0a41-4caa-afb2-7d6f826d3445)
+
+[Github Repository](https://github.com/CannataUTDV/s18dvproject1-duquesnay-feng-kerbow-orji)
+
+
+#Embedded Tableau Insight
+
+(Note: this this embedded Tableau Insight only appears if this document is being viewed in browser).
+These dual-axis visuals show the comparison of the average total payment vs the average medicare payment to Texas hospitals in 2017. The data is grouped by diagnosis and the user can filter by hospital region.
+
+In all cases, the total payment will at or above the total Medicare payment because up to 100% of bills can be covered by Medicare. Only the top 5 diagnoses are listed, determined by total revenue across all hospitals.
+
+The top and bottom visuals can be independently filtered for any given set of hospital regions. The default rendering shows the top visual including all regions, and the bottom visual including only the Harlingen, TX. 
+For this rendering, it can be observed that the hospitals in the Harlingen region have a disproportionally high amount of medical bills covered by Medicare compared to the average of all regions. The reason for this is a 
+subject of further investigation but one possible explanation could be level of income.
+
 <iframe src="https://public.tableau.com/views/Project2_Insight_Total_Payment_vs_Medicare_Payment/payment_comparison_dashboard?:showVizHome=no"width="800" height="800"></iframe>
 
-This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.rstudio.com/authoring_basics.html) language to generate HTML. For a brief introduction to R Markdown, please review this [video](https://www.youtube.com/watch?v=DNS7i2m4sB0&feature=youtu.be).
 
-#Load Packages
-This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
-The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 library(tidyverse)
 library(shiny)
 library(grid)
@@ -31,16 +67,7 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Display Session Information
-The [sessionInfo() fuction](https://cran.r-project.org/web/packages/sessioninfo/sessioninfo.pdf) queries and prints information about the current R session including  information about packages, and from where they were installed.
-```{r}
-sessionInfo()
-```
 
-
-
-#Retrieve data from the  dataset
-The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
 ```{r}
 project <- "https://data.world/brandon-kerbow/s18-edv-project-2-dataset" 
 data.world::set_config(cfg_env("DW_API")) 
@@ -72,8 +99,7 @@ diseases <- data.world::query(data.world::qry_sql(
 dataset = project)
 ```
 
-#Create Dataframe with region, category, sales, and order_date data
-The following Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code runs a query that retrieves the region, category, and sales data from the SuperStore database at data.world and saves it in the df variable as a function that returns an R dataframe. This is an example of a data.world parameterized query; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
+
 
 ```{r}
 
@@ -137,8 +163,6 @@ df3 <- eventReactive(c(input$selectdrg_definition_3, input$yDataMin__3_, input$y
 })
 ```
 
-#Create a Regions Variable
-Create a Regions variable with a string constructed from the selected regions in the input$selectRegion_1 variable.This Regions variable will be used in the title of the ggplot below.
 
 ```{r}
 Hospital_Regions <- eventReactive(c(input$selectHospital_Region_1), { 
@@ -154,8 +178,9 @@ Diseases <- eventReactive(c(input$selectdrg_definition_3), {
 })
 ```
 
+#Boxplot 1 - Average Total Payment vs Disease
 
-#Brandon's Boxplot
+This boxplot can be viewed by clicking the blue "Average Total Payment vs Disease" button next to the plot below. This visual shows the distribution of the Average Total Payments for the ten most common Diseases (DRG Definitions). Each color corresponds to a different hospital region. This allows the user to make comparisons across both disease and city. For example, when we plot Austin, Dallas, Houston, and Harlingen we can see that Harlingen is consistently more expensive than the major Texas cities. This could indicate a shortage of doctors/specialists in the area.
 
 ```{r}
 inputPanel(
@@ -165,9 +190,6 @@ inputPanel(
 )
 ```
 
-
-
-Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
 
 ```{r}
 dashboardPage(
@@ -191,7 +213,10 @@ source("BoxPlot1Server.R", local = TRUE)
 ```
  
 
-#Kyle's Boxplot
+#Boxplot 2 - Average Total Payment vs Region
+
+This boxplot can be viewed by clicking the blue "Average Total Payment vs Region" button next to the plot below. This visual shows the distribution of the average total payments for the ten regions which generate the most revenue. Each color corresponds to a different DRG Definition, allowing the user to make comparisons across both city and disease. For example, when we plot vascular problems, heart failures and renal failures across the regions we see that vascular problems incur the highest payments in the Houston and Dallas region, which could imply either a higher quality of service or a shortage of cardiovascular doctors in the region. 
+
 ```{r}
 inputPanel(
   selectInput
@@ -209,12 +234,12 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Average Total Payment vs Disease", tabName = "boxplot3", icon = icon("dashboard3"))
+      menuItem("Average Total Payment vs Region", tabName = "boxplot3", icon = icon("dashboard3"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "Average Total Payment vs Diseases" tab content
+      # 1. "Average Total Payment vs Region" tab content
       tabItem(tabName = "boxplot3",
         source("BoxPlot3UI.R",local = TRUE)$value
       )
@@ -225,7 +250,10 @@ source("BoxPlot3Server.R", local = TRUE)
 ```
   
 
-#Jeffrey's Histogram
+#Histogram - Hospital Costs by City
+
+This histogram + corresponding density plot can be viewed by clicking the blue "Hospital Cost Histogram" button next to the plot below. The density plot displays the average total payments and the cities are color coded. Up to the first 10 selected cities will be shown in order to keep the histogram legible. By default, the four largest cities in Texas are shown. As shown by the histogram, the lower costs are fairly spread out throughout the four cities. As the cost increases, however, cities such as Houston and Dallas start to be the large majority of the bin. This is especially clear if the user clicks the zoom tool and zooms in to the right side of the histogram or by using the slider for average total payment to reduce the range to the more expensive costs. Dallas and Houston being overrepresented in the high-cost bins indicates that these cities could have a lot of specialized doctors or expensive procedures to offer, but further research would be required to arrive at a more confident conclusion.
+
 ```{r}
 source("JeffData.R", local = TRUE)
 
@@ -263,3 +291,56 @@ source("Histogram1Server.R", local = TRUE)
 
 ```
 
+
+#Appendix: Data Cleaning Code
+(Click "code" to your right to see the code)
+```{r, eval= FALSE}
+library(tidyverse)
+csvURL <- "https://query.data.world/s/5-OstD__RjYPgomgoP0k5_w6DBayoe"
+df <- read_csv(csvURL, col_types = list(
+  DRG_Definition = col_character(),
+  Provider_Id = col_number(),
+  Provider_Name = col_character(),
+  Provider_Street_Address = col_character(),
+  Provider_City = col_character(),
+  Provider_State = col_character(),
+  Provider_Zip_Code = col_number(),
+  Hospital_Referral_Region_Description = col_character(),
+  Total_Discharges = col_number(),
+  Average_Covered_Charges = col_number(), #changed to numbers
+  Average_Total_Payments = col_number(), #changed to numbers
+  Average_Medicare_Payments = col_number() #changed to numbers
+))
+
+names(df) <- gsub("[^ -~]", "", names(df)) 
+names(df) <- gsub(" ", "_", names(df)) 
+
+df$Average_Covered_Charges <- gsub("\\$", "", df$Average_Covered_Charges)
+df$Average_Total_Payments <- gsub("\\$", "", df$Average_Total_Payments)
+df$Average_Medicare_Payments <- gsub("\\$", "", df$Average_Medicare_Payments)
+
+
+df$DRG_Definition <- gsub("[0123456789-]", "", df$DRG_Definition)
+df$DRG_Definition <- gsub("  ", "", df$DRG_Definition)
+
+df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
+
+write_csv(df, "C:/Users/bwkerbow/Desktop/Hospital_Visit_Data_TX.csv") 
+
+df <- read_csv("C:/Users/bwkerbow/Desktop/Hospital_Visit_Data_TX.csv", col_types = list(
+  DRG_Definition = col_character(),
+  Provider_Id = col_number(),
+  Provider_Name = col_character(),
+  Provider_Street_Address = col_character(),
+  Provider_City = col_character(),
+  Provider_State = col_character(),
+  Provider_Zip_Code = col_number(),
+  Hospital_Referral_Region_Description = col_character(),
+  Total_Discharges = col_number(),
+  Average_Covered_Charges = col_number(), #changed to numbers
+  Average_Total_Payments = col_number(), #changed to numbers
+  Average_Medicare_Payments = col_number() #changed to numbers
+))
+
+write_csv(df, "C:/Users/bwkerbow/Desktop/Hospital_Visit_Data_TX.csv")
+```
