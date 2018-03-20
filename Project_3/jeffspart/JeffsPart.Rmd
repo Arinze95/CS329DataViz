@@ -1,0 +1,104 @@
+---
+title: "Top Hat Histograms"
+author: "Dr. Cannata"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.rstudio.com/authoring_basics.html) language to generate HTML. For a brief introduction to R Markdown, please review this [video](https://www.youtube.com/watch?v=DNS7i2m4sB0&feature=youtu.be).
+
+#Load Packages
+This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
+The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Display Session Information
+The [sessionInfo() fuction](https://cran.r-project.org/web/packages/sessioninfo/sessioninfo.pdf) queries and prints information about the current R session including  information about packages, and from where they were installed.
+```{r}
+sessionInfo()
+```
+
+
+
+```{r}
+source("DataA.R", local = TRUE)
+source("DataB.R", local = TRUE)
+
+```
+
+
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+countries <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct country
+	from WHO_Cleaner
+ "), 
+dataset = project)
+```
+#Plot Input
+
+```{r}
+inputPanel(
+  selectInput("selectCountry_1", label = "Select Country",choices = countries, multiple=TRUE, selected=c("Bangladesh", "Brazil", "China", "India","Indonesia","Japan","Nigeria","Pakistan","Russia","United States of America")),
+  sliderInput("HaleFilter", label = "Healthy Life Expectancy:",
+              min = 0, max = 100, value = c(0, 100), step = 5),
+  sliderInput("ExpFilter", label = "Health Expenditure as Percent of GDP:",
+              min = 0, max = 100, value = c(0, 100), step = 5)
+)
+```
+**Only first 10 countries will be shown**
+
+#Render and Display Plots
+
+Below are two bar charts. The first one shows the Healthy Average Life Expectancy by country. The second shows the Healthcare Expenditure as a Percentage of GDP by country. By default, the ten largest countries by populations are selected. An interesting insight that can be observed is how related healthcare expenditures is to healthy life expectancy. It would seem that the more focus a country puts on healthcare, the longer its citizens will have healthy lives. However, according to the following bar charts, there is a different story. The US, by far, has a large focus of its GDP in healthcare, yet its healthy life expectancies of its citizens are not proportionally higher than other countries. This could suggest that the US generally has higher costs for healthcare for similar or only marginally better healthcare than peer countries. This plot visualizes why the US healthcare system is so heavily debated. Compared with other countries the spending and costs does not seem to be generating any benefits. 
+
+[More on this topic](https://www.pbs.org/newshour/health/health-costs-how-the-us-compares-with-other-countries)
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("HALE Bar Chart", tabName = "barchart", icon = icon("dashboard")),
+      menuItem("Expenditure Bar Chart", tabName = "barchart2", icon = icon("dashboard"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "HALE BarChart
+      tabItem(tabName = "barchart",
+        p("This is a barchart of HALE and country"),
+        source("barChart1UI.R",local = TRUE)$value
+      ),
+       # 2. Healthcare Expenditure "BarChart
+      tabItem(tabName = "barchart2",
+        p("This is a barchart of Expenditure as a Percent of GDP and country"),
+        source("barChart2UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+source("barChart1Server.R", local = TRUE)
+source("barChart2Server.R", local = TRUE)
+
+```
