@@ -13,8 +13,8 @@ output$table__1_ <- renderDataTable({
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
 output$BoxPlotPlot__1_ <- renderPlotly({
-  plot = df1() %>% ggplot() + 
-    geom_boxplot(mapping = aes(x = country, y = children_per_woman, colour = population_proportion_under_15)) +
+  plot = df() %>% ggplot() + 
+    geom_boxplot(mapping = aes(x = country, y = children_per_woman)) + #, colour = population_proportion_under_15
     
     theme_bw() +
     theme(plot.title = element_text(size = input$titleFont__1_, face = "bold")) + 

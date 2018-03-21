@@ -75,7 +75,7 @@ df <- eventReactive(c(input$selectChildren_1, input$selectProportion_1), {
     
     order by Country
     ")
-  paramQuery$params <- c(input$selectChildren_1[1], input$selectChildren_1[2], selectChildren_1[1], selectChildren_1[2])
+  paramQuery$params <- c(input$selectChildren_1[1], input$selectChildren_1[2], input$selectProportions_1[1], input$selectProportions_1[2])
   data.world::query(paramQuery, dataset = project)
 }) 
 ```
@@ -94,6 +94,7 @@ Countries <- eventReactive(c(input$selectCountries_1), {
 })
 ```
 
+hello
 ```{r}
 Proportions <- eventReactive(c(input$selectProportions_1), { 
   library('stringr')
@@ -115,6 +116,7 @@ inputPanel(
   )
   
   ,sliderInput("selectChildren_1", label = "Children per woman:", min = 0, max = 8, value = c(0, 8), step = .2)
+  ,sliderInput("selectProportions_1", label = "Proportion of population under 15:", min = 0, max = 100, value = c(0, 100), step = 2)
 )
 ```
 
@@ -136,6 +138,8 @@ dashboardPage(
     )
   )
 )
+
+source("BoxPlot1Server.R", local = TRUE)
 
 ```
 
