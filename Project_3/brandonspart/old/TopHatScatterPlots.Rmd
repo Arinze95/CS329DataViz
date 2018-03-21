@@ -37,6 +37,7 @@ The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/
 
 ```{r}
 source("DataA.R", local = TRUE)
+source("DataB.R", local = TRUE)
 ```
 
 #Retrieve Regions from the SuperStore dataset
@@ -67,7 +68,7 @@ The following code creates an input panel for the Interactive Document, which ha
 
 ```{r}
 inputPanel(
-  selectInput("selectSystemOfGovernment_1", label = "Select Region",choices = systemsOfGovernment , multiple=TRUE, selected=c("Absolute_monarchy", "Republic", "Constitutional_monarchy", "n/a"))
+  selectInput("selectSystemOfGovernment_1", label = "Select System of Government",choices = systemsOfGovernment , multiple=TRUE, selected=c("Absolute_monarchy", "Republic", "Constitutional_monarchy", "n/a"))
 )
 ```
 
@@ -81,20 +82,33 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("menuItem - Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot", tabName = "scatter", icon = icon("dashboard"))
+      menuItem("menuItem0 - Life Expectancy vs Health Expenditures (% of GDP) Scatter Plot", tabName = "scatter0", icon = icon("dashboard")),
+      
+      menuItem("menuItem1 - Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot", tabName = "scatter", icon = icon("dashboard"))
+      
+      
     )
   ),
   dashboardBody(
     tabItems(
+      # 0. "Life Expectancy vs Health Expenditures (% of GDP) Scatter Plot" tab content
+      tabItem(tabName = "scatter0",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        source("ScatterPlot0UI.R",local = TRUE)$value
+      ),
+        
+        
       # 1. "Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot" tab content
       tabItem(tabName = "scatter",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html "),
         source("ScatterPlot1UI.R",local = TRUE)$value
       )
     )
   )
 )
+
+source("ScatterPlot0Server.R", local = TRUE)
 source("ScatterPlot1Server.R", local = TRUE)
 ```
 
-
+local = TRUE)$value
