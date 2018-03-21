@@ -1,0 +1,9 @@
+ENTIRE PROJECT: try to make it a more cohesive story instead of so much segmentation b/w the tools
+
+SPECIFIC VISUALS: when you talk about a plot say what everything is exactly. x axis, y axis, color.
+
+for boxplots explore the outliers
+
+back up conjectures with data like from data.world, confirm your suspicions
+
+healthcare one would be fine for final project but do per capita for your plots
