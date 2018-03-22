@@ -13,8 +13,8 @@ output$table__1_ <- renderDataTable({
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
 output$BoxPlotPlot__1_ <- renderPlotly({
-  plot = df() %>% ggplot() + 
-    geom_boxplot(mapping = aes(x = country, y = children_per_woman)) + #, colour = population_proportion_under_15
+  plot = df1() %>% ggplot() + 
+    geom_boxplot(mapping = aes(x = region, y = gross_national_income_per_capita_ppp_international, colour = system_of_government)) +
     
     theme_bw() +
     theme(plot.title = element_text(size = input$titleFont__1_, face = "bold")) + 
@@ -34,8 +34,8 @@ output$BoxPlotPlot__1_ <- renderPlotly({
     scale_color_discrete(name = input$legendTitle__1_)
   
   if( ! is.na(input$plotWidth__1_) & ! is.na(input$plotHeight__1_))
-    ggplotly(plot, tooltip = c("Country", "children_per_woman"), session="knitr", width = input$plotWidth__1_, height = input$plotHeight__1_)
+    ggplotly(plot, tooltip = c("region", "gross_national_income_per_capita_ppp_international"), session="knitr", width = input$plotWidth__1_, height = input$plotHeight__1_)
   else
-    ggplotly(plot, tooltip = c("Country", "children_per_woman"), session="knitr") 
+    ggplotly(plot, tooltip = c("region", "gross_national_income_per_capita_ppp_international"), session="knitr") 
 })
 # ---------------------------------------------------------

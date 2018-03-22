@@ -32,9 +32,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
 data.world::set_config(cfg_env("DW_API")) 
-countries <- data.world::query(data.world::qry_sql(
+regions <- data.world::query(data.world::qry_sql(
   "   
-  select distinct WHO_Cleanest.country from WHO_Cleanest
+  select distinct WHO_Cleanest.region from WHO_Cleanest
   "), 
   dataset = project)
 ```
@@ -42,9 +42,9 @@ countries <- data.world::query(data.world::qry_sql(
 ```{r}
 project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
 data.world::set_config(cfg_env("DW_API")) 
-proportion <- data.world::query(data.world::qry_sql(
+incomes <- data.world::query(data.world::qry_sql(
   "   
-  select distinct WHO_Cleanest.population_proportion_under_15
+  select distinct WHO_Cleanest.gross_national_income_per_capita_ppp_international
   from WHO_Cleanest
   "), 
   dataset = project)
@@ -53,9 +53,9 @@ proportion <- data.world::query(data.world::qry_sql(
 ```{r}
 project <- "https://data.world/jeffrey-feng/s18-edv-project-3/"  
 data.world::set_config(cfg_env("DW_API")) 
-children <- data.world::query(data.world::qry_sql(
+system <- data.world::query(data.world::qry_sql(
   "   
-  select distinct WHO_Cleanest.children_per_woman from WHO_Cleanest
+  select distinct WHO_Cleanest.system_of_government from WHO_Cleanest
   "), 
   dataset = project)
 ```
@@ -64,18 +64,18 @@ children <- data.world::query(data.world::qry_sql(
 
 ```{r}
 
-df <- eventReactive(c(input$selectChildren_1, input$selectProportion_1), { 
+df1 <- eventReactive(c(input$selectIncome_1, input$selectRegion_1), { 
   project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
     "   
-    select country, children_per_woman, population_proportion_under_15
+    select region, gross_national_income_per_capita_ppp_international, system_of_government
     from WHO_Cleanest h
-    where children_per_woman between ? and ? and population_proportion_under_15 between ? and ? and country in ('China', 'India', 'United States of America', 'Indonesia', 'Brazil', 'Pakistan', 'Bangladesh', 'Nigeria', 'Russia', 'Japan')
+    where gross_national_income_per_capita_ppp_international between ? and ? and region in (?,?,?,?,?,?,?,?,?,?) and system_of_government in ('Republic','Constitutional_monarchy', 'Absolute_monarchy')
     
-    order by Country
+    order by region
     ")
-  paramQuery$params <- c(input$selectChildren_1[1], input$selectChildren_1[2], input$selectProportions_1[1], input$selectProportions_1[2])
+  paramQuery$params <- c(input$selectIncome_1[1], input$selectIncome_1[2], input$selectRegion_1[1], input$selectRegion_1[2], input$selectRegion_1[3], input$selectRegion_1[4], input$selectRegion_1[5], input$selectRegion_1[6], input$selectRegion_1[7], input$selectRegion_1[8], input$selectRegion_1[9], input$selectRegion_1[10])
   data.world::query(paramQuery, dataset = project)
 }) 
 ```
@@ -88,17 +88,17 @@ df <- eventReactive(c(input$selectChildren_1, input$selectProportion_1), {
 
 
 ```{r}
-Countries <- eventReactive(c(input$selectCountries_1), { 
+Region <- eventReactive(c(input$selectRegion_1), { 
   library('stringr')
-  str_c(input$selectCountries_1, collapse=', ')
+  str_c(input$selectRegion_1, collapse=', ')
 })
 ```
 
-hello
+howdy hey
 ```{r}
-Proportions <- eventReactive(c(input$selectProportions_1), { 
+Income <- eventReactive(c(input$selectIncome_1), { 
   library('stringr')
-  str_c(input$selectProportions_1, collapse=', ')
+  str_c(input$selectIncome_1, collapse=', ')
 })
 ```
 
@@ -111,12 +111,11 @@ Proportions <- eventReactive(c(input$selectProportions_1), {
 ```{r}
 inputPanel(
   selectInput
-  ("selectCountries_1", label = "Select Countries",choices = countries, multiple=TRUE, selected=c("China", "India", "Bangladesh", "Indonesia", "Russia", "Japan", "Brazil", "Nigeria", "United States of America", "Pakistan")
+  ("selectRegions_1", label = "Select Regions",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "BALTICS", "OCEANIA", "C.W.OF IND.STATES", "WESTERN EUROPE", "LATIN AMER. & CARIB", "ASIA (EX. NEAR EAST)", "EASTERN EUROPE", "NEAR EAST", "NORTHERN AFRICA")
     
   )
   
-  ,sliderInput("selectChildren_1", label = "Children per woman:", min = 0, max = 8, value = c(0, 8), step = .2)
-  ,sliderInput("selectProportions_1", label = "Proportion of population under 15:", min = 0, max = 100, value = c(0, 100), step = 2)
+  ,sliderInput("selectIncome_1", label = "Gross national income per capita:", min = 0, max = 61000, value = c(0, 61000), step = 100)
 )
 ```
 
@@ -131,7 +130,7 @@ dashboardPage(
   ),
   dashboardBody(
     tabItems(
-      # 1. "Average Total Payment vs Region" tab content
+      # 1. "Gross national income per capita by region" tab content
       tabItem(tabName = "boxplot1",
               source("BoxPlot1UI.R",local = TRUE)$value
       )
