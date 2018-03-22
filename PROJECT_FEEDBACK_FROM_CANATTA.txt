@@ -1,4 +1,6 @@
-ENTIRE PROJECT: try to make it a more cohesive story instead of so much segmentation b/w the tools
+ENTIRE PROJECT: -try to make it a more cohesive story instead of so much segmentation b/w the tools
+
+-write in intro:  what you expect to see in entire data dashboard and what you are looking for, vs what you see. Also for final project if you have anything with time in it, use lead and lag. Use table calculations thsoe are food
 
 SPECIFIC VISUALS: when you talk about a plot say what everything is exactly. x axis, y axis, color.
 
@@ -7,3 +9,16 @@ for boxplots explore the outliers
 back up conjectures with data like from data.world, confirm your suspicions
 
 healthcare one would be fine for final project but do per capita for your plots
+
+FOR EACH VISUAL, describe what you expect to see vs what you actually see. 
+
+
+
+
+
+
+Use the census data from data.world you learned about it on Thursday 3/22 , in the final project if you can. Canatta loves that shit 
+
+
+
+Presentations in data vis, reccomended format: "here is what I'm gonna show you, then show it, then recap/summarize it"
