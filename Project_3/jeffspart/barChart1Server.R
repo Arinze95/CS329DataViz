@@ -1,4 +1,5 @@
 # Change all __1_s, Download information, and edit the plot and ggplotly arguments below:
+
 # Build Download Button and Output DataTable---------------
   output$download__1_ <- downloadHandler(
     filename = function(){"CategoryBoxplot.csv"}, 
@@ -13,7 +14,7 @@
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
   output$Histogram__1_ <- renderPlotly({
-    plot = dfA1() %>% ggplot() + geom_bar(mapping = aes(x=country, y=healthy_life_expectancy_hale_at_birth_years_both_sexes), stat = "identity") +
+    plot = dfA1() %>% ggplot() + geom_bar(mapping = aes(x=region, y=Average, colour=system_of_government, fill=system_of_government), stat = "identity") +
       
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__1_, face = "bold")) + 

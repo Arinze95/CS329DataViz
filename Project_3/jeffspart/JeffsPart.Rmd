@@ -47,10 +47,10 @@ source("DataB.R", local = TRUE)
 ```{r}
 project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
 data.world::set_config(cfg_env("DW_API")) 
-countries <- data.world::query(data.world::qry_sql(
+regions <- data.world::query(data.world::qry_sql(
  "   
-	select distinct country
-	from WHO_Cleaner
+	select distinct region
+	from WHO_Cleanest
  "), 
 dataset = project)
 ```
@@ -58,20 +58,23 @@ dataset = project)
 
 ```{r}
 inputPanel(
-  selectInput("selectCountry_1", label = "Select Country",choices = countries, multiple=TRUE, selected=c("Bangladesh", "Brazil", "China", "India","Indonesia","Japan","Nigeria","Pakistan","Russia","United States of America")),
-  sliderInput("HaleFilter", label = "Healthy Life Expectancy:",
-              min = 0, max = 100, value = c(0, 100), step = 5),
-  sliderInput("ExpFilter", label = "Health Expenditure as Percent of GDP:",
-              min = 0, max = 100, value = c(0, 100), step = 5)
+  selectInput("selectRegion_1", label = "Select Region",choices = regions, multiple=TRUE, selected=c("LATIN AMER. & CARIB",
+"WESTERN EUROPE",
+"ASIA (EX. NEAR EAST)",
+"SUB-SAHARAN AFRICA",
+"NORTHERN AMERICA",
+"NEAR EAST",
+"NORTHERN AFRICA",
+"EASTERN EUROPE")),
+  sliderInput("ContraFilter", label = "Average Contraceptive Prevalence:",
+              min = 0, max = 180, value = c(0, 180), step = 10)
 )
 ```
 **Only first 10 countries will be shown**
 
 #Render and Display Plots
 
-Below are two bar charts. The first one shows the Healthy Average Life Expectancy by country. The second shows the Healthcare Expenditure as a Percentage of GDP by country. By default, the ten largest countries by populations are selected. An interesting insight that can be observed is how related healthcare expenditures is to healthy life expectancy. It would seem that the more focus a country puts on healthcare, the longer its citizens will have healthy lives. However, according to the following bar charts, there is a different story. The US, by far, has a large focus of its GDP in healthcare, yet its healthy life expectancies of its citizens are not proportionally higher than other countries. This could suggest that the US generally has higher costs for healthcare for similar or only marginally better healthcare than peer countries. This plot visualizes why the US healthcare system is so heavily debated. Compared with other countries the spending and costs does not seem to be generating any benefits. 
-
-[More on this topic](https://www.pbs.org/newshour/health/health-costs-how-the-us-compares-with-other-countries)
+The first bar chart shows the average contraceptive prevalence by both region (x-axis) and system of government (color). For two out of three regions which contain absolute monarchies, absolute monarchies perform poorly (low contraceptive prevalence) relative to other systems of government. For Western Europe, however, we see that absolute monarchies are the best performing system of government. To explore why this may be the case, we can observe the second bar chart. This bar chart shows the average population median age by region (x-axis) and system of government (color). It can be observed from this plot that out of those three regions with absolute monarchies, Western Europe’s countries with absolute monarchies have the highest average population median age. The higher median age of these countries could explain the higher access to contraceptives, as older people tend to be wiser and therefore likely familiar with the avenues of obtaining contraceptives.
 
 ```{r}
 dashboardPage(
@@ -79,20 +82,20 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("HALE Bar Chart", tabName = "barchart", icon = icon("dashboard")),
-      menuItem("Expenditure Bar Chart", tabName = "barchart2", icon = icon("dashboard"))
+      menuItem("Contraceptive Bar Chart", tabName = "barchart", icon = icon("dashboard")),
+      menuItem("Age Bar Chart", tabName = "barchart2", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "HALE BarChart
+      # 1. "BarChart2"
       tabItem(tabName = "barchart",
-        p("This is a barchart of HALE and country"),
+        p("This is a barchart of Region and Contraceptive Prevalence"),
         source("barChart1UI.R",local = TRUE)$value
       ),
-       # 2. Healthcare Expenditure "BarChart
+       # 2. "BarChart1"
       tabItem(tabName = "barchart2",
-        p("This is a barchart of Expenditure as a Percent of GDP and country"),
+        p("This is a barchart of Region and Median Age"),
         source("barChart2UI.R",local = TRUE)$value
       )
     )
