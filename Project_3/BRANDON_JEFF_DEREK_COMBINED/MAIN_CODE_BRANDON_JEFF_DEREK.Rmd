@@ -1,6 +1,6 @@
 ---
-title: "Brandon's Scatterplots"
-author: "Brandon Kerbow"
+title: "WHO Data"
+author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
 resource_files:
 - .Renviron
 output:
@@ -32,8 +32,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #Tableau Link
 
-#Create Dataframes
-The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
+
 
 ```{r}
 source("brandonsDataA.R", local = TRUE)
@@ -41,8 +40,7 @@ source("brandonsDataB.R", local = TRUE)
 source("brandonsDataC.R", local = TRUE)
 ```
 
-#Retrieve Regions from the SuperStore dataset
-The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
+
 ```{r}
 project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
 data.world::set_config(cfg_env("DW_API")) 
@@ -229,8 +227,6 @@ source("derekDataB.R", local = TRUE)
 ```
 
 
-#Retrieve Regions from the SuperStore dataset
-The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
 ```{r}
 projectDerek <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
 data.world::set_config(cfg_env("DW_API")) 
