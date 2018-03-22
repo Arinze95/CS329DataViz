@@ -5,7 +5,7 @@ dfBJeff <- eventReactive(c(input$selectRegion_1,input$ExpFilter), {
     "   
     select region, system_of_government, avg(population_median_age_years) Average
 from who_cleanest
-where region in (?,?,?,?,?,?,?,?,?)
+where region in (?,?,?,?,?,?,?,?,?,?,?)
 and system_of_government != 'n/a'
 group by region,who_cleanest.system_of_government
 

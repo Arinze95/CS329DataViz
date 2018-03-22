@@ -181,7 +181,7 @@ inputPanel(
               min = 0, max = 100, value = c(0, 100), step = 10)
 )
 ```
-**Only first 10 countries will be shown**
+
 
 #Render and Display Plots
 

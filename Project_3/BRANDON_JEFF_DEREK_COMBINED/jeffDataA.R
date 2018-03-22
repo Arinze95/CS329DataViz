@@ -5,7 +5,7 @@ dfAJeff <- eventReactive(c(input$selectRegion_1,input$ContraFilter), {
     "   
     select region, system_of_government, avg(contraceptive_prevalence) Average
 from who_cleanest
-where region in (?,?,?,?,?,?,?,?,?)
+where region in (?,?,?,?,?,?,?,?,?,?,?)
 and system_of_government != 'n/a'
 group by region,who_cleanest.system_of_government
 having avg(contraceptive_prevalence) between ? and ?
