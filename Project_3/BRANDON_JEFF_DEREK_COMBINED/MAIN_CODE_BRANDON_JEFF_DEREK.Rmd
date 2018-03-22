@@ -1,0 +1,333 @@
+---
+title: "Brandon's Scatterplots"
+author: "Brandon Kerbow"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+This is an R Interactive Document, Brandon's portion of project 3. 
+
+#Load Packages
+This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
+The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+library(leaflet)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Tableau Link
+
+#Create Dataframes
+The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
+
+```{r}
+source("brandonsDataA.R", local = TRUE)
+source("brandonsDataB.R", local = TRUE)
+source("brandonsDataC.R", local = TRUE)
+```
+
+#Retrieve Regions from the SuperStore dataset
+The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+systemsOfGovernment <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct system_of_government from who_cleanest
+
+ "), 
+dataset = project)
+```
+
+#Create a System of Government Variable
+Create a System of Government variable with a string constructed from the selected System of Governments in the input$selectRegion_1 variable.This System of Government variable will be used in the title of the ggplot below.
+
+```{r}
+SystemsOfGovernment  <- eventReactive(c(input$selectSystemOfGovernment_1), { 
+  library('stringr')
+  str_c(input$selectSystemOfGovernment_1, collapse=', ')
+})
+```
+
+#Create Panel with Select List
+The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting system of government (notice - choices is set to the system of government variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+
+```{r}
+inputPanel(
+  selectInput("selectSystemOfGovernment_1", label = "Select System of Government",choices = systemsOfGovernment , multiple=TRUE, selected=c("Absolute_monarchy", "Republic", "Constitutional_monarchy", "n/a"))
+)
+```
+
+#Render and Display Plots
+
+Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
+
+A question we had going into the data is what are the advnatages of spending money on healthare?
+Measured as a percent of GDP spend on healthcare, what common health metrics improve with additional spending,
+and is a certain system of government best for seeing improvement?
+
+Spending % vs life expectancy - clear posititive trend for all three givernment types,
+unsurprising
+
+spending % vs contraceptive prevalance - doesnt seem to make a difference for
+conctriutional monarchies, so what does cause contraceptive prevelance to change
+in monarchys?
+
+by plotting income vs contraceptive prevelance we can see a strong correlation bwteeen the two for monarchies,
+indicating that the money the inidividual has matters more for contraceptives
+(except for japan which is an outlier.......which is because
+japan had a staggeringly high income per person due to the increase
+in manufacturing and innovtation and patents or something)
+
+the monarchys had a higher R^2 value for income vs contraceptive then the other government types
+indicating that in monarchys the inidivudla income matters more
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Life Expectancy vs Health Expenditures", tabName = "scatter0", icon = icon("dashboard")),
+      
+      menuItem("Contraceptive Prevalence vs Health Expenditures", tabName = "scatter", icon = icon("dashboard")), 
+      
+      menuItem("Contraceptive Prevalence vs Income per Person", tabName = "scatter2", icon = icon("dashboard"))
+      
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 0. "Life Expectancy vs Health Expenditures (% of GDP) Scatter Plot" tab content
+      tabItem(tabName = "scatter0",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        source("brandonsScatterPlot0UI.R",local = TRUE)$value
+      ),
+        
+        
+      # 1. "Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot" tab content
+      tabItem(tabName = "scatter",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html "),
+        source("brandonsScatterPlot1UI.R",local = TRUE)$value
+      ),
+      
+      # 2. "Contraceptive Prevalence vs Income per Person Scatter Plot" tab content
+      tabItem(tabName = "scatter2",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html "),
+        source("brandonsScatterPlot2UI.R",local = TRUE)$value
+      )
+      
+    )
+  )
+)
+
+source("brandonsScatterPlot0Server.R", local = TRUE)
+source("brandonsScatterPlot1Server.R", local = TRUE)
+source("brandonsScatterPlot2Server.R", local = TRUE)
+```
+
+
+
+Jeff's part from the "preapred for integration" version
+
+
+
+```{r}
+source("jeffDataA.R", local = TRUE)
+source("jeffDataB.R", local = TRUE)
+
+```
+
+
+```{r}
+projectJeff <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+regions <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from WHO_Cleanest
+ "), 
+dataset = projectJeff)
+```
+#Plot Input
+
+```{r}
+inputPanel(
+  selectInput("selectRegion_1", label = "Select Region",choices = regions, multiple=TRUE, selected=c("LATIN AMER. & CARIB",
+"WESTERN EUROPE",
+"ASIA (EX. NEAR EAST)",
+"SUB-SAHARAN AFRICA",
+"NORTHERN AMERICA",
+"NEAR EAST",
+"NORTHERN AFRICA",
+"EASTERN EUROPE")),
+
+  sliderInput("ContraFilter", label = "Average Contraceptive Prevalence:",
+              min = 0, max = 100, value = c(0, 100), step = 10)
+)
+```
+**Only first 10 countries will be shown**
+
+#Render and Display Plots
+
+The first bar chart shows the average contraceptive prevalence by both region (x-axis) and system of government (color). For two out of three regions which contain absolute monarchies, absolute monarchies perform poorly (low contraceptive prevalence) relative to other systems of government. For Western Europe, however, we see that absolute monarchies are the best performing system of government. To explore why this may be the case, we can observe the second bar chart. This bar chart shows the average population median age by region (x-axis) and system of government (color). It can be observed from this plot that out of those three regions with absolute monarchies, Western Europes countries with absolute monarchies have the highest average population median age. The higher median age of these countries could explain the higher access to contraceptives, as older people tend to be wiser and therefore likely familiar with the avenues of obtaining contraceptives.
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Contraceptive Bar Chart", tabName = "barchartJeff", icon = icon("dashboard")),
+      menuItem("Age Bar Chart", tabName = "barchart2Jeff", icon = icon("dashboard"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "BarChart2"
+      tabItem(tabName = "barchartJeff",
+        p("This is a barchart of Region and Contraceptive Prevalence"),
+        source("jeffbarChart1UI.R",local = TRUE)$value
+      ),
+       # 2. "BarChart1"
+      tabItem(tabName = "barchart2Jeff",
+        p("This is a barchart of Region and Median Age"),
+        source("jeffbarChart2UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+source("jeffbarChart1Server.R", local = TRUE)
+source("jeffbarChart2Server.R", local = TRUE)
+
+```
+
+
+
+Derek's part from dereks "prepared for integration" version
+
+
+```{r}
+source("derekDataA.R", local = TRUE)
+source("derekDataB.R", local = TRUE)
+
+```
+
+
+#Retrieve Regions from the SuperStore dataset
+The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
+```{r}
+projectDerek <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+regions <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from who_cleaner
+
+ "), 
+dataset = projectDerek)
+```
+
+```{r}
+projectDerek <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+places <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from who_cleaner
+
+ "), 
+dataset = projectDerek)
+```
+#Create a Regions Variable
+Create a Regions variable with a string constructed from the selected regions in the input$selectRegion_1 variable.This Regions variable will be used in the title of the ggplot below.
+
+```{r}
+Regions <- eventReactive(c(input$selectRegionDerek_1), { 
+  library('stringr')
+  str_c(input$selectRegionDerek_1, collapse=', ')
+})
+```
+
+```{r}
+Reg <- eventReactive(c(input$selectReg_1), { 
+  library('stringr')
+  str_c(input$selectReg_1, collapse=', ')
+})
+```
+
+
+
+
+
+
+#Create Panel with Select List
+The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting regions (notice - choices is set to the regions variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+
+```{r}
+inputPanel(
+  selectInput("selectRegionDerek_1", label = "Select Region",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA")),
+  sliderInput("PopFilter_1", label = "Population Proportion Under 15:", min = 0, max = 100, value = c(0, 100), step = 1)
+)
+```
+
+```{r}
+inputPanel(
+  selectInput("selectReg_1", label = "Select Region",choices = places, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA")),
+ sliderInput("incomeFilter_1", label = "Gross National Income Per Capita:", min = 0, max = 60870, value = c(0, 60870), step = 100)
+)
+```
+
+
+
+
+
+#Render and Display the BoxPlots
+
+Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Category Sales BoxPlot", tabName = "boxplot1", icon = icon("dashboard")),
+      menuItem("Quarter Sales BoxPlot", tabName = "boxplot2", icon = icon("dashboard"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Category Sales BoxPlot" tab content
+      tabItem(tabName = "boxplot1",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        source("derekBoxPlot1UI.R",local = TRUE)$value
+      ),
+      # 2. "Quarter Sales BoxPlot" tab content
+      tabItem(tabName = "boxplot2",
+        p("And here."),
+        source("derekBoxPlot2UI.R",local = TRUE)$value
+        )
+      )
+    )
+  )
+
+
+source("derekBoxPlot1Server.R", local = TRUE)
+source("derekBoxPlot2Server.R", local = TRUE)
+```

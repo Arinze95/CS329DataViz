@@ -38,8 +38,8 @@ sessionInfo()
 
 
 ```{r}
-source("DataA.R", local = TRUE)
-source("DataB.R", local = TRUE)
+source("jeffDataA.R", local = TRUE)
+source("jeffDataB.R", local = TRUE)
 
 ```
 
@@ -91,17 +91,17 @@ dashboardPage(
       # 1. "BarChart2"
       tabItem(tabName = "barchart",
         p("This is a barchart of Region and Contraceptive Prevalence"),
-        source("barChart1UI.R",local = TRUE)$value
+        source("jeffbarChart1UI.R",local = TRUE)$value
       ),
        # 2. "BarChart1"
       tabItem(tabName = "barchart2",
         p("This is a barchart of Region and Median Age"),
-        source("barChart2UI.R",local = TRUE)$value
+        source("jeffbarChart2UI.R",local = TRUE)$value
       )
     )
   )
 )
-source("barChart1Server.R", local = TRUE)
-source("barChart2Server.R", local = TRUE)
+source("jeffbarChart1Server.R", local = TRUE)
+source("jeffbarChart2Server.R", local = TRUE)
 
 ```

@@ -1,0 +1,12 @@
+https://piazza.com/class/jcgq6trms124bl?cid=65
+
+
+
+copied and pasted in case it gets deleted:
+
+Leaflet map/tiles bug appears to be a problem with MapQuest
+I am running the same version of the leaflet package as Dr. Cannata, but I was still having issues getting the tiles to appear on the leaflet map (it seemed like the rest of the class was having this issue as well). 
+
+ 
+
+I couldn't figure out what was causing the issue, but when I switched from using MapQuest to Stamen Maps, the tiles appeared. Under the map server file, I changed addProviderTiles("MapQuestOpen.Aerial") to addProviderTiles("Stamen.TonerLite"), and the bug seemed to be resolved. 
