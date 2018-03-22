@@ -176,7 +176,9 @@ inputPanel(
 "EASTERN EUROPE")),
 
   sliderInput("ContraFilter", label = "Average Contraceptive Prevalence:",
-              min = 0, max = 100, value = c(0, 100), step = 10)
+              min = 0, max = 100, value = c(0, 100), step = 10),
+sliderInput("AgeFilter", label = "Average Median Age:",
+              min = 0, max = 80, value = c(0, 80), step = 10)
 )
 ```
 

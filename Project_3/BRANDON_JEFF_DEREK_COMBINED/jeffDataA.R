@@ -12,7 +12,7 @@ having avg(contraceptive_prevalence) between ? and ?
 order by region, system_of_government
     
     ")
-  paramQuery$params <- c(input$selectRegion_1[1], input$selectRegion_1[2], input$selectRegion_1[3], input$selectRegion_1[4], input$selectRegion_1[5], input$selectRegion_1[6], input$selectRegion_1[7], input$selectRegion_1[8], input$selectRegion_1[9],input$ContraFilter[1],input$ContraFilter[2])
+  paramQuery$params <- c(input$selectRegion_1[1], input$selectRegion_1[2], input$selectRegion_1[3], input$selectRegion_1[4], input$selectRegion_1[5], input$selectRegion_1[6], input$selectRegion_1[7], input$selectRegion_1[8], input$selectRegion_1[9], input$selectRegion_1[10], input$selectRegion_1[11],input$ContraFilter[1],input$ContraFilter[2])
   data.world::query(paramQuery, dataset = projectJeff)
 })
 
