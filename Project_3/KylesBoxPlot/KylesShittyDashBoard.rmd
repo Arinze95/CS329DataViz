@@ -11,10 +11,8 @@ output:
     toc_float: yes
 runtime: shiny
 ---
-  
+    
 
-  
-  
   
 ```{r setup, echo=FALSE, message=FALSE}
 library(tidyverse)
@@ -78,6 +76,7 @@ df1 <- eventReactive(c(input$selectIncome_1, input$selectRegion_1), {
   paramQuery$params <- c(input$selectIncome_1[1], input$selectIncome_1[2], input$selectRegion_1[1], input$selectRegion_1[2], input$selectRegion_1[3], input$selectRegion_1[4], input$selectRegion_1[5], input$selectRegion_1[6], input$selectRegion_1[7], input$selectRegion_1[8], input$selectRegion_1[9], input$selectRegion_1[10])
   data.world::query(paramQuery, dataset = project)
 }) 
+
 ```
 
 
@@ -94,7 +93,7 @@ Region <- eventReactive(c(input$selectRegion_1), {
 })
 ```
 
-howdy hey
+
 ```{r}
 Income <- eventReactive(c(input$selectIncome_1), { 
   library('stringr')
@@ -103,15 +102,17 @@ Income <- eventReactive(c(input$selectIncome_1), {
 ```
 
 
-```
+A boxplot comparing gross income per capita per country for each region. An index allows selection of different colors representing different forms of government.
 
+One interesting observation is that sub-saharan africa has the highest amount of outliers, all much higher than the rest of the countries recorded, and these countries are all listed as republics. This trend seems to imply a higher chance of a sub-saharan country having a higher gross income if it is a republic by observing the data in this visualization alone.
+
+I also was not expecting to see so many monarchies having high gross incomes.
 
 #Boxplot 1
 
 ```{r}
 inputPanel(
-  selectInput
-  ("selectRegions_1", label = "Select Regions",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "BALTICS", "OCEANIA", "C.W.OF IND.STATES", "WESTERN EUROPE", "LATIN AMER. & CARIB", "ASIA (EX. NEAR EAST)", "EASTERN EUROPE", "NEAR EAST", "NORTHERN AFRICA")
+  selectInput("selectRegion_1", label = "Select Regions",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "BALTICS", "OCEANIA", "C.W.OF IND.STATES", "WESTERN EUROPE", "LATIN AMER. & CARIB", "ASIA (EX. NEAR EAST)", "EASTERN EUROPE", "NEAR EAST", "NORTHERN AFRICA")
     
   )
   
