@@ -1,0 +1,29 @@
+# Change "Histogram", all __3_s, and edit tiles below:
+tabItem(tabName = "Barchart",
+        tabsetPanel( 
+          tabPanel("Plots"),# To create a tab panel - see https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html
+          tabPanel("Data", 
+             dataTableOutput('table__3_'),
+             downloadButton('download__3_',"Download the data")),
+          tabPanel("Plot Size", 
+             numericInput("plotWidth__3_", "Plot Width (Required)", 1000),
+             numericInput("plotHeight__3_", "Plot Height (Required)", NA)),
+          tabPanel("Plot Title",
+             textInput("title__3_", "Title 1", "Contraceptive Prevalence by Region"),
+             numericInput("titleFont__3_", "Title Font", 10)), 
+          tabPanel("Plot Legend",
+             textInput("legendTitle__3_", "Legend Title", "Regions"),
+             numericInput("legendTitleSize__3_", "Legend Title Size", 8), #was 10,8,5
+             numericInput("legendItemSize__3_", "Legend Item Size", 5),
+             numericInput("legendKeySize__3_", "Legend Key Size", 2)), 
+          tabPanel("Axis Labels",
+             textInput("xLabel__3_", "x-Axis Label", "Region"),
+             textInput("yLabel__3_", "y-Axis Label 1", "Contraceptive Prevalence"),
+             numericInput("textFont__3_", "textFont", 10)),
+          tabPanel("Data Size", 
+             numericInput("yDataMin__3_", "yData Minimum (Required)", 0),
+             numericInput("yDataMax__3_", "yData Maximum (Required)", NA))),
+        plotlyOutput("Histogram__3_", height=800)
+)
+
+#reokaced _1 with _1

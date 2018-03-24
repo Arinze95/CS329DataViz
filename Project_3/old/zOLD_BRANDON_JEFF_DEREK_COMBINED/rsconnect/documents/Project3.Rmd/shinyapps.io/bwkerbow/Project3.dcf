@@ -1,0 +1,12 @@
+name: Project3
+title: Project3
+username:
+account: bwkerbow
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 305519
+bundleId: 1283039
+url: https://bwkerbow.shinyapps.io/Project3/
+when: 1521746776.00138
+asMultiple: FALSE
+asStatic: FALSE

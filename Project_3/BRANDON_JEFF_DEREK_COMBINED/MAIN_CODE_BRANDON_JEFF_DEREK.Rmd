@@ -219,18 +219,23 @@ source("jeffbarChart2Server.R", local = TRUE)
 
 
 
-Derek's part from dereks "prepared for integration" version
+dereks stuff
 
+
+#Create Dataframes
+The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
 
 ```{r}
 source("derekDataA.R", local = TRUE)
 source("derekDataB.R", local = TRUE)
-
+source("derekDataC.R", local = TRUE)
 ```
 
 
+#Retrieve Regions from the SuperStore dataset
+The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
 ```{r}
-projectDerek <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
 data.world::set_config(cfg_env("DW_API")) 
 regions <- data.world::query(data.world::qry_sql(
  "   
@@ -238,11 +243,11 @@ regions <- data.world::query(data.world::qry_sql(
 	from who_cleaner
 
  "), 
-dataset = projectDerek)
+dataset = project)
 ```
 
 ```{r}
-projectDerek <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
 data.world::set_config(cfg_env("DW_API")) 
 places <- data.world::query(data.world::qry_sql(
  "   
@@ -250,15 +255,27 @@ places <- data.world::query(data.world::qry_sql(
 	from who_cleaner
 
  "), 
-dataset = projectDerek)
+dataset = project)
+```
+
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+areas <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from who_cleaner
+
+ "), 
+dataset = project)
 ```
 #Create a Regions Variable
 Create a Regions variable with a string constructed from the selected regions in the input$selectRegion_1 variable.This Regions variable will be used in the title of the ggplot below.
 
 ```{r}
-Regions <- eventReactive(c(input$selectRegionDerek_1), { 
+Regions <- eventReactive(c(input$selectRegion_1derek), { 
   library('stringr')
-  str_c(input$selectRegionDerek_1, collapse=', ')
+  str_c(input$selectRegion_1derek, collapse=', ')
 })
 ```
 
@@ -269,28 +286,42 @@ Reg <- eventReactive(c(input$selectReg_1), {
 })
 ```
 
+```{r}
+Re <- eventReactive(c(input$selectRegi_1), { 
+  library('stringr')
+  str_c(input$selectRegi_1, collapse=', ')
+})
+```
 
 
 
 
 
-#Create Panel with Select List
-The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting regions (notice - choices is set to the regions variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+#Population Proportion, Age Dependency Ratio, and Gross National Income per Capita
+
+According to The Fund for Peace and Foreign Policy, population proportion under 15 years of age is a measure that can serve as an indication of a failed state. In looking at World Health Organization data across world regions, it can be observed that Sub-Saharan African countries constitute a notably large portion of those countries with over 25% of their  population under 15 years of age. This can be seen in the “Population Proportion Under 15 years of Age” Histogram below.  In exploring how population proportion under 15 years of age affects the average country in a region, two measures, Age Dependency Ratio and Gross National Income per Capita, were examined.
+
+Age Dependency Ratio (DR) is an indicator calculated by summing the population under 15 years of age with the population over 65 years of age, and then dividing this sum by the population between ages 15 and 64 (the “productive” age group). DR essentially communicates the number of dependents that each “productive” member of society must provide for. It has many implications for the performance of national economies. The “Age Dependency Ratio” Bar Chart below shows that on average Sub-Saharan African countries have very high DR ratios. Sub-Saharan African countries displayed an average DR ratio of 0.89, much higher than the next highest ratio of 0.62, held by Western European countries (much more economically developed). The fact that a region so underdeveloped has such a relatively small amount of their population contributing to their national economy does not portend well for them. In short, a high DR ratio means that a small portion of a country’s population is contributing to economic output, and bolstering many dependents. How far could this output be going? This idea was further explored through Gross National Income per Capita. 
+
+Gross National Income per Capita is a country’s total income in a year divided by its population. It measures the average income of citizens in a country. The results for Gross National Income per Capita were not surprising for Sub-Saharan African Countries on average. The “Gross National Income per Capita” Boxplot below shows that Sub-Saharan African Countries had the lowest average incomes, with the lowest minimum, first quartile, median, third quartile, and maximum average incomes. This observation goes hand in hand with their low DR ratio, and thus isn’t profound. Obviously, with such a small portion of their population producing economically, the national aggregate income is being allocated over an excess of unproductive citizens, thus yielding a low Gross National Income per Capita. 
+
+Surprisingly (and maybe counterintuitively), although Western European countries recorded the second highest DR ratio, they also had the second highest Gross National Income per Capita. This is striking as it would be expected that they suffer the difficulties of having such a large portion of unproductive citizens. The key to this is in realizing that Western European countries are amongst the most technologically, economically, and socially advanced, especially under western criteria. Because of this, the relatively small portion of productive people in the region can produce economic output that surpasses that from other regions. The same cannot be said for the still developing Sub-Saharan African countries. 
+
 
 ```{r}
 inputPanel(
-  selectInput("selectRegionDerek_1", label = "Select Region",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA")),
-  sliderInput("PopFilter_1", label = "Population Proportion Under 15:", min = 0, max = 100, value = c(0, 100), step = 1)
+  selectInput("selectRegion_1derek", label = "Select Region for Population Proportion Under 15 years",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA")),
+  sliderInput("PopFilter_1", label = "Population Proportion Under 15:", min = 0, max = 100, value = c(0, 100), step = 1),
+  selectInput("selectRegi_1", label = "Select Region for Age Dependency Ratio",choices = places, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA"))
 )
 ```
 
 ```{r}
 inputPanel(
-  selectInput("selectReg_1", label = "Select Region",choices = places, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA")),
+  selectInput("selectReg_1", label = "Select Region for Gross National Income",choices = areas, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA")),
  sliderInput("incomeFilter_1", label = "Gross National Income Per Capita:", min = 0, max = 60870, value = c(0, 60870), step = 100)
 )
 ```
-
 
 
 
@@ -305,19 +336,25 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Category Sales BoxPlot", tabName = "boxplot1", icon = icon("dashboard")),
-      menuItem("Quarter Sales BoxPlot", tabName = "boxplot2", icon = icon("dashboard"))
+      menuItem("Population Proportion Under 15 years Histogram", tabName = "Histo1", icon = icon("dashboard")),
+      menuItem("Age Dependency Ratio Barchart", tabName = "barchart1", icon = icon("dashboard")),
+      menuItem("Gross National Income per Capita Boxplot", tabName = "boxplot", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "Category Sales BoxPlot" tab content
-      tabItem(tabName = "boxplot1",
+      # 1. "Population Proportion Under 15 years Histogram" tab content
+      tabItem(tabName = "Histo1",
         p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
         source("derekBoxPlot1UI.R",local = TRUE)$value
       ),
-      # 2. "Quarter Sales BoxPlot" tab content
-      tabItem(tabName = "boxplot2",
+      # 2. "Dependent Ratio Barchart" tab content
+      tabItem(tabName = "barchart1",
+        p("And here."),
+        source("derekbarChart2UI.R",local = TRUE)$value
+        ),
+      # 3. "Gross National Income per Capita Boxplot" tab content
+      tabItem(tabName = "boxplot",
         p("And here."),
         source("derekBoxPlot2UI.R",local = TRUE)$value
         )
@@ -327,5 +364,6 @@ dashboardPage(
 
 
 source("derekBoxPlot1Server.R", local = TRUE)
+source("derekbarChart2Server.R", local = TRUE)
 source("derekBoxPlot2Server.R", local = TRUE)
 ```

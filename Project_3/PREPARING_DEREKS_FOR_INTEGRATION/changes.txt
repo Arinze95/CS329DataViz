@@ -1,0 +1,41 @@
+
+main: 
+selectRegion_1 -> selectRegion_1derek
+(havent actually changed his yet)
+
+
+derekDataA:
+dfA -> dfAderek
+dfA1 -> dfA1derek
+
+
+derekBoxplot1server:
+dfA1 -> dfA1derek
+__1 with __6
+
+derekBoxPlot1UI:
+__1 with __6
+
+dataB:
+added word derek after
+all the dfB() and dfB1()
+__2 to __7
+
+derekboxplot2server:
+__2 to __7
+added word derek after
+all the dfB() and dfB1()
+
+boxplot2UI:
+__2 with __7
+
+dataC:
+add derek after
+all the dfC and dfC()
+__1 to __8
+
+derekbarChart2Server:
+
+add derek after
+all the dfC and dfC()
+__3 to __8

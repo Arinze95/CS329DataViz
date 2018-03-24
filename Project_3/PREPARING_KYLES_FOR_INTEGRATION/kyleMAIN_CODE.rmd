@@ -1,0 +1,146 @@
+---
+title: "WHO Data"
+author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+    
+
+  
+```{r setup, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
+data.world::set_config(cfg_env("DW_API")) 
+regions <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct WHO_Cleanest.region from WHO_Cleanest
+  "), 
+  dataset = project)
+```
+
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
+data.world::set_config(cfg_env("DW_API")) 
+incomes <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct WHO_Cleanest.gross_national_income_per_capita_ppp_international
+  from WHO_Cleanest
+  "), 
+  dataset = project)
+```
+
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3/"  
+data.world::set_config(cfg_env("DW_API")) 
+system <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct WHO_Cleanest.system_of_government from WHO_Cleanest
+  "), 
+  dataset = project)
+```
+
+
+
+```{r}
+
+df1kyle <- eventReactive(c(input$selectIncome_1kyle, input$selectRegion_1kyle), { 
+  project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+    "   
+    select region, gross_national_income_per_capita_ppp_international, system_of_government
+    from WHO_Cleanest h
+    where gross_national_income_per_capita_ppp_international between ? and ? and region in (?,?,?,?,?,?,?,?,?,?) and system_of_government in ('Republic','Constitutional_monarchy', 'Absolute_monarchy')
+    
+    order by region
+    ")
+  paramQuery$params <- c(input$selectIncome_1kyle[1], input$selectIncome_1kyle[2], input$selectRegion_1kyle[1], input$selectRegion_1kyle[2], input$selectRegion_1kyle[3], input$selectRegion_1kyle[4], input$selectRegion_1kyle[5], input$selectRegion_1kyle[6], input$selectRegion_1kyle[7], input$selectRegion_1kyle[8], input$selectRegion_1kyle[9], input$selectRegion_1kyle[10])
+  data.world::query(paramQuery, dataset = project)
+}) 
+
+```
+
+
+
+
+
+
+
+
+```{r}
+Region <- eventReactive(c(input$selectRegion_1kyle), { 
+  library('stringr')
+  str_c(input$selectRegion_1kyle, collapse=', ')
+})
+```
+
+
+```{r}
+Income <- eventReactive(c(input$selectIncome_1kyle), { 
+  library('stringr')
+  str_c(input$selectIncome_1kyle, collapse=', ')
+})
+```
+
+
+A boxplot comparing gross income per capita per country for each region. An index allows selection of different colors representing different forms of government.
+
+One interesting observation is that sub-saharan africa has the highest amount of outliers, all much higher than the rest of the countries recorded, and these countries are all listed as republics. This trend seems to imply a higher chance of a sub-saharan country having a higher gross income if it is a republic by observing the data in this visualization alone.
+
+I also was not expecting to see so many monarchies having high gross incomes.
+
+#Boxplot 1
+
+```{r}
+inputPanel(
+  selectInput("selectRegion_1kyle", label = "Select Regions",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "BALTICS", "OCEANIA", "C.W.OF IND.STATES", "WESTERN EUROPE", "LATIN AMER. & CARIB", "ASIA (EX. NEAR EAST)", "EASTERN EUROPE", "NEAR EAST", "NORTHERN AFRICA")
+    
+  )
+  
+  ,sliderInput("selectIncome_1kyle", label = "Gross national income per capita:", min = 0, max = 61000, value = c(0, 61000), step = 100)
+)
+```
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("proportion of population under 15", tabName = "boxplot1", icon = icon("dashboard1"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Gross national income per capita by region" tab content
+      tabItem(tabName = "boxplot1",
+              source("kyleBoxPlot1UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+
+source("kyleBoxPlot1Server.R", local = TRUE)
+
+```
+
+
