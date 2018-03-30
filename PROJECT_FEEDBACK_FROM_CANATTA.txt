@@ -1,24 +1,70 @@
-ENTIRE PROJECT: -try to make it a more cohesive story instead of so much segmentation b/w the tools
+
+IMPORTANT: our project 3 was good (disregard this message if we didnt get a good grade) so look at that interactive document
+to see what quality of work you should aim for. link to all projects
+can be found on the group sign up page here:
+https://docs.google.com/spreadsheets/d/1WZ10wLtR5WPBM3gn7WhOFV3hnUDGRE58twin6sv--cw/edit#gid=0
+
+
+
+ENTIRE PROJECT HINTS: -try to make it a more cohesive story instead of so much segmentation b/w the tools
 
 -write in intro:  what you expect to see in entire data dashboard and what you are looking for, vs what you see. Also for final project if you have anything with time in it, use lead and lag. Use table calculations thsoe are food
 
-SPECIFIC VISUALS: when you talk about a plot say what everything is exactly. x axis, y axis, color.
-
-for boxplots explore the outliers
+-SAY WHAT ALL THE FIELDS IN THE DATA SET MEAN and where you got the data from
 
 back up conjectures with data like from data.world, confirm your suspicions
 
 healthcare one would be fine for final project but do per capita for your plots
 
-FOR EACH VISUAL, describe what you expect to see vs what you actually see. 
-
-
-
-
-
-
 Use the census data from data.world you learned about it on Thursday 3/22 , in the final project if you can. Canatta loves that shit 
 
 
+but interactive document comments/visuals could show slightly more interesting things. He said if we want to copy paste Cannata’s code then be mindful of what data we are showing so that it is as interesting as possible, and explain it fully. 
 
-Presentations in data vis, reccomended format: "here is what I'm gonna show you, then show it, then recap/summarize it"
+instead of doing descriptions of tabs above the dashboard, u can do it on each dasboar.d on your shiny doc see the text hat says "
+you can inout your own description here"
+
+
+
+
+
+
+SPECIFIC VISUAL HINTS:: when you talk about a plot say what everything is exactly. x axis, y axis, color.
+
+be clear in your writing which filers and sliders control what
+
+describe what you expect to see vs what you actually see. 
+be sure to start with what the plot shows in terms of x vs y axis and colors
+
+for boxplots explore the outliers
+
+boxplots show a distirbution so dont use boxplots unless they
+have at least 30 data points (CLT)
+
+
+RECCOMENDATION FOR PROJECT 4:
+
+email from canatta: 
+
+"ggplot() facet_wrap and facet_grid
+
+I've noticed that several projects that I've reviewed need the capabilities of facet_wrap and facet_grid but aren't using these features. I showed how to use facet_wrap in the Chapter 3 "Category Histogram"
+
+plot = dfA1() %>% dplyr::group_by(category) %>% dplyr::summarize(avg_shipping_cost = round(mean(shipping_cost), 2)) %>% dplyr::inner_join(., dfA1(), by=c("category")) %>% ggplot() + 
+geom_histogram(mapping = aes(x=shipping_cost, colour = region, fill = region), binwidth = 10) +
+geom_line(mapping=aes(x=shipping_cost, y=avg_shipping_cost)) +
+coord_flip() +
+geom_text(aes(x=125, y=10, label=avg_shipping_cost)) +
+facet_wrap( ~ category, ncol=1) +
+
+Please try these features out - they're really useful."
+
+
+
+
+
+
+
+FINAL PRESENTATION HINTS: 
+
+Presentations in data vis, reccomended format: "here is what I'm gonna show you that is ineresting, then show it along with evidence, then recap/summarize it"
