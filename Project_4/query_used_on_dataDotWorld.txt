@@ -1,0 +1,17 @@
+#This query includes the joins to census data to get the average income and median 
+#age for each zipcode
+#If you want to select just the clean data without the joins to census data,
+#do "select * from airbnbclean"
+
+SELECT a.*, b.MedianAge as median_age_for_zipcode, c.avg_total_income as avg_total_income_for_zipcode
+FROM airbnbclean a
+
+LEFT JOIN 
+(SELECT a.b01002_001 as MedianAge, replace(a.ZCTA,",","") as zipcode
+FROM uscensusbureau.`acs-2015-5-e-AgeSex`.USA_ZCTA a) b
+on a.zipcode = b.zipcode
+
+LEFT JOIN 
+(SELECT replace(a.zipcode,",","") as zipcode, a.avg_total_income
+FROM irsincomebyzipcode a) c
+on a.zipcode = c.zipcode
