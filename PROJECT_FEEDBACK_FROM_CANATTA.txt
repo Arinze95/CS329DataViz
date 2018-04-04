@@ -67,4 +67,6 @@ Please try these features out - they're really useful."
 
 FINAL PRESENTATION HINTS: 
 
-Presentations in data vis, reccomended format: "here is what I'm gonna show you that is ineresting, then show it along with evidence, then recap/summarize it"
+Presentations in data vis, reccomended format: "here is what I'm gonna show you that is ineresting, then show it along with evidence, then recap/summarize it." conclude with what you learned,,
+mak sure it is very interesting what the visuals show
+and why they are interesting
