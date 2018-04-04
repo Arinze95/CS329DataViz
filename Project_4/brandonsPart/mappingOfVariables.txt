@@ -1,0 +1,45 @@
+
+This file is only useful for Brandon, wasn't intended for anyoen else but here it is if you want to see.
+
+
+
+
+DataA/1 stuff:
+Jeff -> Brandon
+jeff -> brandon
+Region -> City
+Contraceptive Prevalence -> Avg Nightly Price
+system of government -> property type
+
+DataB/2 stuff:
+Jeff -> Brandon
+jeff -> brandon
+Region -> City
+Median Age -> Avg Nightly Price
+system of government -> Allows Pets
+
+
+
+~
+FILE VARIABLE MAPPING
+~
+
+---brandonPartMAINCODE
+Age Bar Chart -> Price by Pet Policy
+Contraceptive Bar Chart -> Price by Property Type
+Contraceptive Prevalence -> Average Price per Night
+ContraFilter -> PriceFilter
+regions -> cities
+region -> city
+Region -> City
+selectRegion_1 -> selectCity_1
+
+---brandonDataA
+contraceptive_prevalence -> nightly_price
+region -> city
+system_of_government -> property_type
+You added a "and property type in (...)"
+and you deleted "and property_type != 'n/a'"
+selectRegion_1 -> selectCity_1
+ContraFilter -> PriceFilter
+

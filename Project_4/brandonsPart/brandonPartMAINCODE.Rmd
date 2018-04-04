@@ -1,0 +1,314 @@
+---
+title: "The Prices of AirBnB Units: An Interactive Document"
+author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+
+#Dataset Description - NEEDS UPDATING FOR PROJECT 4
+This dataset was obtained online from the World Health Organization (WHO) and contains various health-related metrics for every country on the planet. Examples of such metrics include the average per capita (per person) income and average life expectancy. There are also fields for the region (e.g. Western Europe, Sub-Saharan Africa) and the system of government in place (e.g. Republic, Absolute Monarchy) for each country.
+
+#Important Links - NEEDS UPDATING FOR PROJECT 4
+
+[Data.world Project](https://data.world/jeffrey-feng/s18-edv-project-3)
+
+Kyle's Insights: [1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/3f4ad123-96f8-43ef-a9bd-6e7707b5894e)
+[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/4bf66d41-46db-46bf-95d6-0fd1f5415b53)
+
+Jeffrey's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/6c074812-db39-4d90-9267-98a018e0d205)
+[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/406defbc-4867-4f7a-b9f7-0ededdfec75b)
+
+Brandon's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/c768d907-2631-4ab8-a277-01971367da4e)
+[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/2c8243ec-112e-4eae-84b9-1737eecc4c22)
+[3](https://data.world/jeffrey-feng/s18-edv-project-3/insights/55d632d3-9c26-47a8-8ad8-1c810833f5f8)
+
+Derek's Insights:
+[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/7eeb0512-fd4d-4e2c-89ab-8ee605bc6123)
+[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/9afba264-eeac-40ea-9e5b-bedd70555b83)
+
+[Github Repository](https://github.com/CannataUTDV/s18dvproject3-duquesnay-feng-orji-kerbow)
+
+#Motivations and Expectations - NEEDS UPDATING FOR PROJECT 4
+With healthcare being a hot topic in both business and everyday life, we wanted to explore some drivers for health on a global scale. Because one of the most common obstacles in improving global health is a lack of funds, we aimed to explore how countries - of different government types and in different geographic regions - can benefit from increasing the amount they spend on healthcare. We also recognize that in many countries, particularly 3rd world countries, it is common for women to give birth to a relatively high number of children. With this in mind, we explored what factors could affect the prevalence of contraception (in other words, the accessibility of birth control such as condoms or pills). We also wanted to explore the overall health of countries by analyzing demographics/age distributions and the potential relationships with factors such as income. As an interesting final point of interest, we wanted to see if there is a relationship between climate (approximated by average annual temperature) and average number of women per children. 
+
+We expect to see that countries which spend more on healthcare have better health (measured by things such as life expectancy) for every region and system of government. We also expect to see that women in poorer nations give birth to more children and that countries with aging populating are not as healthy as their middle-aged country counterparts. Finally, we expect there to be little correlation between climate and the average number of children per woman. More specific expectations are in the sections for each dashboard further down in this interactive document. 
+
+#Summary of Conclusions - NEEDS UPDATING FOR PROJECT 4
+Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although it is true that that countries which spend more on healthcare tend to have better health-related metrics, the relationship does not always hold for all metrics and systems and government. Additionally, what plays into the prevalence of contraceptive is more than just average income and aging populations are not necessarily unhealthier than their middle-aged country counterparts. Lastly, we did observe a pattern in climate vs average number of children per woman: as average temperature rose, so did the number of children. More specific conclusions for each dashboard can be found in each dashboards corresponding text. 
+
+#Embedded Tableau Insight - NEEDS UPDATING FOR PROJECT 4
+
+(Note: Tableau's capability to zoom in to maps may prove useful if the maps appear too small).
+This embedded Tableau dashboard includes two maps and a scatterplot. The two maps, top and bottom, show average annual temperature and average number of children per woman, respectively, by country and color. Although a correlation is clear from the maps, the children per woman map shows a less vibrant range of colors. This is because countries in Sub-Saharan Africa have such a high number of children per woman that they skew the distribution of colors. One interesting observation is Brazil, having a high average temperature but low average number of children per woman. Searches online indicate that reasons for this may be that Brazil is rapidly modernizing and attaining better education. The scatterplot shows the overall correlation between temperature and children per woman. An interesting observation is that Afghanistan has a higher number of women per children than expected, which is likely due to the culture and lack of education.
+
+Note that the map can act as a filter for the scatterplot. 
+
+<iframe src="https://public.tableau.com/views/project3embedTableauOnR/Dashboard?:showVizHome=no"width="800" height="800"></iframe>
+
+
+```{r setup, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+source("brandonDataA.R", local = TRUE)
+source("brandonDataB.R", local = TRUE)
+
+```
+
+
+```{r}
+projectBrandon <- "https://data.world/brandon-kerbow/s18-edv-project-4" 
+data.world::set_config(cfg_env("DW_API")) 
+cities <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct city
+	from AirBnBClean
+ "), 
+dataset = projectBrandon)
+```
+
+#Exploring Loft Prices in LA - Bar Charts
+This dashboard contains two tabs, both bar charts.  The dashboard - and the subsequent crosstab - explore the price differences of AirBnB postings by City and Property Type. We would expect that for cities which have higher prices, the higher price is equally represented across all property types. This was, however, found to not always be the case. We show that Los Angeles has disproportionally expensive loft units and explore why this may be so.
+
+The dashboard's input panel allows the user to decide which cities(s) they would like to see present in the data. The slider for Average Price per Night filters which property types are shown for a given city based on whether or not that value falls within the bounds. Note that for these plots, and some others on this document, the text in the legend is quite small. This is to avoid having the legend overlay the plot.
+
+##Tab 1 - Discovering the Abnormally Expensive LA Lofts
+The first tab's bar chart shows the Average Price per Night (y-axis) for each City (x-axis) by property type (color). It is immediately clear that Washington D.C. and San Francisco have the most expensive rentals overall, but it is more interesting to compare the different property types across cities. Los Angeles, for example, has the second to shortest stack (i.e. the second cheapest overall rentals) but the second to highest average nightly price for lofts (shown in blue). This indicates that LA has disproportionally expensive lofts, but why is this the case? The visual in the second tab and the subsequent crosstab shed some light on this.
+
+##Tab 2 - Charging Extra for Pets
+The second tab's bar chart is filtered to only show lofts and - just like the first tab -  has Average Price per Night and City on the y and x axes, respectively. This plot, however, has the bars colored based on whether or not the loft allows pets. We see that LA, relative to the other cities, has lofts which charge disproportionately more for the luxury of allowing pets. Given that most of the lofts across all cities allow pets, this plays into LA having disproportionally expensive lofts. Though interesting, this is likely not one of the biggest drivers of LA's disproportionally expensive lots. To see a bigger reason for this observation, we observe the subsequent crosstab.
+
+
+
+
+
+
+```{r}
+inputPanel(
+  selectInput("selectCity_1", label = "Select City",choices = cities, multiple=TRUE, selected=c
+("NYC",
+"LA",
+"DC",
+"SF",
+"Chicago",
+"Boston")),
+
+  sliderInput("PriceFilter", label = "Average Price per Night:",
+              min = 0, max = 400, value = c(0, 400), step = 20)
+)
+```
+
+
+
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Price by Property Type", tabName = "barchartBrandon", icon = icon("dashboard")),
+      menuItem("Price by Pet Policy", tabName = "barchart2Brandon", icon = icon("dashboard"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "BarChart2"
+      tabItem(tabName = "barchartBrandon",
+        p("This is a barchart of City and Average Price per Night, by Property Type"),
+        source("brandonbarChart1UI.R",local = TRUE)$value
+      ),
+       # 2. "BarChart1"
+      tabItem(tabName = "barchart2Brandon",
+        p("This is a barchart of City and Average Price per Night, by Pet Policy"),
+        source("brandonbarChart2UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+source("brandonbarChart1Server.R", local = TRUE)
+source("brandonbarChart2Server.R", local = TRUE)
+
+```
+
+#Exploring Loft Prices in LA - Crosstab
+This crosstab shows the Average Price Per Night for lofts by City and Type of Room. The x and y axes show the City and Type of Room, respectively. The data within the crosstab shows the Average Price per Night. The colors provide a conditional formatting to make it apparent where the small (blue), medium (green), and large (red) prices are. Cities can be filtered out with input box and the sliders control the thresholds for being classified as small, medium, and large. A value is considered large if it is greater than the "bottom high" value, small if it is smaller than the "top low" value, and medium otherwise (i.e. between these two values).
+
+Similar to the bar charts, we would expect that cities which have more expensive loft prices have this higher price represented equally across all types of lofts. Instead however, we see that lofts which are private rooms are significantly more expensive in LA than any other city, contributing to LA's disproportionately expensive lofts which was observed in the previous dashboard's first tab.
+
+```{r}
+inputPanel(
+  selectInput("selectCity_2", label = "Select City",
+              choices = cities, multiple=TRUE, selected=c
+              
+  ("NYC","LA","DC","SF","Chicago","Boston")),
+              
+              
+  sliderInput("bottomHigh", label = "Bottom High:",
+              min = 200, max = 400, value = 200, step = 10),
+  
+  sliderInput("topLow", label = "Top Low:",
+              min = 60, max = 150, value = 100, step = 5)
+)
+```
+
+
+```{r}
+dfBrandon <- eventReactive(c(input$selectCity_2, input$bottomHigh, input$topLow), { 
+  project <- "https://data.world/brandon-kerbow/s18-edv-project-4" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+   "   
+    select cast(avg(nightly_price) as int) as continuous_kpi, city, room_type,
+    case 
+    when avg(nightly_price) > ? then 'Large'
+    when avg(nightly_price) < ? then 'Small'
+    else 'Medium'
+    end as discrete_kpi
+    from AirBnBClean s
+    where property_type = 'Loft'
+    group by city, room_type
+    
+    --where city in (?, ?, ?, ?, ?, ?)
+   ")
+  # paramQuery$params <- c(input$bottomHigh, input$topLow, input$selectRegion)
+  paramQuery$params <- c(input$bottomHigh, input$topLow)
+  data.world::query(paramQuery, dataset = project)
+}) 
+
+# The following is needed because  what's in the SQL query above doesn't work if uncommented
+df1BrandonCrosstab <- eventReactive(c(input$bottomHigh, input$topLow, input$selectCity_2), { 
+  dfBrandon() %>% dplyr::filter(city %in% input$selectCity_2)
+})
+
+Cities <- eventReactive(c(input$selectCity_2), { 
+  library('stringr')
+  str_c(input$selectCity_2, collapse=', ')
+})
+
+# Notice the need to use df1() below:
+renderDataTable({
+  DT::datatable(df1BrandonCrosstab(), rownames = FALSE,
+  extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+  )
+})
+```
+
+
+```{r}
+renderPlot({
+  df1BrandonCrosstab() %>% ggplot() + geom_text(mapping = aes(x=city, y=room_type, label=continuous_kpi), size=20) +
+  geom_tile(aes(x=city, y=room_type, fill=discrete_kpi), alpha=0.50) +
+  theme(legend.text=element_text(size=45)) +
+  theme(axis.text=element_text(size=45),
+        axis.title=element_text(size=45, face="bold"))  + 
+  theme(plot.title = element_text(size = 60, face = "bold")) + 
+  ggtitle(paste("Average Price per Night, by City and Room Type")) +
+  xlab("City") + ylab("Room Type")
+}, height = 2000, width = 2000
+)
+```
+
+
+#Appendix - UPDATE DATA CLEANING FOR PROJECT 4
+
+##Data Cleaning Code
+(Click "code" to your right to see the code)
+```{r, eval= FALSE}
+library(tidyverse)
+csvURL <- "https://query.data.world/s/8NFAXz99XN1E_ZYGRuRCCL7d751DpX"
+df <- read_csv(csvURL, col_types = list(
+  country = col_character(),
+ 
+  adult_literacy_rate = col_number(), #changed to numbers
+  gross_national_income_per_capita_ppp_international = col_number(), 
+  population_in_thousands_total = col_number(), 
+  population_median_age_years = col_number(),
+  per_capita_total_expenditure_on_health_ppp_int = col_number(),
+  per_capita_government_expenditure_on_health_ppp_int = col_number(),
+  healthy_life_expectancy_hale_at_birth_years_both_sexes = col_number(),
+  life_expectancy_at_birth_years_both_sexes =col_number(),
+  population_with_sustainable_access_to_improved_sanitation_total = col_number(),
+  aid_received_total = col_number(),
+  income_per_person= col_number(),
+  population_proportion_over_60= col_number(),
+  population_proportion_under_15= col_number(),
+  contraceptive_prevalence= col_number(),
+  total_expenditure_on_health_as_percentage_of_gross_domestic_product= col_number(),
+  children_per_woman= col_number(),
+  infant_mortality_rate= col_number(),
+  patents_granted= col_number()
+  
+))
+  
+
+
+
+# Remove non-printable characters from column names.
+names(df) <- gsub("[^ -~]", "", names(df)) 
+names(df) <- gsub(" ", "_", names(df)) 
+#Get rid of null values
+df[is.na(df)] <-0
+
+
+# Remove non-printable characters from all column values.
+df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
+
+# The following write_csv followed immediately by a read_csv, fixes the column types.
+write_csv(df, "/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv") 
+
+df <- read_csv("/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv", col_types = list(
+  country = col_character(),
+  
+  adult_literacy_rate = col_number(), #changed to numbers
+  gross_national_income_per_capita_ppp_international = col_number(), 
+  population_in_thousands_total = col_number(), 
+  population_median_age_years = col_number(),
+  per_capita_total_expenditure_on_health_ppp_int = col_number(),
+  per_capita_government_expenditure_on_health_ppp_int = col_number(),
+  healthy_life_expectancy_hale_at_birth_years_both_sexes = col_number(),
+  life_expectancy_at_birth_years_both_sexes =col_number(),
+  population_with_sustainable_access_to_improved_sanitation_total = col_number(),
+  aid_received_total = col_number(),
+  income_per_person= col_number(),
+  population_proportion_over_60= col_number(),
+  population_proportion_under_15= col_number(),
+  contraceptive_prevalence= col_number(),
+  total_expenditure_on_health_as_percentage_of_gross_domestic_product= col_number(),
+  children_per_woman= col_number(),
+  infant_mortality_rate= col_number(),
+  patents_granted= col_number()
+))
+# Now save the cleaned data to new.csv
+write_csv(df, "/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv")
+
+
+# Now load /tmp/new.csv into a data.world Dataset.
+```
+
+##SessionInfo
+
+```{r}
+sessionInfo()
+```
+
