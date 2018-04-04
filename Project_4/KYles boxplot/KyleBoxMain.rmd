@@ -1,0 +1,123 @@
+---
+title: "WHO Data"
+author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+  
+  
+  
+```{r setup, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+project <- "https://data.world/brandon-kerbow/s18-edv-project-4/" 
+data.world::set_config(cfg_env("DW_API")) 
+city <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct airbnbclean.city from airbnbclean
+  "), 
+  dataset = project)
+```
+
+```{r}
+project <- "https://data.world/brandon-kerbow/s18-edv-project-4/" 
+data.world::set_config(cfg_env("DW_API")) 
+price <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct airbnbclean.nightly_price from airbnbclean
+  "), 
+  dataset = project)
+```
+
+```{r}
+project <- "https://data.world/brandon-kerbow/s18-edv-project-4/" 
+data.world::set_config(cfg_env("DW_API")) 
+propType <- data.world::query(data.world::qry_sql(
+  "   
+  select distinct airbnbclean.property_type from airbnbclean
+  "), 
+  dataset = project)
+```
+
+```{r}
+
+df1kyle <- eventReactive(c(input$selectPrice_1kyle, input$selectCity_1kyle), { 
+  project <- "https://data.world/brandon-kerbow/s18-edv-project-4/" 
+  data.world::set_config(cfg_env("DW_API")) 
+  paramQuery <- data.world::qry_sql(
+    "   
+    select city, nightly_price, property_type
+    from airbnbclean h
+    where nightly_price between ? and ? and city in (?,?,?,?,?,?) and property_type in ('Apartment','Bed_&_Breakfast', 'Boat', 'Boutique_hotel', 'Bungalow', 'Cabin', 'Camper/RV', 'Castle', 'Condominium', 'Dorm', 'Guest_suite', 'Guesthouse', 'Hostel', 'House', 'In-law', 'Loft', 'Other', 'Serviced_apartment', 'Timeshare', 'Tipi', 'Townhouse', 'Treehouse', 'Villa')
+    
+    order by city
+    ")
+  paramQuery$params <- c(input$selectPrice_1kyle[1], input$selectPrice_1kyle[2], input$selectCity_1kyle[1], input$selectCity_1kyle[2], input$selectCity_1kyle[3], input$selectCity_1kyle[4], input$selectCity_1kyle[5], input$selectCity_1kyle[6])
+  data.world::query(paramQuery, dataset = project)
+}) 
+
+```
+
+```{r}
+City <- eventReactive(c(input$selectCity_1kyle), { 
+  library('stringr')
+  str_c(input$selectCity_1kyle, collapse=', ')
+})
+```
+
+```{r}
+Price <- eventReactive(c(input$selectPrice_1kyle), { 
+  library('stringr')
+  str_c(input$selectPrice_1kyle, collapse=', ')
+})
+```
+
+```{r}
+inputPanel(
+  selectInput("selectCity_1kyle", label = "Select Cities",choices = city, multiple=TRUE, selected=c("BOSTON", "CHICAGO", "DC", "LA", "NYC", "SF")
+    
+  )
+  
+  ,sliderInput("selectPrice_1kyle", label = "Nightly Price", min = 0, max = 2000, value = c(0, 2000), step = 5)
+)
+```
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("airbnbdata", tabName = "boxplot1", icon = icon("dashboard1"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Gross national income per capita by region" tab content
+      tabItem(tabName = "boxplot1",
+              source("kyleBoxPlot1UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+
+source("kyleBoxPlot1Server.R", local = TRUE)
+
+```
