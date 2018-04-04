@@ -1,7 +1,7 @@
 # Change all __1_s, Download information, and edit the plot and ggplotly arguments below:
 # Build Download Button and Output DataTable---------------
 output$download__1_ <- downloadHandler(
-  filename = function(){"airbnbclean0.csv"}, 
+  filename = function(){"airbnbclean.csv"}, 
   content = function(fname){
     write.csv(df1kyle(), fname)
   }
