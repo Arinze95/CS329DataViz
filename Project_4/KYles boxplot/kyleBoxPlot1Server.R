@@ -1,6 +1,6 @@
-# Change all __9_s, Download information, and edit the plot and ggplotly arguments below:
+# Change all __1_s, Download information, and edit the plot and ggplotly arguments below:
 # Build Download Button and Output DataTable---------------
-output$download__9_ <- downloadHandler(
+output$download__1_ <- downloadHandler(
   filename = function(){"airbnbclean0.csv"}, 
   content = function(fname){
     write.csv(df1kyle(), fname)
