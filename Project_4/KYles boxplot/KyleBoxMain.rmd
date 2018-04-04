@@ -61,7 +61,7 @@ project <- "https://data.world/brandon-kerbow/s18-edv-project-4/"
 data.world::set_config(cfg_env("DW_API")) 
 income <- data.world::query(data.world::qry_sql(
   "   
-  select distinct IRSIncomeByZipCode.avg_total_income_for_zipcode from IRSIncomeByZipCode
+  select distinct IRSIncomeByZipCode.avg_total_income from IRSIncomeByZipCode
   "), 
   dataset = project)
 ```
@@ -72,13 +72,14 @@ df1kyle <- eventReactive(c(input$selectPrice_1kyle, input$selectCity_1kyle), {
   project <- "https://data.world/brandon-kerbow/s18-edv-project-4/" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
-    "   
+    "
     select city, nightly_price, property_type
     from airbnbclean h
     where nightly_price between ? and ? and city in (?,?,?,?,?,?) and property_type in ('Apartment','Bed_&_Breakfast', 'Boat', 'Boutique_hotel', 'Bungalow', 'Cabin', 'Camper/RV', 'Castle', 'Condominium', 'Dorm', 'Guest_suite', 'Guesthouse', 'Hostel', 'House', 'In-law', 'Loft', 'Other', 'Serviced_apartment', 'Timeshare', 'Tipi', 'Townhouse', 'Treehouse', 'Villa')
     
     order by city
-    ")
+    "
+    )
   paramQuery$params <- c(input$selectPrice_1kyle[1], input$selectPrice_1kyle[2], input$selectCity_1kyle[1], input$selectCity_1kyle[2], input$selectCity_1kyle[3], input$selectCity_1kyle[4], input$selectCity_1kyle[5], input$selectCity_1kyle[6])
   data.world::query(paramQuery, dataset = project)
 }) 
@@ -93,15 +94,24 @@ df2kyle <- eventReactive(c(input$selectIncome_2kyle, input$selectCity_2kyle), {
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
     "   
+        select * from(
+    
     select city, property_type, cast(c.avg_total_income as int) as avg_total_income_for_zipcode
-    from airbnbclean h
+    from airbnbclean a
     LEFT JOIN 
-    (SELECT replace(a.zipcode,",","") as zipcode, a.avg_total_income
-    FROM irsincomebyzipcode a) c
-    on a.zipcode = c.zipcode
-    where avg_total_income_for_zipcode between ? and ? and city in (?,?,?,?,?,?) and property_type in ('Apartment','Bed_&_Breakfast', 'Boat', 'Boutique_hotel', 'Bungalow', 'Cabin', 'Camper/RV', 'Castle', 'Condominium', 'Dorm', 'Guest_suite', 'Guesthouse', 'Hostel', 'House', 'In-law', 'Loft', 'Other', 'Serviced_apartment', 'Timeshare', 'Tipi', 'Townhouse', 'Treehouse', 'Villa')
+    (SELECT replace(a.zipcode,',','') as zipcode, a.avg_total_income
+    FROM irsincomebyzipcode a)c
+    
+    on a.zipcode = c.zipcode) d
+    
+   where avg_total_income_for_zipcode  between ? and ? and city in (?,?,?,?,?,?) and property_type in ('Apartment','Bed_&_Breakfast', 'Boat', 'Boutique_hotel', 'Bungalow', 'Cabin', 'Camper/RV', 'Castle', 'Condominium', 'Dorm', 'Guest_suite', 'Guesthouse', 'Hostel', 'House', 'In-law', 'Loft', 'Other', 'Serviced_apartment', 'Timeshare', 'Tipi', 'Townhouse', 'Treehouse', 'Villa')
     
     order by city
+    
+    
+
+    
+    
     ")
   paramQuery$params <- c(input$selectIncome_2kyle[1], input$selectIncome_2kyle[2], input$selectCity_2kyle[1], input$selectCity_2kyle[2], input$selectCity_2kyle[3], input$selectCity_2kyle[4], input$selectCity_2kyle[5], input$selectCity_2kyle[6])
   data.world::query(paramQuery, dataset = project)
@@ -164,7 +174,8 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("airbnbdata", tabName = "boxplot1", icon = icon("dashboard1"))
+      menuItem("airbnbdata", tabName = "boxplot1", icon = icon("dashboard1")),
+      menuItem("airbnbdata2", tabName = "boxplot2", icon = icon("dashboard1"))
     )
   ),
   dashboardBody(
@@ -182,5 +193,6 @@ dashboardPage(
 )
 
 source("kyleBoxPlot1Server.R", local = TRUE)
+source("kyleBoxPlot2Server.R", local = TRUE)
 
 ```
