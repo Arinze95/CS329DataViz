@@ -24,7 +24,7 @@ but interactive document comments/visuals could show slightly more interesting t
 instead of doing descriptions of tabs above the dashboard, u can do it on each dasboar.d on your shiny doc see the text hat says "
 you can inout your own description here"
 
-
+after you write a part, copy paste it all into word to do spell check.
 
 
 
@@ -41,8 +41,14 @@ for boxplots explore the outliers
 boxplots show a distirbution so dont use boxplots unless they
 have at least 30 data points (CLT)
 
+after you write a part, copy paste it all into word to do spell check.
 
-RECCOMENDATION FOR PROJECT 4:
+double check that all your axes and legend titles are correct, including consistent capitalization and no underscrores
+
+
+
+
+RECCOMENDATION FOR FINAL PROJECT:
 
 email from canatta: 
 
