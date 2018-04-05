@@ -1,0 +1,103 @@
+---
+title: "Top Hat Histograms"
+author: "Dr. Cannata"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+source("DataA.R", local = TRUE)
+source("DataB.R", local = TRUE)
+
+
+```
+
+
+```{r}
+project <- "https://data.world/brandon-kerbow/s18-edv-project-4" 
+data.world::set_config(cfg_env("DW_API")) 
+cities <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct city 
+	from AirBnBClean
+ "), 
+dataset = project)
+```
+#Plot Input
+
+```{r}
+inputPanel(
+  selectInput("selectCity_1", label = "Select City",choices = cities, multiple=TRUE, selected=c("DC","NYC","LA","SF","Chicago","Boston"))
+)
+```
+
+
+#Render and Display Plots
+
+Below are three plots. THe first of which is a histogram of nightly prices with the various colors depicting the different cities. By default, the six cities that are within the dataset are selected, but they can be selected using the input panel. It can be observed that obviously seen that New York and LA dominate the relatively lower price range. However, by using the zoom tool and closing in on the latter half of the plot, San Francisco seems to be another large player. 
+
+This is supported by the next plot which is a boxplot of nightly prices by cities. San Francisco has a higher median for nightly prices while NYC and LA had larger maximums and outliers.
+
+The next boxplot shows the average income of the zipcode containing the rental and the six cities. The plot shows only a couple outliers for San Francisco while NYC has not only more outliers but also larger variance. This reflects the trends found in previous plots. For New York, the wider span of income levels by zipcodes is a possible reason for the variability in nightly prices for rentals. This effect is also seen in San Francisco, where the generally more expensive zipcodes results in higher nightly prices.
+
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Histogram", tabName = "histogram", icon = icon("dashboard")),
+      menuItem("Boxplot", tabName = "boxplot", icon = icon("dashboard")),
+      menuItem("Boxplot2", tabName = "boxplot2", icon = icon("dashboard"))
+      
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Histo
+      tabItem(tabName = "histogram",
+        p("This is a histogram of nightly prices"),
+        source("Histogram2UI.R",local = TRUE)$value
+      ),
+      # 2. "Boxplot 1
+      tabItem(tabName = "boxplot",
+        p("This is a boxplot of nightly prices"),
+        source("Boxplot1UI.R",local = TRUE)$value
+      ),
+      # 3. "Boxplot 2
+      tabItem(tabName = "boxplot2",
+        p("This is a boxplot of Avg total income"),
+        source("Boxplot2UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+source("Histogram2Server.R", local = TRUE)
+source("Boxplot1Server.R", local = TRUE)
+source("Boxplot2Server.R", local = TRUE)
+
+
+```
