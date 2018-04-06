@@ -44,11 +44,13 @@ We expect to see that countries which spend more on healthcare have better healt
 #Summary of Conclusions - NEEDS UPDATING FOR PROJECT 4
 Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although it is true that that countries which spend more on healthcare tend to have better health-related metrics, the relationship does not always hold for all metrics and systems and government. Additionally, what plays into the prevalence of contraceptive is more than just average income and aging populations are not necessarily unhealthier than their middle-aged country counterparts. Lastly, we did observe a pattern in climate vs average number of children per woman: as average temperature rose, so did the number of children. More specific conclusions for each dashboard can be found in each dashboards corresponding text. 
 
-#Embedded Tableau Insight - NEEDS UPDATING FOR PROJECT 4
-
-The conclusions drawn from this visualization are more easily seen in fullscreen mode.
+#Embedded Tableau Insight 
 
 By comparing review scores to true or false values on if properties have access to waterfronts or not, it can be seen through the use of boxplots that review scores tend to be higher when a property has access to waterfronts. Even those properties that have pool access, with some low outliers, have the majority of review scores greater than or equal to 70.
+
+We had hypothesized that having waterfront access might have some impact on the review score, but we did not anticipate the near universally positive impact it seems to have.
+
+One thing to note is that beach and lake access tend to have higher scores on average than those with pool access, altough there are also more reviews for properties with pool access as opposed to those with lake or beach access, this does indicate that people seem to enjoy access to larger bodies of water during their stay.
 
 <iframe src="https://public.tableau.com/views/Proximitytowaterseffectonreviewscore/Dashboard1?:showVizHome=no"width="800" height="800"></iframe>
 
@@ -131,7 +133,7 @@ income <- data.world::query(data.world::qry_sql(
 ```
 
 
-#Brandons
+
 #Exploring Loft Prices in LA - Bar Charts
 This dashboard contains two tabs, both bar charts.  The dashboard - and the subsequent crosstab - explore the price differences of AirBnB postings by City and Property Type. We would expect that for cities which have higher prices, the higher price is equally represented across all property types. This was, however, found to not always be the case. We show that Los Angeles has disproportionally expensive loft units and explore why this may be so.
 
@@ -273,7 +275,7 @@ renderPlot({
 ```
 
 
-#Kyles
+#Exploring Nightly Prices and Average Income
 ```{r}
 
 df1kyle <- eventReactive(c(input$selectPrice_1kyle, input$selectCity_1kyle), { 
@@ -410,14 +412,14 @@ source("kyleBoxPlot2Server.R", local = TRUE)
 
 
 
-#Jeffs
+#Exploring Review Scores- Histogram and Boxplots
 
 
-Below are three plots. THe first of which is a histogram of nightly prices with the various colors depicting the different cities. By default, the six cities that are within the dataset are selected, but they can be selected using the input panel. It can be observed that obviously seen that New York and LA dominate the relatively lower price range. However, by using the zoom tool and closing in on the latter half of the plot, San Francisco seems to be another large player. 
+Below are two plots. The default cities for both plots are the six cities which our dataset contained. They can also be individually selected using the input panel. The first of which is a boxplot of review score ratings by city. It can be seen that New York not only has the most variable ratings but also outliers that are the lowest. From just this plot and information, one possible reason is that New York has a generally less affluent population.
 
-This is supported by the next plot which is a boxplot of nightly prices by cities. San Francisco has a higher median for nightly prices while NYC and LA had larger maximums and outliers.
+The next plot is a histogram of average total income of the zipcode the rental is in. Although it does seem that New York does have many of its population in the first section of the plot, it also has a dominant presence in the latter half as well. Using the zoom tool on the the latter half, it is more apparent. Although New York has a more affluent population, many of the AirBnB rentals available are receiving low scores. This suggests that there are obviously other variables at play than simply whether or not the area is rich or not.
 
-The next boxplot shows the average income of the zipcode containing the rental and the six cities. The plot shows only a couple outliers for San Francisco while NYC has not only more outliers but also larger variance. This reflects the trends found in previous plots. For New York, the wider span of income levels by zipcodes is a possible reason for the variability in nightly prices for rentals. This effect is also seen in San Francisco, where the generally more expensive zipcodes results in higher nightly prices.
+
 
 ```{r}
 inputPanel(
@@ -432,116 +434,70 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Histogram", tabName = "histogram", icon = icon("dashboard")),
       menuItem("Boxplot", tabName = "boxplot", icon = icon("dashboard")),
-      menuItem("Boxplot2", tabName = "jeffboxplot2", icon = icon("dashboard"))
+      menuItem("Histogram", tabName = "histogram", icon = icon("dashboard"))
+      
+      
       
     )
   ),
   dashboardBody(
     tabItems(
       # 1. "Histo
-      tabItem(tabName = "histogram",
-        p("This is a histogram of nightly prices"),
-        source("Histogram2UI.R",local = TRUE)$value
-      ),
-      # 2. "Boxplot 1
       tabItem(tabName = "boxplot",
-        p("This is a boxplot of nightly prices"),
+        p("This is a boxplot of review scores"),
         source("Boxplot1UI.R",local = TRUE)$value
       ),
-      # 3. "Boxplot 2
-      tabItem(tabName = "jeffboxplot2",
-        p("This is a boxplot of Avg total income"),
-        source("Boxplot2UI.R",local = TRUE)$value
+      # 2. "Boxplot 1
+      tabItem(tabName = "histogram",
+        p("This is a histogram of average income"),
+        source("Histogram2UI.R",local = TRUE)$value
       )
     )
   )
 )
 source("Histogram2Server.R", local = TRUE)
 source("Boxplot1Server.R", local = TRUE)
-source("Boxplot2Server.R", local = TRUE)
+
 
 
 ```
 
+#Embedded Tableau Insight - Review Ratings
+The embedded Tableau insight uses a histogram to visualize the frequency of various review score ratings received at AirBnB sites.
 
+As can be seen, the majority of review scores ratings were between 80 and 100, indicating customer's overall satisfaction with their stays. Review score ratings under 80 were very infrequent. Based upon this finding the following question was posed. Were AirBnB customers simply enjoying their stays so much so that it was rare for a bad review score rating to be given, or were customers only inclined to leave a review score rating if their stay was satisfactory?
 
+By coloring the bins of the histogram based on the average number of reviews received by each AirBnB site with the corresponding review score rating, it is evident that sites with higher review score ratings were characterized by a significantly greater number of actual reviews (see legend for color scale). This indicates that customers were more likely to leave a review if their stay met or exceeded expectations and typically declined to leave a review if their expectations weren't met.
+
+<iframe src="https://public.tableau.com/views/FrequencyofReviewScoresRating/HistogramofReviewScoresRatingColoredbyAverageNumberofReviewsperRating??:showVizHome=no"width="800" height="800"></iframe>
 
 #Appendix - UPDATE DATA CLEANING FOR PROJECT 4
 
 ##Data Cleaning Code
 (Click "code" to your right to see the code)
 ```{r, eval= FALSE}
-library(tidyverse)
-csvURL <- "https://query.data.world/s/8NFAXz99XN1E_ZYGRuRCCL7d751DpX"
-df <- read_csv(csvURL, col_types = list(
-  country = col_character(),
- 
-  adult_literacy_rate = col_number(), #changed to numbers
-  gross_national_income_per_capita_ppp_international = col_number(), 
-  population_in_thousands_total = col_number(), 
-  population_median_age_years = col_number(),
-  per_capita_total_expenditure_on_health_ppp_int = col_number(),
-  per_capita_government_expenditure_on_health_ppp_int = col_number(),
-  healthy_life_expectancy_hale_at_birth_years_both_sexes = col_number(),
-  life_expectancy_at_birth_years_both_sexes =col_number(),
-  population_with_sustainable_access_to_improved_sanitation_total = col_number(),
-  aid_received_total = col_number(),
-  income_per_person= col_number(),
-  population_proportion_over_60= col_number(),
-  population_proportion_under_15= col_number(),
-  contraceptive_prevalence= col_number(),
-  total_expenditure_on_health_as_percentage_of_gross_domestic_product= col_number(),
-  children_per_woman= col_number(),
-  infant_mortality_rate= col_number(),
-  patents_granted= col_number()
-  
-))
-  
-
-
-
+csvURL <- "https://query.data.world/s/thloshzuglkm24pueeag4uckcshrss"
+df <- read_csv(csvURL)
+# Change .+ and -+ in column names to _
+names(df) <- gsub("\\.", "_", names(df))
 # Remove non-printable characters from column names.
 names(df) <- gsub("[^ -~]", "", names(df)) 
-names(df) <- gsub(" ", "_", names(df)) 
-#Get rid of null values
-df[is.na(df)] <-0
 
+# Change dashes in columns to unknowns, and dashes in close_amount to 0's
+df$log_price <- gsub("^\s*", "0", df$log_price)
+df$property_type <- gsub("^\s$", "Unknown", df$property_type)
+df$room_type <- gsub("^\s$", "Unknown", df$room_type)
 
 # Remove non-printable characters from all column values.
 df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
-
 # The following write_csv followed immediately by a read_csv, fixes the column types.
-write_csv(df, "/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv") 
-
-df <- read_csv("/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv", col_types = list(
-  country = col_character(),
-  
-  adult_literacy_rate = col_number(), #changed to numbers
-  gross_national_income_per_capita_ppp_international = col_number(), 
-  population_in_thousands_total = col_number(), 
-  population_median_age_years = col_number(),
-  per_capita_total_expenditure_on_health_ppp_int = col_number(),
-  per_capita_government_expenditure_on_health_ppp_int = col_number(),
-  healthy_life_expectancy_hale_at_birth_years_both_sexes = col_number(),
-  life_expectancy_at_birth_years_both_sexes =col_number(),
-  population_with_sustainable_access_to_improved_sanitation_total = col_number(),
-  aid_received_total = col_number(),
-  income_per_person= col_number(),
-  population_proportion_over_60= col_number(),
-  population_proportion_under_15= col_number(),
-  contraceptive_prevalence= col_number(),
-  total_expenditure_on_health_as_percentage_of_gross_domestic_product= col_number(),
-  children_per_woman= col_number(),
-  infant_mortality_rate= col_number(),
-  patents_granted= col_number()
-))
+write_csv(df, "/Users/derekorji/Documents/BNBtemp.csv") # /Users/pcannata/Downloads needs to be changed to a known folder on your machine.
+df <- read_csv("/Users/derekorji/Documents/BNBtemp.csv")
 # Now save the cleaned data to new.csv
-write_csv(df, "/Users/Jeffrey/Documents/school/Spring 2018/cs329/proj1/CS329DataViz/Project_3/WHO_clean.csv")
-
-
+write_csv(df, "/Users/derekorji/Documents/BNB.csv")
 # Now load /tmp/new.csv into a data.world Dataset.
+
 ```
 
 ##SessionInfo

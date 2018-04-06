@@ -3,8 +3,15 @@ dfA <- eventReactive(c(input$selectCity_1), {
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
     " 
-    SELECT city, nightly_price
-    FROM airbnbclean
+    select * from(
+    
+    select city, cast(c.avg_total_income as int) as avg_total_income
+    from airbnbclean a
+    LEFT JOIN 
+    (SELECT replace(a.zipcode,',','') as zipcode, a.avg_total_income
+    FROM irsincomebyzipcode a)c
+    
+    on a.zipcode = c.zipcode) d
     where city in (?,?,?,?,?,?)
    
     

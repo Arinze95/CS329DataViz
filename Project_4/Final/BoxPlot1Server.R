@@ -13,7 +13,7 @@ output$table__6_ <- renderDataTable({
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
 output$Histogram__6_ <- renderPlotly({
-  plot = dfB1() %>% ggplot(aes(x=city,y=nightly_price)) + 
+  plot = dfB1() %>% ggplot(aes(x=city,y=review_scores_rating)) + 
     geom_boxplot() +
     
     theme(plot.title = element_text(size = input$titleFont__6_, face = "bold")) + 
