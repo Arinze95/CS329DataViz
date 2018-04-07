@@ -1,5 +1,5 @@
 ---
-title: "The Prices of AirBnB Units: An Interactive Document"
+title: "The Prices of Airbnb Units: An Interactive Document"
 author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
 resource_files:
 - .Renviron
@@ -12,10 +12,10 @@ output:
 runtime: shiny
 ---
 
-#Dataset Description - NEEDS UPDATING FOR PROJECT 4
-This dataset was obtained online from the World Health Organization (WHO) and contains various health-related metrics for every country on the planet. Examples of such metrics include the average per capita (per person) income and average life expectancy. There are also fields for the region (e.g. Western Europe, Sub-Saharan Africa) and the system of government in place (e.g. Republic, Absolute Monarchy) for each country.
+#Dataset Description
+This dataset was obtained online from Kaggle.com and contains the nightly prices of Airbnb postings in various major cities across the US. Airbnb is a platform for people to rent out their property for short-term lodging. The dataset contains fields such as the type of property (e.g. apartment, house), room type (e.g. private room, shared room, entire home), city, number of reviews, and various boolean fields to indicate whether or not a listing has a given amenity (e.g. allows pets). By joining with census data found on Data.world, we have also included fields for median age and average income - both by zip code, a field which is present in the original data.
 
-#Important Links - Github Link NEEDS UPDATING FOR PROJECT 4
+#Important Links
 
 [Data.world Project](https://data.world/brandon-kerbow/s18-edv-project-4)
 
@@ -34,25 +34,18 @@ Derek's Insights:
 [1](https://data.world/brandon-kerbow/s18-edv-project-4/insights/8de30184-b578-4280-ac35-d850460c63aa)
 [2](https://data.world/brandon-kerbow/s18-edv-project-4/insights/bf9ebbbd-f4ad-47a4-9cfd-adb4f171be7e)
 
-[Github Repository](https://github.com/CannataUTDV/s18dvproject3-duquesnay-feng-orji-kerbow)
+[Github Repository](https://github.com/CannataUTDV/s18dvproject4-duquesnay-feng-orji-kerbow)
 
-#Motivations and Expectations - NEEDS UPDATING FOR PROJECT 4
-With healthcare being a hot topic in both business and everyday life, we wanted to explore some drivers for health on a global scale. Because one of the most common obstacles in improving global health is a lack of funds, we aimed to explore how countries - of different government types and in different geographic regions - can benefit from increasing the amount they spend on healthcare. We also recognize that in many countries, particularly 3rd world countries, it is common for women to give birth to a relatively high number of children. With this in mind, we explored what factors could affect the prevalence of contraception (in other words, the accessibility of birth control such as condoms or pills). We also wanted to explore the overall health of countries by analyzing demographics/age distributions and the potential relationships with factors such as income. As an interesting final point of interest, we wanted to see if there is a relationship between climate (approximated by average annual temperature) and average number of women per children. 
+#Motivations and Expectations 
+With housing being a hot topic in both business and everyday life, we wanted to explore some drivers for the prices. In the interest of seeing which cities provide the most bang for your buck or which would be ideal for finding an Airbnb, we explore cities which stood out in one way or another. We explore mainly the average price of per night of Airbnb postings by city and apartment price, but also analyze the ratings and median income of areas. 
 
-We expect to see that countries which spend more on healthcare have better health (measured by things such as life expectancy) for every region and system of government. We also expect to see that women in poorer nations give birth to more children and that countries with aging populating are not as healthy as their middle-aged country counterparts. Finally, we expect there to be little correlation between climate and the average number of children per woman. More specific expectations are in the sections for each dashboard further down in this interactive document. 
+We would expect that cities which have higher average prices per night have this reflected in all different types of properties. We would also expect that no city has an abnormally high number of low/outlier ratings and that the median income tends to go hand-in-hand with average nightly prices. Lastly, we expected that reviews would be largely negative similar to how reviews of apartment complexes near UT are mostly negative. As we explore in detail in the visuals, however, we will show that these are not always the case. 
 
-#Summary of Conclusions - NEEDS UPDATING FOR PROJECT 4
-Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although it is true that that countries which spend more on healthcare tend to have better health-related metrics, the relationship does not always hold for all metrics and systems and government. Additionally, what plays into the prevalence of contraceptive is more than just average income and aging populations are not necessarily unhealthier than their middle-aged country counterparts. Lastly, we did observe a pattern in climate vs average number of children per woman: as average temperature rose, so did the number of children. More specific conclusions for each dashboard can be found in each dashboards corresponding text. 
 
-#Embedded Tableau Insight 
+#Summary of Conclusions
+Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although most cities which had high average prices per night had this reflected across all property types, this was not the case in LA. Additionally, in NYC we observed that the high number of outliers in average nightly price could be explained by the relatively large distribution of income levels in the differing zip codes of the city. This seemed to have an effect on both prices and reviews. Finally, we see that customers were more likely to leave a review if their stay met or exceeded expectations and typically did not leave a review if their expectations weren't met.
 
-By comparing review scores to true or false values on if properties have access to waterfronts or not, it can be seen through the use of boxplots that review scores tend to be higher when a property has access to waterfronts. Even those properties that have pool access, with some low outliers, have the majority of review scores greater than or equal to 70.
 
-We had hypothesized that having waterfront access might have some impact on the review score, but we did not anticipate the near universally positive impact it seems to have.
-
-One thing to note is that beach and lake access tend to have higher scores on average than those with pool access, altough there are also more reviews for properties with pool access as opposed to those with lake or beach access, this does indicate that people seem to enjoy access to larger bodies of water during their stay.
-
-<iframe src="https://public.tableau.com/views/Proximitytowaterseffectonreviewscore/Dashboard1?:showVizHome=no"width="800" height="800"></iframe>
 
 
 ```{r setup, echo=FALSE, message=FALSE}
@@ -132,18 +125,16 @@ income <- data.world::query(data.world::qry_sql(
   dataset = project)
 ```
 
-
-
 #Exploring Loft Prices in LA - Bar Charts
-This dashboard contains two tabs, both bar charts.  The dashboard - and the subsequent crosstab - explore the price differences of AirBnB postings by City and Property Type. We would expect that for cities which have higher prices, the higher price is equally represented across all property types. This was, however, found to not always be the case. We show that Los Angeles has disproportionally expensive loft units and explore why this may be so.
+This dashboard contains two tabs, both bar charts.  The dashboard - and the subsequent crosstab - explore the price differences of Airbnb postings by city and property type. We would expect that for cities which have higher prices, the higher price is equally represented across all property types. This was, however, found to not always be the case. We show that Los Angeles has disproportionally expensive loft units and explore why this may be so.
 
-The dashboard's input panel allows the user to decide which cities(s) they would like to see present in the data. The slider for Average Price per Night filters which property types are shown for a given city based on whether or not that value falls within the bounds. Note that for these plots, and some others on this document, the text in the legend is quite small. This is to avoid having the legend overlay the plot.
+The dashboard's input panel allows the user to decide which cities(s) they would like to see present in the data. The slider for average price per night filters which property types are shown for a given city based on whether or not that value falls within the bounds. Note that for these plots, and some others on this document, the text in the legend is quite small. This is to avoid having the legend overlay the plot.
 
 ##Tab 1 - Discovering the Abnormally Expensive LA Lofts
-The first tab's bar chart shows the Average Price per Night (y-axis) for each City (x-axis) by property type (color). It is immediately clear that Washington D.C. and San Francisco have the most expensive rentals overall, but it is more interesting to compare the different property types across cities. Los Angeles, for example, has the second to shortest stack (i.e. the second cheapest overall rentals) but the second to highest average nightly price for lofts (shown in blue). This indicates that LA has disproportionally expensive lofts, but why is this the case? The visual in the second tab and the subsequent crosstab shed some light on this.
+The first tab's bar chart shows the average price per night (y-axis) for each city (x-axis) by property type (color). It is immediately clear that Washington D.C. and San Francisco have the most expensive rentals overall, but it is more interesting to compare the different property types across cities. Los Angeles, for example, has the second to shortest stack (i.e. the second cheapest overall rentals) but the second to highest average nightly price for lofts (shown in blue). This indicates that LA has disproportionally expensive lofts, but why is this the case? The visual in the second tab and the subsequent crosstab shed some light on this.
 
 ##Tab 2 - Charging Extra for Pets
-The second tab's bar chart is filtered to only show lofts and - just like the first tab -  has Average Price per Night and City on the y and x axes, respectively. This plot, however, has the bars colored based on whether or not the loft allows pets. We see that LA, relative to the other cities, has lofts which charge disproportionately more for the luxury of allowing pets. Given that most of the lofts across all cities allow pets, this plays into LA having disproportionally expensive lofts. Though interesting, this is likely not one of the biggest drivers of LA's disproportionally expensive lots. To see a bigger reason for this observation, we observe the subsequent crosstab.
+The second tab's bar chart is filtered to only show lofts and - just like the first tab -  has average price per night and city on the y and x axes, respectively. This plot, however, has the bars colored based on whether or not the loft allows pets. We see that LA, relative to the other cities, has lofts which charge disproportionately more for the luxury of allowing pets. Given that most of the lofts across all cities allow pets, this plays into LA having disproportionally expensive lofts. Though interesting, this is likely not one of the biggest drivers of LA's disproportionally expensive lots. To see a bigger reason for this observation, we direct you to the subsequent crosstab.
 
 
 
@@ -197,7 +188,7 @@ source("brandonbarChart2Server.R", local = TRUE)
 ```
 
 #Exploring Loft Prices in LA - Crosstab
-This crosstab shows the Average Price Per Night for lofts by City and Type of Room. The x and y axes show the City and Type of Room, respectively. The data within the crosstab shows the Average Price per Night. The colors provide a conditional formatting to make it apparent where the small (blue), medium (green), and large (red) prices are. Cities can be filtered out with input box and the sliders control the thresholds for being classified as small, medium, and large. A value is considered large if it is greater than the "bottom high" value, small if it is smaller than the "top low" value, and medium otherwise (i.e. between these two values).
+This crosstab shows the average price per night for lofts by city and type of room. The x and y axes show the city and type of room, respectively. The data within the crosstab shows the average price per night. The colors provide a conditional formatting to make it apparent where the low (blue), medium (green), and hih (red) prices are. Cities can be filtered out with input box and the sliders control the thresholds for being classified as low, medium, and high A value is considered high if it is greater than the "bottom high" value, low if it is smaller than the "top low" value, and medium otherwise (i.e. between these two values).
 
 Similar to the bar charts, we would expect that cities which have more expensive loft prices have this higher price represented equally across all types of lofts. Instead however, we see that lofts which are private rooms are significantly more expensive in LA than any other city, contributing to LA's disproportionately expensive lofts which was observed in the previous dashboard's first tab.
 
@@ -226,8 +217,8 @@ dfBrandon <- eventReactive(c(input$selectCity_2, input$bottomHigh, input$topLow)
    "   
     select cast(avg(nightly_price) as int) as continuous_kpi, city, room_type,
     case 
-    when avg(nightly_price) > ? then 'Large'
-    when avg(nightly_price) < ? then 'Small'
+    when avg(nightly_price) > ? then 'High'
+    when avg(nightly_price) < ? then 'Low'
     else 'Medium'
     end as discrete_kpi
     from AirBnBClean s
@@ -275,7 +266,7 @@ renderPlot({
 ```
 
 
-#Exploring Nightly Prices and Average Income
+
 ```{r}
 
 df1kyle <- eventReactive(c(input$selectPrice_1kyle, input$selectCity_1kyle), { 
@@ -358,15 +349,20 @@ Income <- eventReactive(c(input$selectIncome_2kyle), {
 })
 ```
 
-Comparing income and nightly prices
+#Exploring Distribution of Prices and Incomes
+This dashboard contains two tabs, both boxplots. The dashboard explores the distribution of prices and median incomes within the cities. We would expect that the distributions of the nightly prices and median income tend to look similar for a given city and property type, but we will see that for some cases - specifically houses in NYC - that is not always the case. 
 
-In these boxplots, we list cities on the x axis and list our color index as property types. In one tab, we place nightly price for airbnb properties on the y axis, and in the other, we place average income per zipcode. 
+The dashboard's input panel allows the user to decide which cities(s) they would like to see present in the data. The sliders for average price per night and average income filter the data for their tabs (tab one and two, respectively) so that only listings within the specified range of values are shown. 
 
-In this way, we can compare prices in an area of the property to the incomes. 
+##Tab 1 - Distribution of Prices
+The first tab's bar chart shows the average price per night (y-axis) for each city (x-axis) by property type (color). With all types of properties selected the visuals are a bit cluttered, so it is helpful to filter down to property types of interest. We would like to highlight the selection of "apartment", shown in red. With just apartment selected, we see that NYC has an IQR which is similar to that of other cities, perhaps even a bit on the narrow side. It is also immediately obvious that there are quite a lot of outliers in NYC apartment nightly prices. But what could be causing this? We explore this by observing the median incomes for the zip code which NYC apartments are located. 
 
-The most interesting thing I discovered in this way was that the most expensive apartments were in New York City, and it so happened that the areas of some of these apartments also typically had the highest average incomes when compared to other cities.
 
-One unexpected discovery was the presence of a castle in San Francisco for rent, with a fairly low nightly price and in an area with a fairly low average income.
+##Tab 2 - Distribution of Incomes
+The second tab's boxplot - just like the first tab -  has city and apartment type as the x axis and color, respectively. The y axis however, is changed to average income per zip code. A boxplot for a given city and apartment is interpreted as follows: "For a given city, Airbnb listings of a given property type span a number of zip codes. This is the distribution of the average income for those zip codes."
+
+To follow up on our previous tab's analysis, we filter by the property type "apartment" and observe the data for NYC. We see that NYC has a noticeably larger IQR than the other cities, indicating that the apartments which are listed on Airbnb in NYC cover a wide range of zip codes - from very poor to very wealthy areas. This wide spread can help explain the high number of outliers observed in the previous plot of nightly price - as the wealthy areas are often asking for prices well above the median. 
+
 
 
 ```{r}
@@ -375,7 +371,7 @@ inputPanel(
     
   )
   
-  ,sliderInput("selectPrice_1kyle", label = "Nightly Price", min = 0, max = 2000, value = c(0, 2000), step = 5),
+  ,sliderInput("selectPrice_1kyle", label = "Average Price per Night", min = 0, max = 2000, value = c(0, 2000), step = 5),
   
   sliderInput("selectIncome_2kyle", label = "Average Income", min = 0, max = 1000, value = c(0, 1000), step = 5)
 )
@@ -387,8 +383,8 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("airbnbdata", tabName = "boxplot1", icon = icon("dashboard1")),
-      menuItem("airbnbdata2", tabName = "boxplot2", icon = icon("dashboard1"))
+      menuItem("Average Price per Night by City", tabName = "boxplot1", icon = icon("dashboard1")),
+      menuItem("Average Income by Zip Code", tabName = "boxplot2", icon = icon("dashboard1"))
     )
   ),
   dashboardBody(
@@ -410,16 +406,15 @@ source("kyleBoxPlot2Server.R", local = TRUE)
 
 ```
 
+#Exploring Reviews
+This dashboard contains two tabs, a boxplot and a histogram. The dashboard explores the distribution of review score ratings and some possible explanations behind these distributions. We did not expect any city to have a higher or lower number of outliers but we found this not to be the case. Once again we have NYC - with its high number of low reviews - as an example of interest.
+The dashboard's input panel allows the user to decide which cities(s) they would like to see present in the data.
 
+##Tab 1 - Distribution of Review Scores
+The first tab's bar chart shows the review score ratings (y-axis) for Airbnb postings in a given city (x-axis).  It can be seen that NYC not only has the most variable ratings but also the most outliers. Per our analysis in the previous dashboard, it could be that a wide range of income levels in the city leads to a wide range of review scores. We will explore this further in the next tab.
 
-#Exploring Review Scores- Histogram and Boxplots
-
-
-Below are two plots. The default cities for both plots are the six cities which our dataset contained. They can also be individually selected using the input panel. The first of which is a boxplot of review score ratings by city. It can be seen that New York not only has the most variable ratings but also outliers that are the lowest. From just this plot and information, one possible reason is that New York has a generally less affluent population.
-
-The next plot is a histogram of average total income of the zipcode the rental is in. Although it does seem that New York does have many of its population in the first section of the plot, it also has a dominant presence in the latter half as well. Using the zoom tool on the the latter half, it is more apparent. Although New York has a more affluent population, many of the AirBnB rentals available are receiving low scores. This suggests that there are obviously other variables at play than simply whether or not the area is rich or not.
-
-
+##Tab 2 - Distribution of Incomes
+The second tab is a histogram which shows average total Income (x axis), the count of zip codes which have this average total income (y-axis), colored by city. We see that NYC - shown in dark blue - has a high count across many different income levels. This helps confirm the belief that previous tabs brought to light: NYC has a wide range of incomes, which could play into its wide range of review scores. 
 
 ```{r}
 inputPanel(
@@ -434,8 +429,8 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Boxplot", tabName = "boxplot", icon = icon("dashboard")),
-      menuItem("Histogram", tabName = "histogram", icon = icon("dashboard"))
+      menuItem("Ratings by City", tabName = "boxplot", icon = icon("dashboard")),
+      menuItem("Average Income by City", tabName = "histogram", icon = icon("dashboard"))
       
       
       
@@ -464,15 +459,16 @@ source("Boxplot1Server.R", local = TRUE)
 ```
 
 #Embedded Tableau Insight - Review Ratings
-The embedded Tableau insight uses a histogram to visualize the frequency of various review score ratings received at AirBnB sites.
+The embedded Tableau insight uses a histogram to visualize the frequency of various review score ratings received at Airbnb sites.
 
-As can be seen, the majority of review scores ratings were between 80 and 100, indicating customer's overall satisfaction with their stays. Review score ratings under 80 were very infrequent. Based upon this finding the following question was posed. Were AirBnB customers simply enjoying their stays so much so that it was rare for a bad review score rating to be given, or were customers only inclined to leave a review score rating if their stay was satisfactory?
+As can be seen, the majority of review scores ratings were between 80 and 100, indicating customer's overall satisfaction with their stays. Review score ratings under 80 were very infrequent. Based upon this finding the following question was posed: were Airbnb customers simply enjoying their stays so much so that it was rare for a bad review score rating to be given, or were customers only inclined to leave a review score rating if their stay was satisfactory?
 
-By coloring the bins of the histogram based on the average number of reviews received by each AirBnB site with the corresponding review score rating, it is evident that sites with higher review score ratings were characterized by a significantly greater number of actual reviews (see legend for color scale). This indicates that customers were more likely to leave a review if their stay met or exceeded expectations and typically declined to leave a review if their expectations weren't met.
+By coloring the bins of the histogram based on the average number of reviews received by each Airbnb site with the corresponding review score rating, it is evident that sites with higher review score ratings were characterized by a significantly greater number of actual reviews (see legend for color scale). This indicates that customers were more likely to leave a review if their stay met or exceeded expectations and typically declined to leave a review if their expectations weren't met.
 
 <iframe src="https://public.tableau.com/views/FrequencyofReviewScoresRating/HistogramofReviewScoresRatingColoredbyAverageNumberofReviewsperRating??:showVizHome=no"width="800" height="800"></iframe>
 
-#Appendix - UPDATE DATA CLEANING FOR PROJECT 4
+
+#Appendix
 
 ##Data Cleaning Code
 (Click "code" to your right to see the code)
