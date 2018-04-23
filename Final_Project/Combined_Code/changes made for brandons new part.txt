@@ -1,0 +1,46 @@
+
+
+
+~
+brandonsDataD
+~
+
+brandonsDataC except:
+
+dfC -> dfD
+dfA2 -> dfA3
+old sql query -> new sql query
+
+
+
+
+
+~
+brandonBarChart1UI
+~
+
+derekbarChart2UI except
+
+_8 to _88
+changed some axis titles
+
+
+
+
+
+~
+brandonbarChart1Server
+~
+
+derekbarChart2Server except:
+
+_8 to _88
+dfC1derek() -> dfC1brandon()
+got rid of all the mutates and just did your plot
+
+~
+main RMD
+~
+
+added dataD to brandon's part
+new menu item 

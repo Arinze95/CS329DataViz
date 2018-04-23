@@ -45,15 +45,6 @@ We expect to see that countries which spend more on healthcare have better healt
 #Summary of Conclusions
 Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although it is true that that countries which spend more on healthcare tend to have better health-related metrics, the relationship does not always hold for all metrics and systems and government. Additionally, what plays into the prevalence of contraceptive is more than just average income and aging populations are not necessarily unhealthier than their middle-aged country counterparts. Lastly, we did observe a pattern in climate vs average number of children per woman: as average temperature rose, so did the number of children. More specific conclusions for each dashboard can be found in each dashboards corresponding text. 
 
-#Embedded Tableau Insight
-
-(Note: Tableau's capability to zoom in to maps may prove useful if the maps appear too small).
-This embedded Tableau dashboard includes two maps and a scatterplot. The two maps, top and bottom, show average annual temperature and average number of children per woman, respectively, by country and color. Although a correlation is clear from the maps, the children per woman map shows a less vibrant range of colors. This is because countries in Sub-Saharan Africa have such a high number of children per woman that they skew the distribution of colors. One interesting observation is Brazil, having a high average temperature but low average number of children per woman. Searches online indicate that reasons for this may be that Brazil is rapidly modernizing and attaining better education. The scatterplot shows the overall correlation between temperature and children per woman. An interesting observation is that Afghanistan has a higher number of women per children than expected, which is likely due to the culture and lack of education.
-
-Note that the map can act as a filter for the scatterplot. 
-
-<iframe src="https://public.tableau.com/views/project3embedTableauOnR/Dashboard?:showVizHome=no"width="800" height="800"></iframe>
-
 
 ```{r setup, echo=FALSE, message=FALSE}
 library(tidyverse)
@@ -73,6 +64,8 @@ knitr::opts_chunk$set(echo = TRUE)
 source("brandonsDataA.R", local = TRUE)
 source("brandonsDataB.R", local = TRUE)
 source("brandonsDataC.R", local = TRUE)
+source("brandonsDataD.R", local = TRUE)
+source("brandonsDataE.R", local = TRUE)
 ```
 
 
@@ -127,7 +120,11 @@ dashboardPage(
       
       menuItem("Contraceptive Prevalence vs Health Expenditures", tabName = "scatter", icon = icon("dashboard")), 
       
-      menuItem("Contraceptive Prevalence vs Income per Person", tabName = "scatter2", icon = icon("dashboard"))
+      menuItem("Contraceptive Prevalence vs Income per Person", tabName = "scatter2", icon = icon("dashboard")),
+      
+      menuItem("Average Residual by Region", tabName = "brandonboxplot1", icon = icon("dashboard")),
+      
+       menuItem("Contraceptive Prevalence vs Income per Person for Constitutional Monarchies", tabName = "scatter3", icon = icon("dashboard"))
       
     )
   ),
@@ -142,14 +139,32 @@ dashboardPage(
         
       # 1. "Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot" tab content
       tabItem(tabName = "scatter",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html "),
+        p("Absolute Monarchies (orange line) ~ P-value: 0.0026, R^2: 0.97..............................................        
+           Republics (purple line) ~ P-value: 0.00013, R^2: 0.121 ..............................................................
+            Constitutional Monarchies (dark green line) ~ P-value: 0.93, R^2: 0.0004.................................."),
         source("brandonsScatterPlot1UI.R",local = TRUE)$value
       ),
       
       # 2. "Contraceptive Prevalence vs Income per Person Scatter Plot" tab content
       tabItem(tabName = "scatter2",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html "),
+        p("Absolute Monarchies (orange line) ~ P-value: 0.82, R^2: 0.074..............................................        
+           Republics (purple line) ~ P-value: 0.0001, R^2: 0.204 ..............................................................
+            Constitutional Monarchies (dark green line) ~ P-value: 0.012, R^2: 0.35.................................."),
         source("brandonsScatterPlot2UI.R",local = TRUE)$value
+      ), 
+      
+      # 3. "Average residual by Region" tab content
+      tabItem(tabName = "brandonboxplot1",
+        p("Filter to show only Constitutional Monarchies"),
+        source("brandonBarChart1UI.R",local = TRUE)$value
+      ),
+      
+      # 3. "income vs constraceptive prevalence for constitutional monarchies" tab content
+      tabItem(tabName = "scatter3",
+        p("East Asia (brown line) ~ P-value: 0.09,   R^2: 0.98..................................................................................   
+           Sub-Saharan Africa (purple line) ~ P-value: 0.031,   R^2: 0.64 .............................................................
+            C.W. of Ind States (dark green line) ~ P-value: 0.13,   R^2: 0.57............................................................"),
+        source("brandonsScatterPlot3UI.R",local = TRUE)$value
       )
       
     )
@@ -159,6 +174,8 @@ dashboardPage(
 source("brandonsScatterPlot0Server.R", local = TRUE)
 source("brandonsScatterPlot1Server.R", local = TRUE)
 source("brandonsScatterPlot2Server.R", local = TRUE)
+source("brandonbarChart1Server.R", local = TRUE)
+source("brandonsScatterPlot3Server.R", local = TRUE)
 ```
 
 
@@ -502,6 +519,17 @@ source("kyleBoxPlot1Server.R", local = TRUE)
 
 ```
 
+
+#Embedded Tableau Insights
+
+##Insight 1 - Temperature vs Children per Woman
+
+(Note: Tableau's capability to zoom in to maps may prove useful if the maps appear too small).
+This embedded Tableau dashboard includes two maps and a scatterplot. The two maps, top and bottom, show average annual temperature and average number of children per woman, respectively, by country and color. Although a correlation is clear from the maps, the children per woman map shows a less vibrant range of colors. This is because countries in Sub-Saharan Africa have such a high number of children per woman that they skew the distribution of colors. One interesting observation is Brazil, having a high average temperature but low average number of children per woman. Searches online indicate that reasons for this may be that Brazil is rapidly modernizing and attaining better education. The scatterplot shows the overall correlation between temperature and children per woman. An interesting observation is that Afghanistan has a higher number of women per children than expected, which is likely due to the culture and lack of education.
+
+Note that the map can act as a filter for the scatterplot. 
+
+<iframe src="https://public.tableau.com/views/project3embedTableauOnR/Dashboard?:showVizHome=no"width="800" height="800"></iframe>
 
 
 
