@@ -17,7 +17,7 @@ This dataset was obtained online from the World Health Organization (WHO) and co
 
 #Important Links
 
-[Data.world Project](https://data.world/jeffrey-feng/s18-edv-project-3)
+[Data.world Project](https://data.world/kyl617/s18-edv-final-project)
 
 Kyle's Insights: [1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/3f4ad123-96f8-43ef-a9bd-6e7707b5894e)
 [2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/4bf66d41-46db-46bf-95d6-0fd1f5415b53)
@@ -179,34 +179,37 @@ source("brandonsScatterPlot3Server.R", local = TRUE)
 ```
 
 
-
 ```{r}
 source("jeffDataA.R", local = TRUE)
 source("jeffDataB.R", local = TRUE)
+source("jeffDataC.R", local = TRUE)
 
 ```
 
 
 ```{r}
-projectJeff <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+project <- "https://data.world/kyl617/s18-edv-final-project" 
 data.world::set_config(cfg_env("DW_API")) 
 regions <- data.world::query(data.world::qry_sql(
  "   
 	select distinct region
-	from WHO_Cleanest
+	from WHO_Cleanest2
  "), 
-dataset = projectJeff)
+dataset = project)
 ```
 
 #Dashboard 2 - Contraceptive Prevelance
 
-A similar topic of interest is whether or not the system of government or region has a bearing on the contraceptive prevalence. Answers to this question are explored in the dashboard below. This dashboard contains two tabs, both bar charts. The input panel controls the regions of the world which are shown and the top and bottom sliders control the range of y-values for the bar charts in the first and second tab, respectively. 
+A similar topic of interest is whether or not the system of government or region has a bearing on the contraceptive prevalence. Answers to this question are explored in the dashboard below. This dashboard contains three tabs with two bar charts and a scatter plot. The input panel controls the regions of the world which are shown and the top and bottom sliders control the range of y-values for the bar charts in the first and second tab, respectively. 
 
 ##Tab 1: By Region and Government
 The first bar chart shows the average contraceptive prevalence (y-axis) by both region (x-axis) and system of government (color). One might expect that countries which are republics have the best access to contraceptives since republics tend to have more freedom in their economies, but we observe that this is actually not always the case. For two out of three regions which contain absolute monarchies, absolute monarchies perform poorly (low contraceptive prevalence) relative to other systems of government. For Western Europe, however, we see that absolute monarchies are the best performing system of government. To explore why this may be the case, we can observe the second tab's bar chart.
 
 ##Tab 2: Median Age
-This bar chart shows the average population median age by region (x-axis) and system of government (color). It can be observed from this plot that out of those three regions with absolute monarchies, Western European countries with absolute monarchies have the highest average population median age. The higher median age of these countries could explain the higher access to contraceptives, as older people tend to be wiser and therefore likely to be familiar with the avenues of obtaining contraceptives.
+This bar chart shows the average population median age by region (x-axis) and system of government (color). It can be observed from this plot that out of those three regions with absolute monarchies, Western European countries with absolute monarchies have the highest average population median age. The higher median age of these countries could explain the higher access to contraceptives, as older people tend to be wiser and therefore likely to be familiar with the avenues of obtaining contraceptives. The goal of the next tab is to see if that perceived pattern can be observed.
+
+##Tab3: Median Age vs. Contraceptive Prevalence
+This scatter plot shows contraceptive prevalence (x-axis) and median age (y-axis). By simply looking at the points plotted, a upward sloping pattern can be seen. By including a regression line, a slight correlation can be seen. The linear model equation is Median Age =.179*(contraceptive prevalence) + 15.647 Although the r-squared around a .4, the p-value is below .0001. This model might not be very accurate but does have some explanatory power. It also shows the general pattern, which is that older populations tend to have a higher contraceptive prevalence. One possible reason for this bit of correlation is that  populations that have low contraceptive prevalence would have more children, and that would lower the median age. The goal of the next plot is to show that older populations are wiser or more educated and thus have higher contraceptive prevalence.
 
 
 ```{r}
@@ -219,14 +222,12 @@ inputPanel(
 "NEAR EAST",
 "NORTHERN AFRICA",
 "EASTERN EUROPE")),
-
   sliderInput("ContraFilter", label = "Average Contraceptive Prevalence:",
               min = 0, max = 100, value = c(0, 100), step = 10),
-sliderInput("AgeFilter", label = "Average Median Age:",
-              min = 0, max = 80, value = c(0, 80), step = 10)
+  sliderInput("AgeFilter", label = "Median Age:",
+              min = 0, max = 60, value = c(0, 60), step = 5)
 )
 ```
-
 
 
 
@@ -236,29 +237,42 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Contraceptive Bar Chart", tabName = "barchartJeff", icon = icon("dashboard")),
-      menuItem("Age Bar Chart", tabName = "barchart2Jeff", icon = icon("dashboard"))
+      menuItem("Contraceptive Bar Chart", tabName = "barchart", icon = icon("dashboard")),
+      menuItem("Age Bar Chart", tabName = "barchart2", icon = icon("dashboard")),
+      menuItem("Both Scatter Plot", tabName = "scatter1", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
       # 1. "BarChart2"
-      tabItem(tabName = "barchartJeff",
+      tabItem(tabName = "barchart",
         p("This is a barchart of Region and Contraceptive Prevalence"),
         source("jeffbarChart1UI.R",local = TRUE)$value
       ),
        # 2. "BarChart1"
-      tabItem(tabName = "barchart2Jeff",
+      tabItem(tabName = "barchart2",
         p("This is a barchart of Region and Median Age"),
         source("jeffbarChart2UI.R",local = TRUE)$value
+      ),
+       # 2. "Scatter1"
+      tabItem(tabName = "scatter1",
+        p("This is a scatter plot of contraceptive prevalence and Median Age with a linear model equation of Median Age =.179*(contraceptive prevalence) + 15.647"),
+        source("jeffScatterPlot1UI.R",local = TRUE)$value
       )
     )
   )
 )
 source("jeffbarChart1Server.R", local = TRUE)
 source("jeffbarChart2Server.R", local = TRUE)
+source("jeffScatterPlot1Server.R", local = TRUE)
 
 ```
+##Embedded Tableau Plot: Contraceptive Prevalence, Literacy Rates, and Median Age
+This plot shows the contraceptive prevalence on the left axis and literacy rate on the righ axis with various median ages along the bottom axis. By looking at the general pattern, it can be observed that as median age increases, both literacy rate and contraceptive prevalence increase to a certain point then stays relatively stable.
+<iframe src="https://public.tableau.com/views/finaltest_10/Sheet4?:showVizHome=no"width="800" height="800"></iframe>
+
+
+
 
 
 

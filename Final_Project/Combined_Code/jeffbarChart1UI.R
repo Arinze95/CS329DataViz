@@ -1,29 +1,27 @@
-# Change "Histogram", all __3_s, and edit tiles below:
+# Change "Histogram", all __j1_s, and edit tiles below:
 tabItem(tabName = "Barchart",
         tabsetPanel( 
           tabPanel("Plots"),# To create a tab panel - see https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html
           tabPanel("Data", 
-             dataTableOutput('table__3_'),
-             downloadButton('download__3_',"Download the data")),
+             dataTableOutput('table__j1_'),
+             downloadButton('download__j1_',"Download the data")),
           tabPanel("Plot Size", 
-             numericInput("plotWidth__3_", "Plot Width (Required)", 1000),
-             numericInput("plotHeight__3_", "Plot Height (Required)", NA)),
+             numericInput("plotWidth__j1_", "Plot Width (Required)", 1000),
+             numericInput("plotHeight__j1_", "Plot Height (Required)", NA)),
           tabPanel("Plot Title",
-             textInput("title__3_", "Title 1", "Contraceptive Prevalence by Region"),
-             numericInput("titleFont__3_", "Title Font", 10)), 
+             textInput("title__j1_", "Title 1", "Contraceptive Prevalence by Region"),
+             numericInput("titleFont__j1_", "Title Font", 10)), 
           tabPanel("Plot Legend",
-             textInput("legendTitle__3_", "Legend Title", "Regions"),
-             numericInput("legendTitleSize__3_", "Legend Title Size", 8), #was 10,8,5
-             numericInput("legendItemSize__3_", "Legend Item Size", 5),
-             numericInput("legendKeySize__3_", "Legend Key Size", 2)), 
+             textInput("legendTitle__j1_", "Legend Title", "System of Gov."),
+             numericInput("legendTitleSize__j1_", "Legend Title Size", 10),
+             numericInput("legendItemSize__j1_", "Legend Item Size", 10),
+             numericInput("legendKeySize__j1_", "Legend Key Size", 5)), 
           tabPanel("Axis Labels",
-             textInput("xLabel__3_", "x-Axis Label", "Region"),
-             textInput("yLabel__3_", "y-Axis Label 1", "Contraceptive Prevalence"),
-             numericInput("textFont__3_", "textFont", 10)),
+             textInput("xLabel__j1_", "x-Axis Label", "Regions"),
+             textInput("yLabel__j1_", "y-Axis Label 1", "Contraceptive Prevalence"),
+             numericInput("textFont__j1_", "textFont", 10)),
           tabPanel("Data Size", 
-             numericInput("yDataMin__3_", "yData Minimum (Required)", 0),
-             numericInput("yDataMax__3_", "yData Maximum (Required)", NA))),
-        plotlyOutput("Histogram__3_", height=800)
+             numericInput("yDataMin__j1_", "yData Minimum (Required)", 0),
+             numericInput("yDataMax__j1_", "yData Maximum (Required)", NA))),
+        plotlyOutput("Histogram__j1_", height=800)
 )
-
-#reokaced _1 with _1
