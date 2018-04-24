@@ -522,15 +522,11 @@ source("kyleBoxPlot1Server.R", local = TRUE)
 
 #Embedded Tableau Insights
 
-##Insight 1 - Temperature vs Children per Woman
+##Insight 1 - Exploring the Number of Children per Woman
 
-(Note: Tableau's capability to zoom in to maps may prove useful if the maps appear too small).
-This embedded Tableau dashboard includes two maps and a scatterplot. The two maps, top and bottom, show average annual temperature and average number of children per woman, respectively, by country and color. Although a correlation is clear from the maps, the children per woman map shows a less vibrant range of colors. This is because countries in Sub-Saharan Africa have such a high number of children per woman that they skew the distribution of colors. One interesting observation is Brazil, having a high average temperature but low average number of children per woman. Searches online indicate that reasons for this may be that Brazil is rapidly modernizing and attaining better education. The scatterplot shows the overall correlation between temperature and children per woman. An interesting observation is that Afghanistan has a higher number of women per children than expected, which is likely due to the culture and lack of education.
+The scatterplot shows the negative correlation between the literarcy rate and average number of children per woman. To explore the residuals of this correlation, we see if there is a geographic trend in countries in which the average number of children per women is over or under predicted by the model. We see no such geographic trend but the next tab of the story does show a correlation behind the residuals - the infant mortality rate. Note that on the first tab, the map and scatterplot can be used to filter one another. Also included is a set of the 20 richest countries, which interestingly enough has countries which do not follow the negative trend.
 
-Note that the map can act as a filter for the scatterplot. 
-
-<iframe src="https://public.tableau.com/views/project3embedTableauOnR/Dashboard?:showVizHome=no"width="800" height="800"></iframe>
-
+<iframe src="https://public.tableau.com/views/final_project_brandon_insight/ChildrenPerWomenStory?:showVizHome=no"width="1416" height="814"></iframe>
 
 
 
