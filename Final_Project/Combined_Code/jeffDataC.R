@@ -1,4 +1,4 @@
-dfC <- eventReactive(c(input$selectRegion_1,input$AgeFilter), { 
+jeffdfC <- eventReactive(c(input$selectRegion_1,input$AgeFilter), { 
   project <- "https://data.world/kyl617/s18-edv-final-project" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
@@ -13,11 +13,11 @@ where region in (?,?,?,?,?,?,?,?,?) and contraceptive_prevalence > .1
   data.world::query(paramQuery, dataset = project)
 })
 
-dfC1 <- eventReactive(c(input$AgeFilter,input$selectRegion_1, input$yDataMin__1_, input$yDataMax__1_), { 
+jeffdfC1 <- eventReactive(c(input$AgeFilter,input$selectRegion_1, input$yDataMin__1_, input$yDataMax__1_), { 
   if( ! is.na(input$yDataMin__1_) & ! is.na(input$yDataMax__1_)) {
-    dfC() %>% dplyr::filter(between(Average, input$yDataMin__1_, input$yDataMax__1_))
+    jeffdfC() %>% dplyr::filter(between(Average, input$yDataMin__1_, input$yDataMax__1_))
   }
   else {
-    dfC()
+    jeffdfC()
   }
 })

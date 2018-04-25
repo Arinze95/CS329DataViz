@@ -1,4 +1,4 @@
-dfA <- eventReactive(c(input$selectRegion_1,input$ContraFilter), { 
+jeffdfA <- eventReactive(c(input$selectRegion_1,input$ContraFilter), { 
   project <- "https://data.world/kyl617/s18-edv-final-project" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
@@ -16,12 +16,12 @@ order by region, system_of_government
   data.world::query(paramQuery, dataset = project)
 })
 
-dfA1 <- eventReactive(c(input$ContraFilter,input$selectRegion_1, input$yDataMin__1_, input$yDataMax__1_), { 
+jeffdfA1 <- eventReactive(c(input$ContraFilter,input$selectRegion_1, input$yDataMin__1_, input$yDataMax__1_), { 
   if( ! is.na(input$yDataMin__1_) & ! is.na(input$yDataMax__1_)) {
-    dfA() %>% dplyr::filter(between(Averag, input$yDataMin__1_, input$yDataMax__1_))
+    jeffdfA() %>% dplyr::filter(between(Averag, input$yDataMin__1_, input$yDataMax__1_))
   }
   else {
-    dfA()
+    jeffdfA()
   }
 })
 

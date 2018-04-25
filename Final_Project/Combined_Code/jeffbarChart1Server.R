@@ -4,17 +4,17 @@
   output$download__j1_ <- downloadHandler(
     filename = function(){"CategoryBoxplot.csv"}, 
     content = function(fname){
-      write.csv(dfA1(), fname)
+      write.csv(jeffdfA1(), fname)
     }
   )
   output$table__j1_ <- renderDataTable({
-    DT::datatable(dfA1() , rownames = FALSE, extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+    DT::datatable(jeffdfA1() , rownames = FALSE, extensions = list(Responsive = TRUE, FixedHeader = TRUE)
     )
   })
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
   output$Histogram__j1_ <- renderPlotly({
-    plot = dfA1() %>% ggplot() + geom_bar(mapping = aes(x=region, y=Averag, colour=system_of_government, fill=system_of_government), stat = "identity") +
+    plot = jeffdfA1() %>% ggplot() + geom_bar(mapping = aes(x=region, y=Averag, colour=system_of_government, fill=system_of_government), stat = "identity") +
       
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__j1_, face = "bold")) + 

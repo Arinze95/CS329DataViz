@@ -3,17 +3,17 @@
   output$download__j3_ <- downloadHandler(
     filename = function(){"ScatterPlot.csv"}, 
     content = function(fname){
-      write.csv(dfCC1(), fname)
+      write.csv(jeffdfC1(), fname)
     }
   )
   output$table__j3_ <- renderDataTable({
-    DT::datatable(dfC1() , rownames = FALSE, extensions = list(Responsive = TRUE, FixedHeader = TRUE)
+    DT::datatable(jeffdfC1() , rownames = FALSE, extensions = list(Responsive = TRUE, FixedHeader = TRUE)
     )
   })
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
   output$Histogram__j3_ <- renderPlotly({
-    plot = dfC1() %>% ggplot() + 
+    plot = jeffdfC1() %>% ggplot() + 
       geom_point(mapping = aes(x=contraceptive_prevalence, y=population_median_age_years)) +
       geom_smooth(aes(y=population_median_age_years, x=contraceptive_prevalence), method = lm, formula = y ~ x, se=TRUE) +
       
