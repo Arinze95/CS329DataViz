@@ -1,6 +1,6 @@
 ---
-title: "The Health of Countries: An Interactive Document"
-author: "Kyle DeQuesnay, Jeffrey Feng,Brandon Kerbow, Derek Orji"
+title: "The Health and Well-Being of Countries: An Interactive Document"
+author: "Kyle DeQuesnay, Jeffrey Feng, Brandon Kerbow, Derek Orji"
 resource_files:
 - .Renviron
 output:
@@ -13,37 +13,64 @@ runtime: shiny
 ---
 
 #Dataset Description
-This dataset was obtained online from the World Health Organization (WHO) and contains various health-related metrics for every country on the planet. Examples of such metrics include the average per capita (per person) income and average life expectancy. There are also fields for the region (e.g. Western Europe, Sub-Saharan Africa) and the system of government in place (e.g. Republic, Absolute Monarchy) for each country.
+This dataset was obtained online from the World Health Organization (WHO) and contains various health-related metrics for every country on the planet. Examples of such metrics include the average per capita (per person) income and average life expectancy. 
+
+To further segment the data we went to the UNESCO institute for statistics to join the fields of region (e.g. Western Europe, Sub-Saharan Africa) and the system of government in place (e.g. Republic, Absolute Monarchy) for each country. 
 
 #Important Links
 
 [Data.world Project](https://data.world/kyl617/s18-edv-final-project)
 
-Kyle's Insights: [1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/3f4ad123-96f8-43ef-a9bd-6e7707b5894e)
-[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/4bf66d41-46db-46bf-95d6-0fd1f5415b53)
 
-Jeffrey's Insights:
-[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/6c074812-db39-4d90-9267-98a018e0d205)
-[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/406defbc-4867-4f7a-b9f7-0ededdfec75b)
 
-Brandon's Insights:
-[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/c768d907-2631-4ab8-a277-01971367da4e)
-[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/2c8243ec-112e-4eae-84b9-1737eecc4c22)
-[3](https://data.world/jeffrey-feng/s18-edv-project-3/insights/55d632d3-9c26-47a8-8ad8-1c810833f5f8)
+Kyle's Data.World Insights: 
 
-Derek's Insights:
-[1](https://data.world/jeffrey-feng/s18-edv-project-3/insights/7eeb0512-fd4d-4e2c-89ab-8ee605bc6123)
-[2](https://data.world/jeffrey-feng/s18-edv-project-3/insights/9afba264-eeac-40ea-9e5b-bedd70555b83)
+[Quality of Life in relation to Contraceptive Prevalence](https://data.world/kyl617/s18-edv-final-project/insights/c2f01c89-67ac-4fa6-8232-17efc21d6d88)
 
-[Github Repository](https://github.com/CannataUTDV/s18dvproject3-duquesnay-feng-orji-kerbow)
+[Exploration of Infant Mortality Rate](https://data.world/kyl617/s18-edv-final-project/insights/b77020d1-8ad4-4324-9c7b-31ba4bb794f3)
 
-#Motivations and Expectations
-With healthcare being a hot topic in both business and everyday life, we wanted to explore some drivers for health on a global scale. Because one of the most common obstacles in improving global health is a lack of funds, we aimed to explore how countries - of different government types and in different geographic regions - can benefit from increasing the amount they spend on healthcare. We also recognize that in many countries, particularly 3rd world countries, it is common for women to give birth to a relatively high number of children. With this in mind, we explored what factors could affect the prevalence of contraception (in other words, the accessibility of birth control such as condoms or pills). We also wanted to explore the overall health of countries by analyzing demographics/age distributions and the potential relationships with factors such as income. As an interesting final point of interest, we wanted to see if there is a relationship between climate (approximated by average annual temperature) and average number of women per children. 
 
-We expect to see that countries which spend more on healthcare have better health (measured by things such as life expectancy) for every region and system of government. We also expect to see that women in poorer nations give birth to more children and that countries with aging populating are not as healthy as their middle-aged country counterparts. Finally, we expect there to be little correlation between climate and the average number of children per woman. More specific expectations are in the sections for each dashboard further down in this interactive document. 
+Jeffrey's Data.World Insights:
 
-#Summary of Conclusions
-Through our analysis of the data and visuals in subsequent sections, we found that our expectations were not always correct. Although it is true that that countries which spend more on healthcare tend to have better health-related metrics, the relationship does not always hold for all metrics and systems and government. Additionally, what plays into the prevalence of contraceptive is more than just average income and aging populations are not necessarily unhealthier than their middle-aged country counterparts. Lastly, we did observe a pattern in climate vs average number of children per woman: as average temperature rose, so did the number of children. More specific conclusions for each dashboard can be found in each dashboards corresponding text. 
+[HALE and Health Expenditure](https://data.world/kyl617/s18-edv-final-project/insights/5d555d5c-ea5f-477a-8e8b-75cfb0efb95e)
+
+[Contraceptive Prevalence and Literacy Rate](https://data.world/kyl617/s18-edv-final-project/insights/dadd284a-8e76-4f3a-ba47-0bc4ca7f8997)
+
+Brandon's Data.World Insights:
+
+[Average Children per Women vs Average Annual Temperature by Country](https://data.world/kyl617/s18-edv-final-project/insights/248e546f-4b00-4536-a9ca-f41f7eafc061)
+
+[Contraceptive Access and Median Age by Region and System of Government](https://data.world/kyl617/s18-edv-final-project/insights/eae60986-778f-488b-a29e-c55f5ebe7cbb)
+
+[Number of Children per Women: By Geography and Infant Mortality Rate](https://data.world/kyl617/s18-edv-final-project/insights/440cd999-cba6-4cbe-8960-bd96694a12a9)
+
+Derek's Data.World Insights:
+
+[Frequncy of Population Proportion Under 15 and Effect on Gross National Income per Capita](https://data.world/kyl617/s18-edv-final-project/insights/a4460ccc-7b49-457a-b815-d034d8bbf673)
+
+[Contraceptive Prevalence vs. Adult Literacy Rate](https://data.world/kyl617/s18-edv-final-project/insights/3560c82f-12b5-430d-823e-229678892446)
+
+
+
+
+[Github Repository](https://github.com/CannataUTDV/s18dvfinalproject-duquesnay-feng-orji-kerbow)
+
+#Summary of our Questions and Findings
+*Does spending more money on healthcare increase the well-being of countries?
+Not always the case, but usually other factors help explain what causes healthcare metrics to improve.
+
+*What factors play into the availability of contraceptives?
+Region, system of government, age, and education - but not always in the way we expected.
+
+*Do countries which have a small portion of "working age" population tend to be more poor (per capita)?
+This is actually not always the case.
+
+*What factors play into the number of children per women and what accounts for the variability?
+Although education is the strongest driver, the variability in this predictive model was not what we expected.
+
+*Does System of Government tend to have an effect on quality of life, as measured through health metrics?
+Yes, but which system of government tends to have the strongest metrics depends on the region
+
 
 
 ```{r setup, echo=FALSE, message=FALSE}
@@ -61,11 +88,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-source("brandonsDataA.R", local = TRUE)
+
 source("brandonsDataB.R", local = TRUE)
 source("brandonsDataC.R", local = TRUE)
 source("brandonsDataD.R", local = TRUE)
-source("brandonsDataE.R", local = TRUE)
+
 ```
 
 
@@ -89,18 +116,36 @@ SystemsOfGovernment  <- eventReactive(c(input$selectSystemOfGovernment_1), {
 ```
 
 #Dashboard 1 - Benefits of Spending on Healthcare
-One important question surrounding the issue of global health is how much money countries should spend on improving it. The three scatterplot tabs in the dashboard below explore answers that question. To see what kind of returns countries can attain from spending, we focus on relationships between healthcare expenditure (% of GDP, with GDP being the total value of goods produced annually within a country) vs common health metrics such as life expectancy and contraceptive prevalence. Contraceptive prevalence is the percent of the population which has access to readily available contraception. Contraception is any tool for preventing pregnancy and includes condoms and birth control pills. Because the system of government can have a large effect on how far money can go in improving the health of a country, the plots are colored by system of government. We would expect that for any given system of government, an increase in spending tends to improve common health metrics. As you will see in our analysis, however, this is not always the case.
+One important question surrounding the issue of global health is how much money countries should spend on improving it. To see what kind of returns countries can attain from spending, we focus on relationships between healthcare expenditure (% of GDP, with GDP being the total value of goods produced annually within a country) vs common health metrics such as life expectancy and contraceptive prevalence. We would expect that for any given system of government, an increase in spending tends to improve common health metrics, but we will observe that this is not the case.
 
-The input panel allows the user to decide which system(s) of government they would like to see present in the data. It is advised to exclude "n/a" because this means the country did not have a system of government listed in the dataset. Note that for these plots, and some others on this document, the text in the legend is quite small. This is to avoid having the legend overlay the plot. 
+##Tab 1 - Contraceptive Prevalence
 
-##Tab 1 - Life Expectancy
-The first tab's scatterplot shows the relationship between health expenditure as % of GDP (x-axis) and life expectancy (y-axis). Each dot represents a country and each line shows the linear fit for a given system of government. The interactive legend to the right of the plot shows which color dot corresponds to which country, and which color line corresponds to which system of government. Note that you must scroll down to the bottom of the legend to see which color line corresponds to which system of government. In this visual there is a clear positive trend for each system of government, which is unsurprising. But is there always a relationship between spending and common health metrics? We explore this further in the next tab's visual.
+*Contraceptive prevalence vs healthcare expenditure
 
-##Tab 2 - Contraceptive Prevalence
-The second tab's scatterplot shows the relationship between health expenditure as % of GDP (x-axis) and contraceptive prevalence (y-axis). Once again we have the dots and lines corresponding to country and system of government, respectively. On this plot it is interesting to observe that for constitutional monarchies, there does not appear to be an increase in contraceptive prevalence that comes with an increasing in spending. This is counter intuitive and begs the question: what factors DO affect the contraceptive prevalence in constitutional monarchies? We explore this in the next tab's visual. 
+*Countries as dots, trend lines by system of government
 
-##Tab 3 - Average Income
-The third tab's visual shows the relationship between average income per capita/person (x-axis) and contraceptive prevalence (y-axis). Once again we have the dots and lines corresponding to countries and systems of government, respectively. We can observe a correlation between these two fields for all three system of governments, but the correlation is strongest for the constitutional monarchies. This - combined with the second visual - implies that in constitutional monarchies, individual income is a larger factor in contraceptive prevalence than the country's overall healthcare expenditure. 
+*Observation: for constitutional monarchies, there does not appear to be an increase in contraceptive prevalence that comes with an increasing in spending
+
+*Why this may be the case is explored in the next tabs
+
+
+##Tab 2 - Average Income per Capita
+
+*Contraceptive prevalence vs income per capita
+
+*Positive correlation for all systems of government, strongest R^2 value for constitutional monarchies
+
+*Tabs 1 and 2 together indicate that for constitutional monarchies, contraceptive prevalence is not based on total healthcare expenditure of that country but rather the individual income 
+
+*We explore residuals for the constitutional monarchies trend in the next visual
+
+##Tab 3 - Average Residual by Region
+
+*Analyzing the residuals of the "contraceptive prevalence vs income per capita" model for constitutional monarchies, i.e. the dark green line in the previous tab
+
+*There is a clear pattern by region: African regions have less access to contraceptive prevalence than predicted by the model, Asia has more
+
+*Summary of conclusion from tabs 1-3: In constitutional monarchies the arability of contraceptives depends on both individual income and region, whereas for other systems of government the total healthcare expenditure of the countries gives a stronger prediction.
 
 ```{r}
 inputPanel(
@@ -116,25 +161,19 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Life Expectancy vs Health Expenditures", tabName = "scatter0", icon = icon("dashboard")),
+
       
-      menuItem("Contraceptive Prevalence vs Health Expenditures", tabName = "scatter", icon = icon("dashboard")), 
+      menuItem("Contraceptives vs Spending", tabName = "scatter", icon = icon("dashboard")), 
       
-      menuItem("Contraceptive Prevalence vs Income per Person", tabName = "scatter2", icon = icon("dashboard")),
+      menuItem("Contraceptives vs Income", tabName = "scatter2", icon = icon("dashboard")),
       
-      menuItem("Average Residual by Region", tabName = "brandonboxplot1", icon = icon("dashboard")),
-      
-       menuItem("Contraceptive Prevalence vs Income per Person for Constitutional Monarchies", tabName = "scatter3", icon = icon("dashboard"))
+      menuItem("Average Residual by Region", tabName = "brandonboxplot1", icon = icon("dashboard"))
       
     )
   ),
   dashboardBody(
     tabItems(
-      # 0. "Life Expectancy vs Health Expenditures (% of GDP) Scatter Plot" tab content
-      tabItem(tabName = "scatter0",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
-        source("brandonsScatterPlot0UI.R",local = TRUE)$value
-      ),
+ 
         
         
       # 1. "Contraceptive Prevalence vs Health Expenditures (% of GDP) Scatter Plot" tab content
@@ -157,25 +196,17 @@ dashboardPage(
       tabItem(tabName = "brandonboxplot1",
         p("Filter to show only Constitutional Monarchies"),
         source("brandonBarChart1UI.R",local = TRUE)$value
-      ),
-      
-      # 3. "income vs constraceptive prevalence for constitutional monarchies" tab content
-      tabItem(tabName = "scatter3",
-        p("East Asia (brown line) ~ P-value: 0.09,   R^2: 0.98..................................................................................   
-           Sub-Saharan Africa (purple line) ~ P-value: 0.031,   R^2: 0.64 .............................................................
-            C.W. of Ind States (dark green line) ~ P-value: 0.13,   R^2: 0.57............................................................"),
-        source("brandonsScatterPlot3UI.R",local = TRUE)$value
       )
       
     )
   )
 )
 
-source("brandonsScatterPlot0Server.R", local = TRUE)
+
 source("brandonsScatterPlot1Server.R", local = TRUE)
 source("brandonsScatterPlot2Server.R", local = TRUE)
 source("brandonbarChart1Server.R", local = TRUE)
-source("brandonsScatterPlot3Server.R", local = TRUE)
+
 ```
 
 
@@ -203,13 +234,25 @@ dataset = project)
 A similar topic of interest is whether or not the system of government or region has a bearing on the contraceptive prevalence. Answers to this question are explored in the dashboard below. This dashboard contains three tabs with two bar charts and a scatter plot. The input panel controls the regions of the world which are shown and the top and bottom sliders control the range of y-values for the bar charts in the first and second tab, respectively. 
 
 ##Tab 1: By Region and Government
-The first bar chart shows the average contraceptive prevalence (y-axis) by both region (x-axis) and system of government (color). One might expect that countries which are republics have the best access to contraceptives since republics tend to have more freedom in their economies, but we observe that this is actually not always the case. For two out of three regions which contain absolute monarchies, absolute monarchies perform poorly (low contraceptive prevalence) relative to other systems of government. For Western Europe, however, we see that absolute monarchies are the best performing system of government. To explore why this may be the case, we can observe the second tab's bar chart.
+*Average contraceptive prevalence (y-axis) by both region (x-axis) and system of government (color)
+
+*We thought Republics would have the best access to contraceptives.
+
+*For two out of three regions which contain absolute monarchies, absolute monarchies have relatively low contraceptive prevalence.
+
+*For Western Europe, however, we see that absolute monarchies are the best performing system of government.
 
 ##Tab 2: Median Age
-This bar chart shows the average population median age by region (x-axis) and system of government (color). It can be observed from this plot that out of those three regions with absolute monarchies, Western European countries with absolute monarchies have the highest average population median age. The higher median age of these countries could explain the higher access to contraceptives, as older people tend to be wiser and therefore likely to be familiar with the avenues of obtaining contraceptives. The goal of the next tab is to see if that perceived pattern can be observed.
+*Average population median age by region (x-axis) and system of government (color)
+
+*Western European countries with absolute monarchies have the highest average population median age.
 
 ##Tab3: Median Age vs. Contraceptive Prevalence
-This scatter plot shows contraceptive prevalence (x-axis) and median age (y-axis). By simply looking at the points plotted, a upward sloping pattern can be seen. By including a regression line, a slight correlation can be seen. The linear model equation is Median Age =.179*(contraceptive prevalence) + 15.647 Although the r-squared around a .4, the p-value is below .0001. This model might not be very accurate but does have some explanatory power. It also shows the general pattern, which is that older populations tend to have a higher contraceptive prevalence. One possible reason for this bit of correlation is that  populations that have low contraceptive prevalence would have more children, and that would lower the median age. The goal of the next plot is to show that older populations are wiser or more educated and thus have higher contraceptive prevalence.
+*Contraceptive prevalence (x-axis) and median age (y-axis)
+
+*Linear model equation is Median Age = 0.179 x (contraceptive prevalence) + 15.647 with the r-squared around a 0.4, the p-value < 0.0001
+
+*One argument against the model is that populations that have low contraceptive prevalence would have more children, and that would lower the median age.
 
 
 ```{r}
@@ -267,9 +310,13 @@ source("jeffbarChart2Server.R", local = TRUE)
 source("jeffScatterPlot1Server.R", local = TRUE)
 
 ```
+
 ##Embedded Tableau Plot: Contraceptive Prevalence, Literacy Rates, and Median Age
-This plot shows the contraceptive prevalence on the left axis and literacy rate on the righ axis with various median ages along the bottom axis. By looking at the general pattern, it can be observed that as median age increases, both literacy rate and contraceptive prevalence increase to a certain point then stays relatively stable.
-<iframe src="https://public.tableau.com/views/finaltest_10/Sheet4?:showVizHome=no"width="800" height="800"></iframe>
+*Contraceptive prevalence on the left axis and literacy rate on the right axis with various median ages along the bottom axis
+
+*Pattern slightly upward sloping
+
+<iframe src="https://public.tableau.com/views/finaltest_10/Sheet4?:showVizHome=no"width="1000" height="800"></iframe>
 
 
 
@@ -280,6 +327,7 @@ This plot shows the contraceptive prevalence on the left axis and literacy rate 
 source("derekDataA.R", local = TRUE)
 source("derekDataB.R", local = TRUE)
 source("derekDataC.R", local = TRUE)
+source("derekDataD.R", local = TRUE)
 ```
 
 
@@ -319,6 +367,17 @@ areas <- data.world::query(data.world::qry_sql(
 dataset = project)
 ```
 
+```{r}
+project <- "https://data.world/jeffrey-feng/s18-edv-project-3" 
+data.world::set_config(cfg_env("DW_API")) 
+abodes <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct region
+	from who_cleaner
+
+ "), 
+dataset = project)
+```
 
 ```{r}
 Regions <- eventReactive(c(input$selectRegion_1derek), { 
@@ -341,24 +400,50 @@ Re <- eventReactive(c(input$selectRegi_1), {
 })
 ```
 
+```{r}
+Re <- eventReactive(c(input$selectRegion_1Orji), { 
+  library('stringr')
+  str_c(input$selectRegion_1Orji, collapse=', ')
+})
+```
 
-#Dashboard 3: Exploring Age and Income
+#Dashboard 3: Exploring Age Distribution, Income, and Technology
 
-According to The Fund for Peace and Foreign Policy, population proportion under 15 years of age is a measure that can serve as an indication of a failed state. In this dashboard we explore this metric, how it varies by region, and potential causes for the metric being high or low. The input panel controls the regions which are shown for each visual. The top and bottom sliders control the range of y values on tabs one and three, respectively. 
+According to The Fund for Peace and Foreign Policy, population proportion under 15 years of age is a measure that can serve as an indication of a failed state. In this dashboard we explore this metric, as well as metrics related to national income and technology.
 
 ##Tab 1: Population Proportion under 15 Years
-The histogram in this dashboard's first tab shows the population proportion under 15 for each region, represented by different colors. In looking at this data across the different regions, it can be observed that Sub-Saharan African countries constitute a notably large portion of countries with over 25% of their population under 15 years of age. This is interesting but not unexpected. 
+*Population proportion under 15 years of age
 
-To further dig into this metric, we will explore what factors may affect the population proportion under 15 years. The selected factors are age dependency ratio (DR) and gross national income per capita. These are examined in the next two plots.
+*It can be observed that Sub-Saharan African countries constitute a notably large portion of countries with over 25% of their population under 15 years of age
+
+*While this is interesting it is not unexpected. An analysis of related metrics such as age dependency ratio (DR), gross national income per capita, and patents granted will yield more insightful news 
+
 
 ##Tab 2: Age Dependency Ratio
-Age dependency ratio (DR) is an indicator calculated by summing he population under 15 years of age with the population over 65 years of age, and then dividing this sum by the population between ages 15 and 64 (the productive age group). DR essentially communicates the number of dependents that each a productive member of society must provide for. It has many implications for the performance of national economies. The age dependency ratio bar chart in the second tab shows that on average Sub-Saharan African countries have very high DR ratios. Sub-Saharan African countries displayed an average DR ratio of 0.89, much higher than the next highest ratio of 0.62  held by Western European countries. The fact that a region so underdeveloped has such a small amount of their population contributing to their national economy does not bode well for them. In short, a high DR ratio means that a small portion of a country's population is contributing to the economic output, and each member of productive age carries the burden many dependents. To explore factors which could explain these DR values we observe the average income per capita for these regions in the next tab.
+*Age dependency ratio (ADR) is an indicator calculated by summing he population under 15 years of age with the population over 65 years of age, and then dividing this sum by the population between ages 15 and 64 (the productive age group)
+
+*ADR essentially communicates the number of dependents that each productive member of society must provide for
+
+*The ADR bar chart in the second tab shows that on average Sub-Saharan African and Western European countries have very high ADR's 
+
+*A high ADR means that a small portion of a country's population is contributing to the economic output, each citizen of productive age carries the burden of many dependents
  
 
 ##Tab 3: Gross National Income per Capita
-This tab is a series of boxplots which show, for each Region (x-axis and color), the distribution of gross national income per capita for every country within that region. Gross national income per capita is a country's total income in a year divided by its population, giving the average income of citizens in a country. For Sub-Saharan African countries, the low results for gross national income per capita were not surprising. This observation goes hand in hand with their low DR ratio: with such a small portion of their population producing economically, the total national income is being allocated over a large number of unproductive citizens, thus yielding a lower gross national income per capita. The boxplot for Sub-Saharan African countries has a number of outliers which appear to be from countries that have recently been adopting technology (e.g. Botswana) or have a stable tourism industry (e.g. Seychelles). 
+*Gross national income per capita is a country's total income in a year divided by its population, giving the average income of citizens in a country
 
-Surprisingly, although Western European countries recorded the second highest DR ratio, they also had the second highest gross national income per capita. This is striking as it would be expected that they suffer the difficulties of having such a large portion of unproductive citizens. The key to this is in realizing that Western European countries are amongst the most technologically, economically, and socially advanced - especially under western criteria. Because of this, the relatively small portion of productive people in the region can produce economic output that surpasses that of other regions. The same cannot be said for the still developing Sub-Saharan African countries. This is explored further in the next dashboard.
+*For Sub-Saharan African countries, the low results for gross national income per capita go hand in hand with their high ADR's
+
+*With high ADR, total national income is being allocated over a large number of unproductive citizens, thus yielding a lower gross national income per capita
+
+*Surprisingly, although Western European countries recorded the second highest DR ratio, they also had the second highest gross national income per capita
+
+##Tab 4: Average Number of Patents per Region
+*The average number of patents per region is being used as an indication of the pervasiveness of technology and innovation in a region 
+
+*Regions that are technologically advanced tend to have high economic output, thus negating the detriments of a high ADR
+
+*Notice that Sub-Saharan African countries feature the lowest amount of patents granted, while Western European countries feature the second highest amount of patents granted 
 
 
 ```{r}
@@ -376,6 +461,13 @@ inputPanel(
 )
 ```
 
+```{r}
+inputPanel(
+  selectInput("selectRegion_1Orji", label = "Select Region for Average Number of Patents",choices = abodes, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "OCEANIA", "LATIN AMER. & CARIB", "NEAR EAST", "ASIA (EX. NEAR EAST)", "C.W. OF IND. STATES", "EASTERN EUROPE", "NORTHERN AFRICA", "WESTERN EUROPE", "BALTICS", "NORTHERN AMERICA")),
+ sliderInput("PatentFilter_1", label = "Average Number of Patents:", min = 0, max = 60095, value = c(0, 60095), step = 100)
+)
+```
+
 
 
 ```{r}
@@ -384,9 +476,10 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Population Proportion Under 15 years Histogram", tabName = "Histo1", icon = icon("dashboard")),
+      menuItem("Population Proportion Under 15", tabName = "Histo1", icon = icon("dashboard")),
       menuItem("Age Dependency Ratio Barchart", tabName = "barchart1", icon = icon("dashboard")),
-      menuItem("Gross National Income per Capita Boxplot", tabName = "boxplot", icon = icon("dashboard"))
+      menuItem("Gross National Income per Capita", tabName = "boxplot", icon = icon("dashboard")),
+      menuItem("Avg # of Patents per Region", tabName = "brchart2", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
@@ -405,6 +498,11 @@ dashboardPage(
       tabItem(tabName = "boxplot",
         p("And here."),
         source("derekBoxPlot2UI.R",local = TRUE)$value
+        ),
+      # 4. "Average Number of Patents" tab content
+      tabItem(tabName = "brchart2",
+        p("And here."),
+        source("derekBARUI.R",local = TRUE)$value
         )
       )
     )
@@ -414,135 +512,71 @@ dashboardPage(
 source("derekBoxPlot1Server.R", local = TRUE)
 source("derekbarChart2Server.R", local = TRUE)
 source("derekBoxPlot2Server.R", local = TRUE)
+source("derekBARServer.R", local = TRUE)
 ```
 
 
-
-
-
-```{r}
-project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
-data.world::set_config(cfg_env("DW_API")) 
-regions <- data.world::query(data.world::qry_sql(
-  "   
-  select distinct WHO_Cleanest.region from WHO_Cleanest
-  "), 
-  dataset = project)
-```
-
-```{r}
-project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
-data.world::set_config(cfg_env("DW_API")) 
-incomes <- data.world::query(data.world::qry_sql(
-  "   
-  select distinct WHO_Cleanest.gross_national_income_per_capita_ppp_international
-  from WHO_Cleanest
-  "), 
-  dataset = project)
-```
-
-```{r}
-project <- "https://data.world/jeffrey-feng/s18-edv-project-3/"  
-data.world::set_config(cfg_env("DW_API")) 
-system <- data.world::query(data.world::qry_sql(
-  "   
-  select distinct WHO_Cleanest.system_of_government from WHO_Cleanest
-  "), 
-  dataset = project)
-```
-
-
-
-```{r}
-
-df1kyle <- eventReactive(c(input$selectIncome_1kyle, input$selectRegion_1kyle), { 
-  project <- "https://data.world/jeffrey-feng/s18-edv-project-3/" 
-  data.world::set_config(cfg_env("DW_API")) 
-  paramQuery <- data.world::qry_sql(
-    "   
-    select region, gross_national_income_per_capita_ppp_international, system_of_government
-    from WHO_Cleanest h
-    where gross_national_income_per_capita_ppp_international between ? and ? and region in (?,?,?,?,?,?,?,?,?,?) and system_of_government in ('Republic','Constitutional_monarchy', 'Absolute_monarchy')
-    
-    order by region
-    ")
-  paramQuery$params <- c(input$selectIncome_1kyle[1], input$selectIncome_1kyle[2], input$selectRegion_1kyle[1], input$selectRegion_1kyle[2], input$selectRegion_1kyle[3], input$selectRegion_1kyle[4], input$selectRegion_1kyle[5], input$selectRegion_1kyle[6], input$selectRegion_1kyle[7], input$selectRegion_1kyle[8], input$selectRegion_1kyle[9], input$selectRegion_1kyle[10])
-  data.world::query(paramQuery, dataset = project)
-}) 
-
-```
-
-
-
-
-
-
-
-
-```{r}
-Region <- eventReactive(c(input$selectRegion_1kyle), { 
-  library('stringr')
-  str_c(input$selectRegion_1kyle, collapse=', ')
-})
-```
-
-
-```{r}
-Income <- eventReactive(c(input$selectIncome_1kyle), { 
-  library('stringr')
-  str_c(input$selectIncome_1kyle, collapse=', ')
-})
-```
-
-#Dashboard 4 - Further Insight on Income
-This dashboard shows a boxplot comparing gross income per capita (y-axis) across regions (x-axis). This visual expands on the third tab in the previous dashboard by color-coding based on system of government. The input panel filters the regions shown. The slider adjuts the range of the y values.
-
-To expand on an observation made in tab three of the previous dashboard, we notice that Sub-Saharan Africa has the highest amount of outliers. From this visual we gain some insight into what may be causing this: all of these outlier countries are republics. This trend seems to imply a higher chance of a Sub-Saharan country having a higher income per capita if it is a republic, as republics in Africa have a much higher average income per capita than the other systems of government present there.
-
-
-```{r}
-inputPanel(
-  selectInput("selectRegion_1kyle", label = "Select Regions",choices = regions, multiple=TRUE, selected=c("SUB-SAHARAN AFRICA", "BALTICS", "OCEANIA", "C.W.OF IND.STATES", "WESTERN EUROPE", "LATIN AMER. & CARIB", "ASIA (EX. NEAR EAST)", "EASTERN EUROPE", "NEAR EAST", "NORTHERN AFRICA")
-    
-  )
-  
-  ,sliderInput("selectIncome_1kyle", label = "Gross national income per capita:", min = 0, max = 61000, value = c(0, 61000), step = 100)
-)
-```
-
-```{r}
-dashboardPage(
-  dashboardHeader(
-  ),
-  dashboardSidebar(
-    sidebarMenu(
-      menuItem("proportion of population under 15", tabName = "boxplot1", icon = icon("dashboard1"))
-    )
-  ),
-  dashboardBody(
-    tabItems(
-      # 1. "Gross national income per capita by region" tab content
-      tabItem(tabName = "boxplot1",
-              source("kyleBoxPlot1UI.R",local = TRUE)$value
-      )
-    )
-  )
-)
-
-source("kyleBoxPlot1Server.R", local = TRUE)
-
-```
 
 
 #Embedded Tableau Insights
 
-##Insight 1 - Exploring the Number of Children per Woman
+##Insight 1 - Exploring the Number of Children per Women
 
-The scatterplot shows the negative correlation between the literarcy rate and average number of children per woman. To explore the residuals of this correlation, we see if there is a geographic trend in countries in which the average number of children per women is over or under predicted by the model. We see no such geographic trend but the next tab of the story does show a correlation behind the residuals - the infant mortality rate. Note that on the first tab, the map and scatterplot can be used to filter one another. Also included is a set of the 20 richest countries, which interestingly enough has countries which do not follow the negative trend.
+*Tableau Story to explore the correlations and variance of the average number of children per women 
+
+*Makes use of maps, tableau actions, and a set
+
+TAB 1
+*Scatterplot: shows the negative correlation between the literacy rate and average number of children per woman. Unsurprising, statistically significant, and high R^2, but we want to analyze the residuals.
+
+*Map: Color coded by residuals, blue countries have high residual i.e. more children than predicted by model. Some geographic trends (West Europe and East Asia) but not much. 
+
+*Residuals further explored in tab 2 where we seek correlations 
+
+*Side note: By using the set we can observe that although there is a significant model for the aggregate of all countries, when we filter to the just the 20 wealthiest countries (by average income per capita) there is not a significant model
+
+TAB 2
+*We compare residuals to other measures: infant mortality rate on the left, population proportion over 0 on the right. 
+
+*Both correlations were significant but have fairly weak correlation coefficients
+
+*This was particularly surprising for the right plot because we expected to see populations which tend to be older have less children than expected, but a weak correlation coefficients indicates this isn't really the case.
 
 <iframe src="https://public.tableau.com/views/final_project_brandon_insight/ChildrenPerWomenStory?:showVizHome=no"width="1416" height="814"></iframe>
 
 
+##Insight 2 - Income per Capita vs Region
+*By arranging this boxplot with x-axis as region and y-axis as gross national income, we see that sub-Saharan African countries have the lowest level of incomes, and that the higher outliers are republics.
+
+<iframe src="https://public.tableau.com/views/AnalysisofWHOdata/Sheet2?:showVizHome=no"width="1050" height="814"></iframe>
+
+##Insight 3 - Income per Capita vs System of Government
+*By arranging this boxplot with x-axis as system of government and y-value as gross national income with region as color, we can observe that constitutional monarchies in general have a high percentage of countries in the lower quartiles compared to republics
+
+<iframe src="https://public.tableau.com/views/AnalysisofWHOdata/Sheet1?:showVizHome=no"width="1050" height="814"></iframe>
+
+##Insights 4-6 - Health Metrics compared across System of Government
+*It can be seen that by examining the quality of life indicators of constitutional monarchies such as infant mortality rate, per capita government expenditure on health and contraceptive prevalence that sub-Saharan constitutional monarchies have a lower quality of life than other forms of government on average
+
+<iframe src="https://public.tableau.com/views/AnalysisofWHOdata/Sheet7?:showVizHome=no"width="1050" height="814"></iframe>
+
+<iframe src="https://public.tableau.com/views/AnalysisofWHOdata/Sheet8?:showVizHome=no"width="1050" height="814"></iframe>
+
+<iframe src="https://public.tableau.com/views/AnalysisofWHOdata/Sheet9?:showVizHome=no"width="1050" height="814"></iframe>
+
+#Conclusion
+
+Highlighting some of the key takeaways:
+
+*Spending more money on healthcare to give the population greater access to contraceptives appears to work well for Absolute Monarchies and Republics, but for Constitutional Monarchies the individual income and region have a stronger correlation.
+
+*Although we tend to think of Republics as giving the most economic and social freedom, they do not always have the strongest access to contraceptive - it depends on the education. 
+
+*Regions with higher dependency ratios do not always have a lower income per capita, how technologically advanced a region is also a key factor (e.g. Europe vs Africa both having a high ratio but different incomes per capita).
+
+*The relationship between number and children and education is clear, but the variance is best explained by quite a few factors put together (e.g. region, infant mortality rate) rather than just one factor.
+
+*System of government does have a bearing on health metrics / quality of life, but there is also a dependence on the region.
 
 #Appendix 
 

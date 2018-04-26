@@ -1,0 +1,12 @@
+name: s18-edv-final-project
+title: s18-edv-final-project
+username:
+account: bwkerbow
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 330747
+bundleId: 1340484
+url: https://bwkerbow.shinyapps.io/s18-edv-final-project/
+when: 1524735016.10688
+asMultiple: FALSE
+asStatic: FALSE
